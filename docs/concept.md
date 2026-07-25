@@ -32,11 +32,28 @@ automatable one (post-1900 expansion) in a single, bounded case study.
   dated range when uncertain), and the slider shows exactly what should
   exist at that year — no synthetic in-between states needed except a
   short cross-fade at the moment a building appears/disappears.
-- **Sources so far**: a curated overview of historical plans of Hoorn,
-  1545–2000: https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html
-  (scanned map images with historical commentary, not georeferenced or
-  vector data — useful as a reference and for tracing, not a direct data
-  feed). Additional sources to evaluate (see Open Questions).
+- **Sources so far**:
+  - A curated overview of historical plans of Hoorn, 1545–2000:
+    https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html
+    (scanned map images with historical commentary, not georeferenced or
+    vector data — useful as a reference and for manual tracing, not a
+    direct data feed).
+  - **Topotijdreis / TOPraster** (Kadaster, via PDOK): the underlying
+    TOPraster topographic map series is published as open-data GeoTIFF
+    (already georeferenced, EPSG:28992) covering roughly 1815 to the
+    present, viewable at topotijdreis.nl and loadable directly in
+    QGIS/ArcGIS. This is the preferred source wherever it applies — no
+    manual georeferencing needed for anything it covers. Manual
+    georeferencing (control points via QGIS) is only needed for the
+    pre-1811 plans (Van Deventer, Blaeu, etc. from the kwaad.net list),
+    which predate the cadastral/topographic series.
+  - **Paintings and photographs**: used purely as visual reference for
+    modeling appearance (facade layout, roof shape, materials, colors) —
+    not republished on the site itself. Since the works in scope are old
+    (pre-20th-century paintings, historic photos), this sidesteps most
+    licensing concerns, but it's still worth spot-checking rights before
+    treating any specific archive as a source, in case a given digitization
+    carries its own terms.
 
 ## Key research finding: BAG solves the modern era almost for free
 
@@ -64,11 +81,11 @@ history doesn't reach that far back), or appearance/material/height (BAG is
 2. **Modern baseline via BAG** — script a pull of BAG building footprints +
    construction years for the municipality; this seeds the post-1900
    dataset directly.
-3. **Georeferencing** — for pre-BAG sources, align each historical map scan
-   to real-world coordinates (EPSG:28992 / RD New fits the Netherlands
-   well) using control points (e.g. QGIS georeferencer against features
-   that still exist today, like the city walls' former line or surviving
-   towers).
+3. **Georeferencing** — for anything covered by Topotijdreis/TOPraster
+   (~1815 onward), use it directly; it's already in EPSG:28992. Only
+   pre-1811 sources (the older kwaad.net plans) need manual georeferencing:
+   control points in QGIS against features that still exist today, like the
+   city walls' former line or surviving towers.
 4. **Building/feature extraction** — derive footprints, lifespans, heights,
    and appearance per building: footprints and existence spans from maps,
    facades/heights/materials from paintings and photos, construction/
@@ -99,10 +116,11 @@ realistic. Suggested order — each phase produces something viewable:
    colored/appearing by real construction year. This alone gives a
    navigable "Hoorn today, built up over time" experience with almost no
    manual modeling.
-3. **Historic core, coarse**: georeference 3-4 key historical maps spanning
-   the core (e.g. Blaeu 1649, Kadaster 1811-1832, Kuypers 1868), trace
-   footprints, assign lifespans, render as schematic massing alongside the
-   BAG layer.
+3. **Historic core, coarse**: trace footprints directly from Topotijdreis/
+   TOPraster editions (e.g. ~1815, 1868) since those are already
+   georeferenced, plus manually georeference 1-2 pre-1811 plans (e.g.
+   Blaeu 1649) for the earliest era. Assign lifespans, render as schematic
+   massing alongside the BAG layer.
 4. **Hero buildings**: add higher-fidelity models for a handful of
    well-documented landmarks.
 5. **Fill in the gaps**: demolished buildings, uncertain-date structures,
@@ -110,14 +128,9 @@ realistic. Suggested order — each phase produces something viewable:
 
 ## Open questions
 
-- Beyond the kwaad.net overview, do we have (or should we pursue) access to
-  vector/georeferenced historical map sources — e.g. Kadaster's historical
-  topographic map viewer, or a local georeferencing effort in QGIS against
-  the kwaad.net scans?
-- For photos/paintings of demolished or altered buildings (facades,
-  heights), which archives are usable — and under what license/rights? This
-  matters for what can legally be published on a public GitHub Pages site
-  vs. kept as private reference material only.
 - Is there a target platform/browser constraint (e.g. must work well on
   mobile), since that affects how much detail/how many buildings can be
   live in the scene at once?
+- TOPraster's open-data license terms (via PDOK) should be double-checked
+  before scripting the tile/tracing pull, though Dutch government geo open
+  data is typically unrestricted (CC0-like) for this kind of derived use.
