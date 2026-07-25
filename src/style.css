@@ -35,3 +35,12 @@ html, body {
 #year-slider {
   width: min(60vw, 500px);
 }
+
+#loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #f0f0f0;
+  font-size: 1.1rem;
+}
