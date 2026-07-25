@@ -1,0 +1,37 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+  background: #10151a;
+}
+
+#app {
+  position: absolute;
+  inset: 0;
+}
+
+#ui {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: rgba(16, 21, 26, 0.75);
+  color: #f0f0f0;
+  backdrop-filter: blur(4px);
+}
+
+#year-label {
+  min-width: 4ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#year-slider {
+  width: min(60vw, 500px);
+}

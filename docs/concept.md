@@ -107,10 +107,10 @@ history doesn't reach that far back), or appearance/material/height (BAG is
 The end goal is the whole municipality, but building it in one pass isn't
 realistic. Suggested order — each phase produces something viewable:
 
-1. **Scaffold**: repo tooling, coordinate system decision, three.js scene
-   with the terrain/water outline and a placeholder slider, deployed to
-   GitHub Pages from day one (even with fake data) so the pipeline is
-   proven end-to-end early.
+1. **Scaffold** (done): Vite + three.js project, placeholder land/harbor
+   outline, orbit camera, and a year slider (not yet wired to real data).
+   GitHub Actions workflow deploys `main` to GitHub Pages so the pipeline
+   is proven end-to-end early.
 2. **Modern layer via BAG**: script the BAG pull for the municipal
    boundary, render every present-day building at its real footprint,
    colored/appearing by real construction year. This alone gives a
