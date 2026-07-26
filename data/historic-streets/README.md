@@ -110,3 +110,33 @@ has not been established, so the houses currently sit at the Roode Steen end of
 Grote Noord by assumption. The survivor count therefore says nothing about
 these particular houses yet. Fixing it means sampling a frontage that runs
 between two identifiable junctions and using the matching modern segment.
+
+## Rendering
+
+`scripts/build-historic-houses.mjs` turns projected records into
+`public/data/hoorn-historic-houses.json`, which the app renders alongside the
+BAG buildings in a warm brick tone so reconstructions never read as survey
+data. Each house is visible only while the slider sits inside its attested
+window, and a button flies the camera to them — eight ~4 m frontages in a
+12 km scene are otherwise impossible to find.
+
+Facade widths come from the map. **Plot depth (12 m) and eaves height (9 m)
+are assumptions**, recorded in the file's `assumptions` block: a bird's-eye
+map gives frontage but not depth or height.
+
+Neighbours in a terrace are built to touch **exactly**, and coordinates are
+rounded to millimetres rather than decimetres. Both matter: an earlier attempt
+to inset each house by 12 cm produced gaps that are sub-pixel at normal
+viewing distance and aliased badly, and decimetre rounding pulled shared
+corners apart into slivers.
+
+### Known artifact
+
+Close-up screenshots from the headless test container show speckle on the
+historic facades. It survives every fix tried — ring winding, near/far plane,
+party-wall gap, coordinate precision, render order, dev vs production build,
+and removing the BAG layer entirely — which points at the container's
+**software WebGL (SwiftShader)** rasteriser rather than the scene. A
+logarithmic depth buffer suppressed it only by hiding the mesh outright, since
+raw `ShaderMaterial`s need the logdepth shader chunks to work with it. Worth
+confirming on real GPU hardware before chasing further.

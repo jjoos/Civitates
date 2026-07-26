@@ -44,3 +44,18 @@ html, body {
   color: #f0f0f0;
   font-size: 1.1rem;
 }
+
+#historic-note {
+  border: 1px solid rgba(232, 168, 130, 0.4);
+  cursor: pointer;
+  font-family: inherit;
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  padding: 7px 11px;
+  border-radius: 6px;
+  background: rgba(16, 21, 26, 0.75);
+  color: #e8a882;
+  font-size: 0.82rem;
+  backdrop-filter: blur(4px);
+}

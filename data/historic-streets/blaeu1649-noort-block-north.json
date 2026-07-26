@@ -226,5 +226,10 @@
     0,
     31.1
   ],
-  "survivors": 0
+  "survivors": 0,
+  "attested_from": 1649,
+  "attested_to": 1880,
+  "attested_reasoning": "attested_from 1649 = the map's date: these houses are drawn, so they stood then. attested_to 1880 is INFERRED, not documented: the nearest standing buildings on this stretch are dated 1880 and 1890 in BAG, so the 1649 houses were gone by then. It does not mean they survived until 1880 - only that they were replaced at some point between. Treat the visible lifespan as an evidence window, not a building lifetime.",
+  "plot_depth_m": 12,
+  "building_height_m": 9
 }

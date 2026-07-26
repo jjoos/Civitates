@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { loadBuildings } from './buildings';
 import { loadBasemap } from './basemap';
+import { loadHistoricHouses } from './historic';
 import './style.css';
 
 const app = document.getElementById('app')!;
@@ -9,11 +10,13 @@ const app = document.getElementById('app')!;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x10151a);
 
+// near/far ratio drives depth precision. minDistance is 20, so a 1 m near
+// plane bought nothing and cost precision - close-up facades z-fought.
 const camera = new THREE.PerspectiveCamera(
   50,
   window.innerWidth / window.innerHeight,
-  1,
-  30000,
+  8,
+  24000,
 );
 camera.position.set(1800, 1500, 1800);
 
@@ -58,17 +61,39 @@ loadingLabel.id = 'loading';
 loadingLabel.textContent = 'Loading buildings…';
 document.body.appendChild(loadingLabel);
 
-loadBuildings(scene, `${import.meta.env.BASE_URL}data/hoorn-bag.json`).then(({ setYear, center }) => {
+const historic = loadHistoricHouses(scene, `${import.meta.env.BASE_URL}data/hoorn-historic-houses.json`)
+  .catch(() => ({ setYear: () => {}, count: 0, centre: null }));
+
+loadBuildings(scene, `${import.meta.env.BASE_URL}data/hoorn-bag.json`).then(async ({ setYear, center }) => {
   loadingLabel.remove();
+  const hist = await historic;
   controls.target.set(center.x, 0, center.y);
   camera.position.set(center.x + 1800, 1500, center.y + 1800);
   backdrop.position.set(center.x, -0.15, center.y);
 
-  setYear(Number(yearSlider.value));
+  const apply = (y: number) => { setYear(y); hist.setYear(y); };
+  apply(Number(yearSlider.value));
   yearSlider.addEventListener('input', () => {
     yearLabel.textContent = yearSlider.value;
-    setYear(Number(yearSlider.value));
+    apply(Number(yearSlider.value));
   });
+
+  // The reconstructed houses are a handful of ~4 m frontages in a 12 km-wide
+  // scene, so they are impossible to find by panning. Make the note fly there.
+  if (hist.count && hist.centre) {
+    const note = document.createElement('button');
+    note.id = 'historic-note';
+    note.textContent = `${hist.count} houses reconstructed from Blaeu 1649 — show me`;
+    note.addEventListener('click', () => {
+      const { x, y } = hist.centre!;
+      controls.target.set(x, 0, y);
+      camera.position.set(x + 55, 45, y + 55);
+      yearSlider.value = '1649';
+      yearLabel.textContent = '1649';
+      apply(1649);
+    });
+    document.body.appendChild(note);
+  }
 });
 
 window.addEventListener('resize', () => {
