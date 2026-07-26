@@ -201,14 +201,15 @@
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
     "image_urls": [
       "https://www.kwaad.net/PlansHrn/08A_Hoorn_Blaeu_1649_bis.jpg",
-      "https://www.kwaad.net/PlansHrn/08C_Hoorn_Blaeu_1649_kleur_bis.jpg"
+      "https://www.kwaad.net/PlansHrn/08C_Hoorn_Blaeu_1649_kleur_bis.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/d/da/Plattegrond_van_Hoorn_Hoorn_%28titel_op_object%29%2C_RP-P-AO-7-36-1A.jpg"
     ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
     "projection": "birds-eye-oblique",
     "orientation": "North at the BOTTOM, east at the LEFT (~4 deg off a straight 180-degree rotation). Confirmed two ways: the compass rose needle runs top->bottom, and the open water full of ships along the top edge is the Zuiderzee, which lies south/south-east of Hoorn.",
     "scale_bar": "\"Virgae Rhijnlandicae\", ticks at 0/10/20/30/40/50 roeden. Measured 3.54 px per roede at 1500px-wide scan; 1 Rijnlandse roede = 3.767 m, giving ~1.06 m/px along the bar.",
-    "georef_notes": "NOT a true plan - do not fit with a similarity (rotate+scale) transform. Measured evidence: the walled city occupies roughly 1240x580 px on the scan (ratio ~2.1), while the real pre-1700 built-up area measures 975x799 m (ratio 1.22) from BAG footprints; the implied scale differs per axis (~0.79 vs ~1.38 m/px). The view is foreshortened by roughly 1.7x, and buildings are drawn as 3D houses, so roof/facade parallax displaces footprints further. Usable for street layout, block structure and which buildings existed; needs at minimum a projective/affine fit with 4+ control points, and footprint precision stays limited.",
+    "georef_notes": "NOT a true plan - do not fit with a similarity (rotate+scale) transform. Measured evidence: the walled city occupies roughly 1240x580 px on the scan (ratio ~2.1), while the real pre-1700 built-up area measures 975x799 m (ratio 1.22) from BAG footprints; the implied scale differs per axis (~0.79 vs ~1.38 m/px). The view is foreshortened by roughly 1.7x, and buildings are drawn as 3D houses, so roof/facade parallax displaces footprints further. Usable for street layout, block structure and which buildings existed; needs at minimum a projective/affine fit with 4+ control points, and footprint precision stays limited. HIGH-RESOLUTION SCAN FOUND: Rijksmuseum RP-P-AO-7-36-1A via Wikimedia Commons, 5978x4966 (29.7 MP) against the 1500x1193 (1.8 MP) kwaad.net copy - roughly 3x linear on the map area. At that resolution individual gabled houses are countable and the street names are legible on the plate itself (\"Kerck Straet\", \"Nieu Straet\", \"t Oost\", \"Ouden Noort\", \"Nieuwen Noort\"), which identifies streets directly instead of by inference. This makes Blaeu the PRIMARY source for the house-sequence method (see data/historic-streets/README.md), despite being useless for whole-scan georeferencing.",
     "notes": "Named as a candidate first pre-1811 map to georeference in the phase-3 roadmap - well-known, detailed town atlas plan."
   },
   {

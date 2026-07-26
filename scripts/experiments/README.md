@@ -82,3 +82,40 @@ Two lessons worth keeping:
    4-point fit can be self-consistent and still be a coincidence.
 2. **Always run `verify_fit.py`.** It is the only step in this whole
    exercise that has actually caught a wrong answer.
+
+## extract_facades.py — WORKS on the hi-res Blaeu
+
+Measures individual house facade widths straight off a bird's-eye map, which
+is what the house-sequence method in `data/historic-streets/` needs.
+
+Found a **much better scan** first: Rijksmuseum RP-P-AO-7-36-1A via Wikimedia
+Commons, **5978x4966 (29.7 MP)** against the 1500x1193 (1.8 MP) kwaad.net
+copy — roughly 3x linear on the map area. At that resolution individual gabled
+houses are countable **and the street names are legible on the plate**
+("Kerck Straet", "Nieu Straet", "t Oost", "Ouden Noort", "Nieuwen Noort"),
+which identifies streets directly rather than by inference.
+
+Method: sample a band along a street frontage, reduce to a 1-D darkness
+profile, autocorrelate to find the house rhythm, then pick gable apexes.
+
+First real extraction, on the "Noort" block: **9 gable apexes over 155 px,
+autocorrelation 0.75**, giving facade widths
+`[11.0, 18.0, 13.0, 14.0, 14.5, 15.0, 15.5, 15.5]` px (mean 14.6, sd 1.9).
+
+Two things decide whether it works, both learned by getting them wrong:
+
+1. **Sample toward the STREET, not into the block.** Sampling the wrong way
+   crosses roof ridges and the rhythm disappears — measured autocorrelation
+   **0.29 wrong side vs 0.75 right side**. The autocorrelation value is the
+   quality signal: >0.6 is a real frontage, <0.4 means the line is misplaced.
+2. **A straight segment only tracks a block edge so far** before drifting off
+   it. Here it held for ~155 px of a 247 px line. Use short segments and chain
+   them, or a polyline.
+
+### Caveat found in the data: foreshortening is not exactly constant
+
+The extracted widths trend upward along the row (11 -> 15.5 px). That is most
+likely **perspective gradient**, not real variation in house widths. So the
+assumption that relative facade widths are preserved along a frontage holds
+only *approximately* — over a long row a linear ramp correction may be needed
+before the proportional projection is trustworthy.

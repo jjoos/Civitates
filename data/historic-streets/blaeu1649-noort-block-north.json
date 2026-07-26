@@ -1,0 +1,64 @@
+{
+  "id": "blaeu1649-noort-block-north",
+  "source_id": "kwaad-blaeu-1649",
+  "source_year": 1649,
+  "source_image": "https://upload.wikimedia.org/wikipedia/commons/d/da/Plattegrond_van_Hoorn_Hoorn_%28titel_op_object%29%2C_RP-P-AO-7-36-1A.jpg",
+  "source_image_size_px": [
+    5978,
+    4966
+  ],
+  "map_street_label": "Noort",
+  "street": null,
+  "side": "left",
+  "crs": "EPSG:28992",
+  "frontage_px": [
+    [
+      3268,
+      2576
+    ],
+    [
+      3505,
+      2646
+    ]
+  ],
+  "frontage_valid_px": 155,
+  "street_centreline_rd": [],
+  "frontage_offset_m": 7,
+  "match_tolerance_m": 12,
+  "houses": [
+    {
+      "id": "blaeu1649-noort-n-001",
+      "facade_width": 11
+    },
+    {
+      "id": "blaeu1649-noort-n-002",
+      "facade_width": 18
+    },
+    {
+      "id": "blaeu1649-noort-n-003",
+      "facade_width": 13
+    },
+    {
+      "id": "blaeu1649-noort-n-004",
+      "facade_width": 14
+    },
+    {
+      "id": "blaeu1649-noort-n-005",
+      "facade_width": 14.5
+    },
+    {
+      "id": "blaeu1649-noort-n-006",
+      "facade_width": 15
+    },
+    {
+      "id": "blaeu1649-noort-n-007",
+      "facade_width": 15.5
+    },
+    {
+      "id": "blaeu1649-noort-n-008",
+      "facade_width": 15.5
+    }
+  ],
+  "notes": "REAL measurement from the Rijksmuseum hi-res plate: 9 gable apexes detected along a 155 px stretch of frontage, autocorrelation 0.75 (strong rhythm). street is NULL because the modern equivalent of Blaeu's \"Ouden Noort\"/\"Nieuwen Noort\" is not yet confirmed against present-day Grote Noord / Nieuwe Noord - do not project until it is. Note the widths trend 11 -> 15.5 px along the row, which is likely perspective gradient rather than real variation: foreshortening is approximately but NOT exactly constant along a frontage, and may need a linear ramp correction.",
+  "status": "PENDING: no street centreline"
+}
