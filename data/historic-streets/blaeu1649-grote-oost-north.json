@@ -1,0 +1,47 @@
+{
+  "id": "blaeu1649-grote-oost-north",
+  "source_id": "kwaad-blaeu-1649",
+  "source_year": 1649,
+  "street": "Grote Oost",
+  "side": "left",
+  "crs": "EPSG:28992",
+  "street_centreline_rd": [
+    [
+      133214.31,
+      517040.32
+    ],
+    [
+      133178.93,
+      517012.73
+    ],
+    [
+      133133.98,
+      517004.44
+    ],
+    [
+      133047.7,
+      516967.68
+    ],
+    [
+      133012.83,
+      516959.92
+    ],
+    [
+      132958.8,
+      516936.52
+    ],
+    [
+      132913.39,
+      516929.58
+    ],
+    [
+      132855.56,
+      516918.83
+    ]
+  ],
+  "frontage_offset_m": 7,
+  "match_tolerance_m": 12,
+  "houses": [],
+  "notes": "Centreline derived from the 100 geocoded Grote Oost address points (principal axis, averaged per decile) - a stand-in until proper BGT road geometry is pulled. houses[] is EMPTY: facade widths must be measured off the Blaeu 1649 engraving, which draws individual gabled houses. Do not invent them.",
+  "status": "PENDING: no houses recorded"
+}
