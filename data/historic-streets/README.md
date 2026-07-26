@@ -131,11 +131,19 @@ viewing distance and aliased badly, and decimetre rounding pulled shared
 corners apart into slivers.
 
 But touching exactly means a uniform terrace renders as **one featureless
-box** — which is exactly what it did at first. Two things make the individual
-houses legible, both **stylisation for legibility, not evidence**:
+box** — which is exactly what it did, twice. Three things make the individual
+houses legible, all **stylisation for legibility, not evidence**:
 
+- **Gabled roofs**, ridge running front-to-back so the gable end faces the
+  street. This is the one with real support: Blaeu draws these houses with
+  prominent street-facing gables. The sawtooth roofline is what actually makes
+  a terrace read as separate houses.
 - **Height jitter** of ±0.8 m around the assumed 9 m, so the roofline steps.
 - **A per-house brick tint**, emitted as `tint` in the data file.
+
+Geometry is built by hand rather than by `ExtrudeGeometry`, so the quad is
+emitted in a known order (front-left, front-right, back-right, back-left) and
+faces are wound explicitly instead of guessed.
 
 Both derive from the house id through an FNV-1a hash with an fmix32
 finaliser, so rebuilds are stable. **The avalanche is the point**: house ids
@@ -154,3 +162,15 @@ and removing the BAG layer entirely — which points at the container's
 logarithmic depth buffer suppressed it only by hiding the mesh outright, since
 raw `ShaderMaterial`s need the logdepth shader chunks to work with it. Worth
 confirming on real GPU hardware before chasing further.
+
+## Cache busting
+
+Vite content-hashes the JS bundle, but files in `public/` keep stable URLs and
+GitHub Pages serves them with `max-age=600`. A data-only change therefore
+ships a fresh bundle that reads a **stale cached JSON** — which is how a fixed
+dataset kept rendering as the old one.
+
+`scripts/gen-data-manifest.mjs` runs as npm's `prebuild`, hashes each file in
+`public/data/`, and generates `src/data-manifest.ts` (gitignored). The app
+requests `data/foo.json?v=<hash>`. Per-file, so changing the small historic
+dataset does not force a re-download of the 9 MB BAG file.

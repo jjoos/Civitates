@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prebuild": "node scripts/gen-data-manifest.mjs"
   },
   "dependencies": {
     "three": "^0.169.0"
