@@ -23,6 +23,11 @@ const DEFAULT_HEIGHT_M = 9;   // ~3 storeys to the eaves; NOT measured
 // deterministically per house, so the individual units read. This is a
 // STYLISATION for legibility - the eaves height was never measured anyway.
 const HEIGHT_VARIATION_M = 1.6;
+// Blaeu draws these houses with prominent street-facing gables, so model a
+// pitched roof rather than a flat box: the sawtooth roofline is what makes a
+// terrace read as individual houses. Ridge runs front-to-back (gable end to
+// the street), the standard Dutch arrangement.
+const ROOF_PITCH_M = 3.4;
 // Neighbours in a terrace share a party wall. Let them touch EXACTLY: the
 // shared face is then back-to-back and culled from every exterior view. An
 // earlier attempt to inset each house by 12 cm was worse - at normal viewing
@@ -104,10 +109,9 @@ for (const file of (await readdir(DIR)).filter((f) => f.endsWith('.json'))) {
     // apart and left sub-pixel slivers that aliased into heavy speckle.
     ].map(toLocal).map(([x, z]) => [Math.round(x * 1000) / 1000, Math.round(z * 1000) / 1000]);
 
-    // BAG outer rings are wound clockwise (negative signed area). Match that,
-    // or ExtrudeGeometry builds the walls with inverted normals and the
-    // faces render inside-out.
-    if (signedArea(corners) > 0) corners.reverse();
+    // Emit the quad in a KNOWN order - front-left, front-right, back-right,
+    // back-left - so the renderer can build gable geometry without having to
+    // guess which edge faces the street.
 
     houses.push({
       id: h.id,
@@ -116,11 +120,12 @@ for (const file of (await readdir(DIR)).filter((f) => f.endsWith('.json'))) {
       attested_from: rec.attested_from ?? rec.source_year,
       attested_to: rec.attested_to ?? null,
       facade_m: h.facade_m,
-      height: houseHeight(h.id, rec.building_height_m ?? DEFAULT_HEIGHT_M),
+      eaves: houseHeight(h.id, rec.building_height_m ?? DEFAULT_HEIGHT_M),
+      ridge: Math.round((houseHeight(h.id, rec.building_height_m ?? DEFAULT_HEIGHT_M) + ROOF_PITCH_M) * 100) / 100,
       // per-house brick tint, so a terrace of touching houses stays legible
       tint: Math.round(hash01(`${h.id}-tint`) * 1000) / 1000,
       position_confidence: rec.along_street_offset_verified === false ? 'approximate' : 'located',
-      ring: corners,
+      quad: corners,
     });
   }
 }
@@ -132,6 +137,7 @@ const out = {
     plot_depth_m: DEFAULT_DEPTH_M,
     building_height_m: DEFAULT_HEIGHT_M,
     height_variation_m: HEIGHT_VARIATION_M,
+    roof_pitch_m: ROOF_PITCH_M,
     party_wall_gap_m: PARTY_WALL_GAP_M,
     note: 'Facade widths are measured from the map. Depth and height are assumptions - a '
       + "bird's-eye map gives frontage but not plot depth or eaves height. Heights are "

@@ -3,6 +3,7 @@ import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { loadBuildings } from './buildings';
 import { loadBasemap } from './basemap';
 import { loadHistoricHouses } from './historic';
+import { dataUrl } from './data-manifest';
 import './style.css';
 
 const app = document.getElementById('app')!;
@@ -61,10 +62,10 @@ loadingLabel.id = 'loading';
 loadingLabel.textContent = 'Loading buildings…';
 document.body.appendChild(loadingLabel);
 
-const historic = loadHistoricHouses(scene, `${import.meta.env.BASE_URL}data/hoorn-historic-houses.json`)
+const historic = loadHistoricHouses(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-historic-houses.json'))
   .catch(() => ({ setYear: () => {}, count: 0, centre: null }));
 
-loadBuildings(scene, `${import.meta.env.BASE_URL}data/hoorn-bag.json`).then(async ({ setYear, center }) => {
+loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(async ({ setYear, center }) => {
   loadingLabel.remove();
   const hist = await historic;
   controls.target.set(center.x, 0, center.y);

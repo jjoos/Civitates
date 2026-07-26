@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { dataUrl } from './data-manifest';
 
 interface BasemapMeta {
   localMinX: number;
@@ -8,8 +9,8 @@ interface BasemapMeta {
 }
 
 export async function loadBasemap(scene: THREE.Scene, baseUrl: string): Promise<void> {
-  const meta: BasemapMeta = await (await fetch(`${baseUrl}data/hoorn-basemap.json`)).json();
-  const texture = await new THREE.TextureLoader().loadAsync(`${baseUrl}data/hoorn-basemap.jpg`);
+  const meta: BasemapMeta = await (await fetch(dataUrl(baseUrl, 'hoorn-basemap.json'))).json();
+  const texture = await new THREE.TextureLoader().loadAsync(dataUrl(baseUrl, 'hoorn-basemap.jpg'));
   texture.colorSpace = THREE.SRGBColorSpace;
 
   const width = meta.localMaxX - meta.localMinX;
