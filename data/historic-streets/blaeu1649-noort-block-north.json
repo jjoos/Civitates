@@ -9,7 +9,7 @@
   ],
   "map_street_label": "Noort",
   "street": "Grote Noord",
-  "side": "left",
+  "side": "right",
   "crs": "EPSG:28992",
   "frontage_px": [
     [
@@ -22,47 +22,209 @@
     ]
   ],
   "frontage_valid_px": 155,
-  "street_centreline_rd": [],
+  "street_centreline_rd": [
+    [
+      132756.14,
+      516961.18
+    ],
+    [
+      132720.46,
+      517005.6
+    ],
+    [
+      132690.84,
+      517039.86
+    ],
+    [
+      132659.26,
+      517071.48
+    ],
+    [
+      132616.26,
+      517112.51
+    ],
+    [
+      132592.65,
+      517139.45
+    ],
+    [
+      132519.26,
+      517224.6
+    ]
+  ],
   "frontage_offset_m": 7,
   "match_tolerance_m": 12,
   "houses": [
     {
       "id": "blaeu1649-noort-n-001",
-      "facade_width": 11
+      "facade_width": 11,
+      "order": 1,
+      "facade_frac": 0.09442,
+      "facade_m": 2.94,
+      "rd": [
+        132760.68,
+        516966.71
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000546522",
+          "year": 1890,
+          "dist_m": 11.4
+        }
+      ],
+      "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-002",
-      "facade_width": 18
+      "facade_width": 18,
+      "order": 2,
+      "facade_frac": 0.15451,
+      "facade_m": 4.81,
+      "rd": [
+        132758.25,
+        516969.73
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000546522",
+          "year": 1890,
+          "dist_m": 9.6
+        }
+      ],
+      "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-003",
-      "facade_width": 13
+      "facade_width": 13,
+      "order": 3,
+      "facade_frac": 0.11159,
+      "facade_m": 3.47,
+      "rd": [
+        132755.66,
+        516972.95
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000546522",
+          "year": 1890,
+          "dist_m": 9.3
+        }
+      ],
+      "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-004",
-      "facade_width": 14
+      "facade_width": 14,
+      "order": 4,
+      "facade_frac": 0.12017,
+      "facade_m": 3.74,
+      "rd": [
+        132753.4,
+        516975.77
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000546522",
+          "year": 1890,
+          "dist_m": 10.4
+        }
+      ],
+      "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-005",
-      "facade_width": 14.5
+      "facade_width": 14.5,
+      "order": 5,
+      "facade_frac": 0.12446,
+      "facade_m": 3.87,
+      "rd": [
+        132751.02,
+        516978.73
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000551276",
+          "year": 1880,
+          "dist_m": 9.2
+        }
+      ],
+      "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-006",
-      "facade_width": 15
+      "facade_width": 15,
+      "order": 6,
+      "facade_frac": 0.12876,
+      "facade_m": 4.01,
+      "rd": [
+        132748.55,
+        516981.8
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000551276",
+          "year": 1880,
+          "dist_m": 6.7
+        }
+      ],
+      "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-007",
-      "facade_width": 15.5
+      "facade_width": 15.5,
+      "order": 7,
+      "facade_frac": 0.13305,
+      "facade_m": 4.14,
+      "rd": [
+        132746,
+        516984.98
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000551276",
+          "year": 1880,
+          "dist_m": 6.1
+        }
+      ],
+      "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-008",
-      "facade_width": 15.5
+      "facade_width": 15.5,
+      "order": 8,
+      "facade_frac": 0.13305,
+      "facade_m": 4.14,
+      "rd": [
+        132743.41,
+        516988.2
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000551276",
+          "year": 1880,
+          "dist_m": 8
+        }
+      ],
+      "bag_match": null
     }
   ],
   "notes": "REAL measurement from the Rijksmuseum hi-res plate: 9 gable apexes detected along a 155 px stretch of frontage, autocorrelation 0.75 (strong rhythm). street is NULL because the modern equivalent of Blaeu's \"Ouden Noort\"/\"Nieuwen Noort\" is not yet confirmed against present-day Grote Noord / Nieuwe Noord - do not project until it is. Note the widths trend 11 -> 15.5 px along the row, which is likely perspective gradient rather than real variation: foreshortening is approximately but NOT exactly constant along a frontage, and may need a linear ramp correction.",
-  "status": "PENDING: no street centreline",
+  "status": "projected",
   "street_confidence": "high",
   "street_evidence": "Blaeu's \"Nieuwen Noort\" = modern NIEUWE NOORD. Documented: the street was called Burchwal and was still a CANAL until 1595, after which it became the street now named Nieuwe Noord, which runs parallel to and directly behind the Grote Noord. Blaeu 1649 postdates 1595, so it appears as a street named \"Nieuwen Noort\". Blaeu's \"Ouden Noort\" is therefore the older parallel street it contrasts with = modern GROTE NOORD. Corroborated geometrically: Grote Noord and Nieuwe Noord are an adjacent parallel pair ~40 m apart (Nieuwe Noord on the NE side), matching the single block these two labels flank on the plate; Kleine Noord by contrast is a separate continuation further out. On the plate (north at bottom) \"Nieuwen Noort\" sits lower than \"Ouden Noort\", i.e. further north - consistent.",
   "street_caveat": "In 1649 what are now Grote Noord and Kleine Noord were still ONE street under varying names, so \"Ouden Noort\" may span both. This frontage is adjacent to Nieuwen Noort, which parallels the Grote Noord section specifically, so Grote Noord is the right modern street for THIS block. NOT yet verified: which SIDE of the street this frontage is - side is still a guess and would put the houses on the wrong side if wrong. Confirm visually before projecting.",
-  "historical_note": "Directly useful for the time slider: Nieuwe Noord was open water (the Burchwal canal) until 1595. Before that date this block had a canal on that side, not a street."
+  "historical_note": "Directly useful for the time slider: Nieuwe Noord was open water (the Burchwal canal) until 1595. Before that date this block had a canal on that side, not a street.",
+  "side_reasoning": "The sampled band runs from the frontage toward decreasing image-y. Blaeu is north-at-bottom, so that is SOUTH-ish - the block's Grote Noord frontage, since Nieuwe Noord lies to the NE. With the centreline ordered from the Roode Steen end north-westward, the houses sit on its NE flank, which is the right-hand side of travel.",
+  "map_scale_m_per_px": 0.267,
+  "map_scale_source": "Blaeu's own \"Virgae Rhijnlandicae\" bar: 3.54 px/roede on the 1500px scan, x3.985 for the 5978px plate = 14.11 px/roede; 1 Rijnlandse roede = 3.767 m.",
+  "segment_start_m": 0,
+  "segment_length_m": 31.11,
+  "segment_caveat": "segment_length_m is DERIVED: the detected apexes span 116.5 px (first to last), x 0.267 m/px from Blaeu's own scale bar. NOTE this is the apex-to-apex span, NOT the 155 px stretch that was searched - using the search length would inflate every facade by 1.33x. segment_start_m = 0 remains an ASSUMPTION: the along-street position of this frontage has not been established, so the houses are placed at the Roode Steen end of Grote Noord. The facade widths and their ordering are real measurements; the along-street offset is not.",
+  "along_street_offset_verified": false,
+  "street_length_m": 354.6,
+  "segment_m": [
+    0,
+    31.1
+  ],
+  "survivors": 0
 }

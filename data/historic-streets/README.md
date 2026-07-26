@@ -67,12 +67,46 @@ before the map's date** — a 1920s building standing on the spot is not that
 house. Nearby buildings of any date are still listed under `bag_candidates`
 for inspection.
 
-## Honest status
+## Segments
 
-The projection maths is verified against a synthetic straight street with
-known widths (exact recovery of facade metres, positions and side offset).
-What is **not** yet done is measuring real facade widths off the Blaeu
-engraving — `houses` arrays are empty, and the script reports PENDING rather
-than inventing them. Our current Blaeu scan is 1500x1193, where a house is
-only ~10 px wide; a higher-resolution scan is likely needed before facade
-extraction is reliable.
+A frontage usually covers only part of a street. Spreading eight houses over a
+355 m centreline would invent 44 m facades, so a record pins the stretch it
+actually spans with `segment_start_m` and `segment_length_m`.
+
+Derive `segment_length_m` from the **apex-to-apex** span of the detected
+facades, not from the length of frontage you searched — using the search
+length inflated every facade by 1.33x when this was first run.
+
+## First end-to-end run
+
+`blaeu1649-noort-block-north` — 8 houses on the Grote Noord frontage of the
+block between Blaeu's "Ouden Noort" and "Nieuwen Noort":
+
+| # | facade |  | # | facade |
+|---|---|---|---|---|
+| 1 | 2.94 m | | 5 | 3.87 m |
+| 2 | 4.81 m | | 6 | 4.01 m |
+| 3 | 3.47 m | | 7 | 4.14 m |
+| 4 | 3.74 m | | 8 | 4.14 m |
+
+**The widths are the validation.** Scaled by Blaeu's own *Virgae Rhijnlandicae*
+bar (0.267 m/px on the 5978px plate), they land at **2.9–4.8 m, mean 3.9 m** —
+exactly the range for 17th-century Dutch canal houses. Nothing in the pipeline
+was tuned to produce that; it falls out of the gable spacing and the printed
+scale bar independently.
+
+**Survivors: 0.** The nearest standing buildings are dated **1880 and 1890**,
+so the matcher rejects them — correctly, since a building put up in 1890
+cannot be a house drawn in 1649. That is the year filter doing its job.
+
+### What is real here and what is not
+
+Real: the facade widths, their ordering, the metre scale, and the street
+identification (Blaeu's "Nieuwen Noort" is modern Nieuwe Noord — it was the
+Burchwal *canal* until 1595 — so "Ouden Noort" is modern Grote Noord).
+
+Not real: `segment_start_m = 0`. The **along-street position** of this frontage
+has not been established, so the houses currently sit at the Roode Steen end of
+Grote Noord by assumption. The survivor count therefore says nothing about
+these particular houses yet. Fixing it means sampling a frontage that runs
+between two identifiable junctions and using the matching modern segment.

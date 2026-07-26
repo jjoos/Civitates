@@ -77,6 +77,14 @@ function project(record) {
   if (widths.some((w) => !(w > 0))) throw new Error(`${record.id}: every house needs a positive facade_width`);
 
   const { total, segs } = polylineLength(record.street_centreline_rd);
+  // A frontage usually covers only PART of a street. Spreading a handful of
+  // houses over the whole centreline would invent absurd facade widths, so a
+  // record may pin the stretch it actually spans.
+  const segStart = record.segment_start_m ?? 0;
+  const segLen = record.segment_length_m ?? total - segStart;
+  if (segStart < 0 || segStart + segLen > total + 1e-6) {
+    throw new Error(`${record.id}: segment ${segStart}..${segStart + segLen} m falls outside the ${total.toFixed(1)} m centreline`);
+  }
   const sumW = widths.reduce((a, b) => a + b, 0);
   const ends = cumulative(widths);
   const side = record.side === 'right' ? -1 : 1;
@@ -84,12 +92,12 @@ function project(record) {
 
   const placed = houses.map((h, i) => {
     const midFrac = (ends[i] - widths[i] / 2) / sumW;         // centre of this facade
-    const { pos, normal } = alongPolyline(segs, total, midFrac * total);
+    const { pos, normal } = alongPolyline(segs, total, segStart + midFrac * segLen);
     return {
       ...h,
       order: i + 1,
       facade_frac: Number((widths[i] / sumW).toFixed(5)),
-      facade_m: Number(((widths[i] / sumW) * total).toFixed(2)),
+      facade_m: Number(((widths[i] / sumW) * segLen).toFixed(2)),
       rd: [
         Number((pos[0] + side * normal[0] * offset).toFixed(2)),
         Number((pos[1] + side * normal[1] * offset).toFixed(2)),
@@ -97,7 +105,13 @@ function project(record) {
     };
   });
 
-  return { ...record, street_length_m: Number(total.toFixed(1)), houses: placed, status: 'projected' };
+  return {
+    ...record,
+    street_length_m: Number(total.toFixed(1)),
+    segment_m: [Number(segStart.toFixed(1)), Number((segStart + segLen).toFixed(1))],
+    houses: placed,
+    status: 'projected',
+  };
 }
 
 // Does a projected historical house plausibly correspond to a surviving one?
@@ -129,7 +143,7 @@ for (const path of files) {
   let out = project(rec);
   if (out.status === 'projected') {
     out = matchBag(out, bag);
-    console.log(`${out.id}: ${out.houses.length} houses over ${out.street_length_m} m of ${out.street}; ` +
+    console.log(`${out.id}: ${out.houses.length} houses spanning ${out.segment_m[0]}-${out.segment_m[1]} m along ${out.street} (centreline ${out.street_length_m} m); ` +
       `${out.survivors} plausibly still standing`);
     for (const h of out.houses) {
       const m = h.bag_match ? `BAG ${h.bag_match.id} (${h.bag_match.year}, ${h.bag_match.dist_m} m)` : '-';
