@@ -6,8 +6,13 @@
     "year": "current",
     "publisher": "Kadaster, via PDOK",
     "url": "https://service.pdok.nl/lv/bag/wfs/v2_0",
+    "image_urls": [],
     "license": "Dutch government open data (no restriction for this kind of derived use)",
     "status": "ingested",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Real footprint + bouwjaar (construction year) for every building currently standing. Ingested by scripts/fetch-bag.mjs into public/data/hoorn-bag.json. Does not cover demolished buildings or anything before the cadastral era."
   },
   {
@@ -17,8 +22,13 @@
     "year": "current",
     "publisher": "Kadaster, via PDOK",
     "url": "https://service.pdok.nl/kadaster/bestuurlijkegebieden/wfs/v1_0",
+    "image_urls": [],
     "license": "Dutch government open data",
     "status": "ingested",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Used to filter BAG/basemap pulls to the actual Hoorn municipal polygon (gemeente code 0405), not just a bounding box."
   },
   {
@@ -28,8 +38,13 @@
     "year": "current",
     "publisher": "Kadaster, via PDOK",
     "url": "https://service.pdok.nl/kadaster/brt-achtergrondkaart/wmts/v2_0",
+    "image_urls": [],
     "license": "Dutch government open data",
     "status": "ingested",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Present-day-only reference basemap, stitched from WMTS tiles by scripts/fetch-basemap.mjs into public/data/hoorn-basemap.jpg. Not historical; era-appropriate ground textures are expected to come from phase 3 instead."
   },
   {
@@ -39,8 +54,13 @@
     "year": "1815-present",
     "publisher": "Kadaster, via PDOK",
     "url": "https://www.topotijdreis.nl",
+    "image_urls": [],
     "license": "Dutch government open data (TOPraster GeoTIFFs via PDOK)",
     "status": "georeferenced",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Already georeferenced in EPSG:28992 - the preferred source for anything in its date range. No manual control-point work needed. Not yet ingested by a script."
   },
   {
@@ -50,8 +70,15 @@
     "year": "1545",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/01A_Hoorn_VanDeventer_1545_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "plan",
+    "orientation": "North up, east right - unambiguous: the sheet is labelled Septentrio (top), Meridies (bottom), Oriens (right), Occidens (left).",
+    "scale_bar": "\"Passus quingentum\" bar on the main sheet, ticks at 100/200/300/400/500 passus. Not yet measured in pixels.",
+    "georef_notes": "TRUE planimetric plan - streets, blocks and the moat are drawn flat; only churches and gates appear as small pictorial symbols. Van Deventer surveyed the Netherlandish cities for Philip II, so these are the earliest systematic true-plan surveys of Dutch towns. Best first georeferencing target of the pre-1811 set: oldest AND most geometrically faithful. The scan is a two-page atlas spread (Biblioteca Nacional de Espana) with a book gutter; the left inset panel shows the city at larger scale than the right-hand regional sheet - prefer the inset for the city itself.",
     "notes": "Earliest plan in the kwaad.net overview. Scanned image only, no vector/geo data."
   },
   {
@@ -61,8 +88,16 @@
     "year": "1560",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/02AA_Hoorn_VanDeventer_1560_bis.jpg",
+      "https://www.kwaad.net/PlansHrn/Hoorn_VanDeventer_1560_uitsnede.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -72,8 +107,15 @@
     "year": "1582",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/03A_Hoorn_Guicciardini_1582_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -83,8 +125,16 @@
     "year": "1596",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/05A_Hoorn_Utenwael_1596_bis.jpg",
+      "https://www.kwaad.net/PlansHrn/05B3_Hoorn_Utenwael.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -94,8 +144,15 @@
     "year": "1615",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/06A_Hoorn_Velius_1615_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -105,8 +162,15 @@
     "year": "1632",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/09_Hoorn_Boxhorn_1632_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -116,8 +180,16 @@
     "year": "1648",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/Hoorn_Pott_1648_bis.jpg",
+      "https://www.kwaad.net/PlansHrn/Hoorn_Pott_1648.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -127,8 +199,16 @@
     "year": "1649",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/08A_Hoorn_Blaeu_1649_bis.jpg",
+      "https://www.kwaad.net/PlansHrn/08C_Hoorn_Blaeu_1649_kleur_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "birds-eye-oblique",
+    "orientation": "North at the BOTTOM, east at the LEFT (~4 deg off a straight 180-degree rotation). Confirmed two ways: the compass rose needle runs top->bottom, and the open water full of ships along the top edge is the Zuiderzee, which lies south/south-east of Hoorn.",
+    "scale_bar": "\"Virgae Rhijnlandicae\", ticks at 0/10/20/30/40/50 roeden. Measured 3.54 px per roede at 1500px-wide scan; 1 Rijnlandse roede = 3.767 m, giving ~1.06 m/px along the bar.",
+    "georef_notes": "NOT a true plan - do not fit with a similarity (rotate+scale) transform. Measured evidence: the walled city occupies roughly 1240x580 px on the scan (ratio ~2.1), while the real pre-1700 built-up area measures 975x799 m (ratio 1.22) from BAG footprints; the implied scale differs per axis (~0.79 vs ~1.38 m/px). The view is foreshortened by roughly 1.7x, and buildings are drawn as 3D houses, so roof/facade parallax displaces footprints further. Usable for street layout, block structure and which buildings existed; needs at minimum a projective/affine fit with 4+ control points, and footprint precision stays limited.",
     "notes": "Named as a candidate first pre-1811 map to georeference in the phase-3 roadmap - well-known, detailed town atlas plan."
   },
   {
@@ -138,8 +218,15 @@
     "year": "1659",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/Hoorn_MartinZeiller_1659.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -149,8 +236,16 @@
     "year": "1697",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/10A_Hoorn_DeParival_Wetstein_1697_bis.jpg",
+      "https://www.kwaad.net/PlansHrn/Hoorn_DeParival_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -160,8 +255,15 @@
     "year": "1698",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/11A_Hoorn_DeWit_1698_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -171,8 +273,15 @@
     "year": "1690-1738",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/12A_Hoorn_Covens_Mortier_1738_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Two related editions grouped as one entry on the source page."
   },
   {
@@ -182,8 +291,15 @@
     "year": "1743",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/13A_Hoorn_Tirion_1743_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -193,8 +309,15 @@
     "year": "1743",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/Hoorn_En_Omgeving_GovertOostwoud_1743.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": ""
   },
   {
@@ -204,8 +327,15 @@
     "year": "1794",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/14_Hoorn_Doesjan_1794.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Last pre-cadastral plan before the Kadaster 1811-1832 minuutplans, which Topotijdreis/TOPraster already covers in georeferenced form."
   },
   {
@@ -215,8 +345,16 @@
     "year": "1811-1832",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/Hoorn_Kadasterkaart1832_west_1500pix.jpg",
+      "https://www.kwaad.net/PlansHrn/Hoorn_Kadasterkaart1832_oost_1500pix.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Falls within Topotijdreis/TOPraster's covered range - prefer tracing from that already-georeferenced source instead of manually georeferencing this scan."
   },
   {
@@ -226,8 +364,15 @@
     "year": "1868",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/15_Hoorn_Kuypers_1868.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Falls within Topotijdreis/TOPraster's covered range - prefer tracing from that already-georeferenced source instead of manually georeferencing this scan."
   },
   {
@@ -237,8 +382,18 @@
     "year": "1838-1884",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/Rioleringssysteem_Hoorn_VanAsperen_1838_bis.jpg",
+      "https://www.kwaad.net/PlansHrn/Rioleringssysteem_Hoorn_1842_combinatie.jpg",
+      "https://www.kwaad.net/PlansHrn/Rioleringssysteem_Hoorn_vanAkerlaken_bis.jpg",
+      "https://www.kwaad.net/PlansHrn/Hoorn_1884_Graftdijk_bis.jpg"
+    ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "reference-only",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Infrastructure detail rather than a building-footprint source; useful context for the historic core."
   },
   {
@@ -248,8 +403,16 @@
     "year": "2000",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
+    "image_urls": [
+      "https://www.kwaad.net/PlansHrn/Hoorn_Stad_2000_300dpi_klein.jpg",
+      "https://www.kwaad.net/PlansHrn/Hoorn_2000_300dpi_stadswateren_grijzebasis_klein.jpg"
+    ],
     "license": "unclear - modern map, not old enough for age-based public domain",
     "status": "reference-only",
+    "projection": "unknown (not yet examined)",
+    "orientation": "unknown (not yet examined)",
+    "scale_bar": null,
+    "georef_notes": "",
     "notes": "Falls within the era BAG already covers with real vector data - not needed as a geometry source."
   }
 ]
