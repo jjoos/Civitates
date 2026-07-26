@@ -3,6 +3,8 @@ import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { loadBuildings } from './buildings';
 import { loadBasemap } from './basemap';
 import { loadHistoricHouses } from './historic';
+import { loadHistoricBlocks } from './blocks';
+import { LEGEND, SOURCE_COLORS, BAG_SWATCH, css } from './palette';
 import { dataUrl } from './data-manifest';
 import './style.css';
 
@@ -64,15 +66,18 @@ document.body.appendChild(loadingLabel);
 
 const historic = loadHistoricHouses(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-historic-houses.json'))
   .catch(() => ({ setYear: () => {}, count: 0, centre: null }));
+const blocks = loadHistoricBlocks(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-historic-blocks.json'))
+  .catch(() => ({ setYear: () => {}, count: 0, years: [] as number[], centre: null }));
 
 loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(async ({ setYear, center }) => {
   loadingLabel.remove();
   const hist = await historic;
+  const blk = await blocks;
   controls.target.set(center.x, 0, center.y);
   camera.position.set(center.x + 1800, 1500, center.y + 1800);
   backdrop.position.set(center.x, -0.15, center.y);
 
-  const apply = (y: number) => { setYear(y); hist.setYear(y); };
+  const apply = (y: number) => { setYear(y); hist.setYear(y); blk.setYear(y); };
   apply(Number(yearSlider.value));
   yearSlider.addEventListener('input', () => {
     yearLabel.textContent = yearSlider.value;
@@ -95,7 +100,46 @@ loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(a
     });
     document.body.appendChild(note);
   }
+
+  // The raster blocks only exist from their survey year on, so at 1400 the
+  // layer is empty and the button is the only hint it is there at all.
+  if (blk.count && blk.years.length) {
+    const year = String(Math.min(...blk.years));
+    const note = document.createElement('button');
+    note.id = 'blocks-note';
+    note.textContent = `${blk.count} blocks traced from the ${year} topographic sheet — show me`;
+    note.addEventListener('click', () => {
+      const c = blk.centre ?? center;
+      controls.target.set(c.x, 0, c.y);
+      camera.position.set(c.x + 620, 400, c.y + 620);
+      yearSlider.value = year;
+      yearLabel.textContent = year;
+      apply(Number(year));
+    });
+    document.body.appendChild(note);
+  }
+
+  buildLegend();
 });
+
+// Three layers make three different claims. Say which is which, in the same
+// colours the geometry actually uses — palette.ts is the single source.
+function buildLegend() {
+  const el = document.createElement('div');
+  el.id = 'legend';
+  for (const row of LEGEND) {
+    const item = document.createElement('div');
+    item.className = 'legend-row';
+    const sw = document.createElement('span');
+    sw.className = 'legend-swatch';
+    sw.style.background = css(row.key === 'bag' ? BAG_SWATCH : SOURCE_COLORS[row.key]);
+    const txt = document.createElement('span');
+    txt.innerHTML = `<strong>${row.label}</strong> — ${row.note}`;
+    item.append(sw, txt);
+    el.appendChild(item);
+  }
+  document.body.appendChild(el);
+}
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;

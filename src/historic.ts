@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { SOURCE_COLORS } from './palette';
 
 interface HistoricHouse {
   id: string;
@@ -98,6 +99,7 @@ export async function loadHistoricHouses(
     side: THREE.DoubleSide,
     uniforms: {
       uYear: { value: 1649 },
+      uColor: { value: SOURCE_COLORS.blaeu1649.clone() },
       uLightDir: { value: new THREE.Vector3(0.4, 0.8, 0.3).normalize() },
     },
     vertexShader: /* glsl */ `
@@ -118,6 +120,7 @@ export async function loadHistoricHouses(
     `,
     fragmentShader: /* glsl */ `
       uniform float uYear;
+      uniform vec3 uColor;
       uniform vec3 uLightDir;
       varying float vFrom;
       varying float vTo;
@@ -125,9 +128,9 @@ export async function loadHistoricHouses(
       varying vec3 vNormal;
       void main() {
         if (uYear < vFrom || uYear > vTo) discard;
-        // warm brick, clearly not the BAG palette; tint varies per house so
+        // per-source colour (see palette.ts); tint varies per house so
         // adjacent houses in a terrace stay individually legible
-        vec3 base = vec3(0.78, 0.36, 0.20) * (0.80 + 0.36 * vTint);
+        vec3 base = uColor * (0.80 + 0.36 * vTint);
         float diffuse = abs(dot(normalize(vNormal), uLightDir));
         gl_FragColor = vec4(base * (0.45 + 0.55 * diffuse), 1.0);
       }

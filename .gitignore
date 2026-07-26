@@ -3,3 +3,4 @@ dist
 .DS_Store
 *.tsbuildinfo
 src/data-manifest.ts
+data/raster-cache

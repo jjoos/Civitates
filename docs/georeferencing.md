@@ -214,13 +214,32 @@ quality was fine. Don't retry this against present-day data.
 
 ### Untested, in rough order of promise
 
-### Tested: TOPraster ~1815 bridge — blocked
+### Tested: TOPraster ~1815 bridge — blocked (and two corrections)
 
-The 1815 sheet fetches fine and is genuinely georeferenced (ArcGIS service
-`Historische_tijdreis_1815`, EPSG:28992, 1.5875 m/px; 89 historical years are
-available). But it is a **monochrome engraving**, so colour segmentation
-cannot separate its water, and colour only enters the series around **1924** —
-far too late to preserve the 1560 canal layout.
+The 1815 sheet fetches fine and is genuinely georeferenced (EPSG:28992,
+1.5875 m/px). But it is a **monochrome engraving**, so colour segmentation
+cannot separate its water, and it is drawn at **regional** scale — the whole
+town is a ~400 px blob under Zuiderzee hatching, with the word HOORN printed
+larger than the city. Nothing can be extracted from it. As a bridge to 1560,
+blocked.
+
+Two things stated here earlier were wrong and are corrected in place:
+
+- **The service host moved.** `services.arcgisonline.nl/.../Historisch/…` now
+  returns 404 and that server no longer has a `Historisch` folder at all. The
+  live endpoint is
+  `https://tiles.arcgis.com/tiles/nSZVuSZjHpEZZbRo/arcgis/rest/services/Historische_tijdreis_<year>/MapServer`,
+  found in topotijdreis.nl's own JS bundle. **184** year-services, 1815–2025,
+  not 89.
+- **Colour starts in 1880, not 1924.** The 1880 sheet is a full-colour
+  Bonneblad with buildings in carmine, water in blue and woodland in green.
+  That is early enough to be useful, and it is what
+  `scripts/extract-map-blocks.py` now runs on.
+
+Also worth knowing before treating a year as evidence: **the years are
+validity ranges, not surveys.** 1880/1885/1890/1895/1898 return byte-identical
+tiles; so do 1870/1872/1875. Every fetched sheet records a `sheet_hash` so
+duplicates are visible.
 
 ### Tested: automatic church-tower matching — confident false match
 

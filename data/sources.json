@@ -49,19 +49,19 @@
   },
   {
     "id": "topotijdreis",
-    "title": "Topotijdreis / TOPraster (historical topographic map series)",
-    "type": "map",
-    "year": "1815-present",
-    "publisher": "Kadaster, via PDOK",
-    "url": "https://www.topotijdreis.nl",
+    "title": "Topotijdreis / historical topographic map series, 1815-2025",
+    "type": "raster-tile-service",
+    "year": "1815-2025 (184 year-services)",
+    "publisher": "Kadaster, via topotijdreis.nl",
+    "url": "https://tiles.arcgis.com/tiles/nSZVuSZjHpEZZbRo/arcgis/rest/services/Historische_tijdreis_1880/MapServer",
     "image_urls": [],
     "license": "Dutch government open data (TOPraster GeoTIFFs via PDOK)",
-    "status": "georeferenced",
-    "projection": "unknown (not yet examined)",
-    "orientation": "unknown (not yet examined)",
+    "status": "ingested (1880 -> data/historic-rasters/topo-1880-blocks.json)",
+    "projection": "true plan, published georeferenced in EPSG:28992 - NO fitting required",
+    "orientation": "north up",
     "scale_bar": null,
-    "georef_notes": "",
-    "notes": "Already georeferenced in EPSG:28992 - the preferred source for anything in its date range. No manual control-point work needed. Not yet ingested by a script."
+    "georef_notes": "The one source in this catalogue needing no georeferencing: the tile grid IS EPSG:28992 (origin -30515500.0 / 31112399.999999993; LOD 11 = 1.5875 m/px is the finest published). Substitute any year 1815-2025 into the service name. The host MOVED - the old services.arcgisonline.nl 'Historisch' folder 404s and that server no longer has the folder.",
+    "notes": "1815 is a REGIONAL engraving, useless for buildings: the whole town is a ~400 px blob under Zuiderzee hatching. Colour begins in 1880, whose full-colour Bonneblad prints buildings in carmine - that is what scripts/extract-map-blocks.py segments. Roads use the SAME carmine, so they are rejected by shape, not colour. Years are validity ranges, not surveys: 1880/1885/1890/1895/1898 return byte-identical tiles, as do 1870/1872/1875. At 1.5875 m/px this yields blocks, never individual houses."
   },
   {
     "id": "kwaad-vandeventer-1545",
@@ -79,7 +79,7 @@
     "orientation": "North up, east right - unambiguous: the sheet is labelled Septentrio (top), Meridies (bottom), Oriens (right), Occidens (left).",
     "scale_bar": "\"Passus quingentum\" bar on the main sheet, ticks at 100/200/300/400/500 passus. Not yet measured in pixels.",
     "georef_notes": "TRUE planimetric plan - streets, blocks and the moat are drawn flat; only churches and gates appear as small pictorial symbols. Van Deventer surveyed the Netherlandish cities for Philip II, so these are the earliest systematic true-plan surveys of Dutch towns. Best first georeferencing target of the pre-1811 set: oldest AND most geometrically faithful. The scan is a two-page atlas spread (Biblioteca Nacional de Espana) with a book gutter; the left inset panel shows the city at larger scale than the right-hand regional sheet - prefer the inset for the city itself.",
-    "notes": "Earliest plan in the kwaad.net overview. Scanned image only, no vector/geo data."
+    "notes": "Earliest plan in the kwaad.net overview. Scanned image only, no vector/geo data. PROVENANCE (per the user, worth confirming against the literature): Van Deventer surveyed streets and facade widths in the field and re-measured them himself several times, so the STREET WIDTHS and FACADE WIDTHS on these plans are measured quantities. House DEPTHS and garden/yard depths are the surveyor's own guesswork. That maps directly onto what this project should trust: use them as evidence for frontage and street geometry, never for plot depth. Facade TYPE as drawn may also be reliable."
   },
   {
     "id": "kwaad-vandeventer-1560",
@@ -98,7 +98,7 @@
     "orientation": "North up, east right - unambiguous: the regional sheet is labelled \"Noordt\" (top), \"West\" (left), \"Oost\" (right), and the Zuiderzee occupies the bottom edge.",
     "scale_bar": null,
     "georef_notes": "TRUE planimetric plan, and the clearest of the pre-1600 set: streets, canals, blocks and the moat all drawn flat, buildings as red roof-plan masses, only churches as small symbols. Two images: the full regional sheet (02AA) covering several km of countryside with Hoorn small in the lower middle, and a high-resolution detail crop of the city itself (uitsnede) - prefer the detail crop for tracing the city. The regional sheet also names surrounding settlements still on the map today (Zwaag, Blokker, the Reguliers monastery, a leper house west of town), which are candidate control points for fitting the wide sheet. Provenance: the scan is a 19th-century lithographic facsimile (\"JACOB VAN DEVENTER, del.\" / \"Lith. J. Smulders & Co., Den Haag\"), not the original manuscript - facsimile redrawing is a possible extra error source to keep in mind when residuals are assessed.",
-    "notes": ""
+    "notes": "PROVENANCE (per the user, worth confirming against the literature): Van Deventer surveyed streets and facade widths in the field and re-measured them himself several times, so the STREET WIDTHS and FACADE WIDTHS on these plans are measured quantities. House DEPTHS and garden/yard depths are the surveyor's own guesswork. That maps directly onto what this project should trust: use them as evidence for frontage and street geometry, never for plot depth. Facade TYPE as drawn may also be reliable."
   },
   {
     "id": "kwaad-guicciardini-1582",
