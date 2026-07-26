@@ -111,11 +111,14 @@ realistic. Suggested order — each phase produces something viewable:
    outline, orbit camera, and a year slider (not yet wired to real data).
    GitHub Actions workflow deploys `main` to GitHub Pages so the pipeline
    is proven end-to-end early.
-2. **Modern layer via BAG**: script the BAG pull for the municipal
-   boundary, render every present-day building at its real footprint,
-   colored/appearing by real construction year. This alone gives a
-   navigable "Hoorn today, built up over time" experience with almost no
-   manual modeling.
+2. **Modern layer via BAG** (done): `scripts/fetch-bag.mjs` pulls every
+   present-day building footprint + construction year for the Hoorn
+   municipality from BAG (via PDOK WFS, tiling around its 50k-row pagination
+   cap), filtered to the real municipal boundary. Baked into
+   `public/data/hoorn-bag.json` (~50,200 buildings) and rendered as a single
+   merged mesh with a per-vertex year attribute; a custom shader discards
+   fragments for buildings not yet built, so the slider drives visibility
+   with one uniform update — no geometry rebuild needed while scrubbing.
 3. **Historic core, coarse**: trace footprints directly from Topotijdreis/
    TOPraster editions (e.g. ~1815, 1868) since those are already
    georeferenced, plus manually georeference 1-2 pre-1811 plans (e.g.
