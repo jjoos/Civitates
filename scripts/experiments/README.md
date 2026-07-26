@@ -83,7 +83,26 @@ Two lessons worth keeping:
 2. **Always run `verify_fit.py`.** It is the only step in this whole
    exercise that has actually caught a wrong answer.
 
-## extract_facades.py — WORKS on the hi-res Blaeu
+## measure_frontage.py — the one to use for facade widths
+
+Supersedes `extract_facades.py`. Works in a street-aligned frame (fitted from
+the roadway's light band, because a hand-drawn line was 10.1° off) and
+detects the **roof silhouette** rather than average darkness.
+
+    python3 scripts/experiments/measure_frontage.py blaeu-rp.jpg \
+        3268 2576 3505 2646 right --range 25 213 --minsep 12 --scale 0.32156
+
+On the NE frontage of "Ouden Noort": **12 apexes over 168 px → 11 facades**,
+13.5–17.5 px = 4.34–5.63 m, mean 4.91 m. Against the street's house-numbering
+density of 5.07 m per original plot that is 3% agreement — see
+`docs/georeferencing.md` for that check, which is the only thing that made the
+result trustworthy.
+
+The apex count depends on `--minsep`, so it is not self-validating. Always
+overlay the apexes on a rectified strip and look at them, and compare the mean
+against numbering density.
+
+## extract_facades.py — SUPERSEDED, measured the wrong thing
 
 Measures individual house facade widths straight off a bird's-eye map, which
 is what the house-sequence method in `data/historic-streets/` needs.
@@ -112,10 +131,19 @@ Two things decide whether it works, both learned by getting them wrong:
    it. Here it held for ~155 px of a 247 px line. Use short segments and chain
    them, or a polyline.
 
-### Caveat found in the data: foreshortening is not exactly constant
+### Why it was wrong
 
-The extracted widths trend upward along the row (11 -> 15.5 px). That is most
-likely **perspective gradient**, not real variation in house widths. So the
-assumption that relative facade widths are preserved along a frontage holds
-only *approximately* — over a long row a linear ramp correction may be needed
-before the proportional projection is trustworthy.
+The band-darkness profile is dominated by the **hatching strokes drawn inside
+each gable**, whose spacing has nothing to do with house widths. The
+autocorrelation duly locked onto that rhythm — 14.6 px, roughly a quarter of a
+real house — and reported a confident 0.75. High autocorrelation confirmed
+only that *something* was periodic.
+
+The "perspective gradient" read off the widths trending 11 → 15.5 px was
+therefore reading a trend in the hatching, not in the houses. On the corrected
+measurement the widths are strikingly regular (13.5–17.5 px with no trend), so
+there is no evidence for a ramp correction and none is applied.
+
+Third lesson for the list above: **a strong periodicity is not evidence you
+found the right period.** Check the answer against something outside the
+image.

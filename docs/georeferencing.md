@@ -300,6 +300,65 @@ Also noted for the modelling phase: Oud Hoorn reference a **"Maquette van
 Hoorn 1650"**, a physical scale model of the city — an existing 3D
 reconstruction worth investigating.
 
+### Measuring facade widths: two ways to get it wrong
+
+Both of these were caught only by an outside check, not by anything internal
+to the measurement.
+
+**1. Never transfer a scale bar between scans by image size.** Blaeu's
+"Virgae Rhijnlandicae" bar measures 3.54 px/roede on the 1500 px kwaad.net
+scan. Scaling that by 5978/1500 = 3.985 for the Rijksmuseum plate gave
+0.267 m/px, and every facade width derived from it was 20% too small. The
+Rijksmuseum sheet carries a wide paper margin around the plate mark and the
+kwaad.net one is cropped to it — aspect ratios 1.204 vs 1.257 — so the image
+width ratio is not the map area ratio. Measured directly on the plate, the
+bar's six long ticks sit at x = 1139.1, 1256.4, 1374.3, 1491.0, 1608.1,
+1724.9 px, i.e. 50 roeden = 585.8 px = **0.32156 m/px**.
+
+Because Blaeu is a bird's-eye oblique this is still only a *nominal* scale
+sitting between the two axis scales, so expect ±20% by direction. Good
+enough to size a frontage, not to georeference.
+
+**2. BAG footprint widths are not a benchmark for historic plot widths.** A
+BAG *pand* is a modern amalgamation: on Grote Noord, 57 panden cover 105
+distinct house numbers. Their median frontage of 15.1 m therefore measures
+blocks of two or three historic plots, and comparing a 1649 house against it
+suggests — wrongly — an error of nearly 4x.
+
+**Use house numbering instead.** It is documentary, cheap, and survives
+amalgamation, because a demolished plot's number is simply skipped rather
+than reassigned. Query the PDOK locatieserver for the street's addresses,
+project them onto the centreline, and divide the numbering range by the
+street length:
+
+| Grote Noord side | numbering | plots | over | per plot |
+|---|---|---|---|---|
+| NE (even) | 2–140 | 70 | 354.6 m | **5.07 m** |
+| SW (odd) | 1–113 | 57 | 354.6 m | 6.33 m |
+
+The corrected map measurement of the NE frontage gives 4.91 m mean — **3%
+agreement**, from two completely independent sources. Note the median gap
+between *surviving* consecutive numbers (6.4 m) is the wrong statistic: it is
+inflated by the missing numbers.
+
+### Sampling a frontage: fit the street axis, and detect the silhouette
+
+Two further mistakes in the same measurement, both fixed in
+`scripts/experiments/measure_frontage.py`:
+
+- **A hand-drawn frontage line was 10.1° off the street axis**, enough that
+  the sample band walked across the gables it was meant to be counting. Fit
+  the axis from the roadway's own light band instead.
+- **Average band darkness measures the engraver's hatching, not the houses.**
+  The strokes inside each gable have their own rhythm (14.6 px here, about a
+  quarter of a house), and autocorrelation locks onto it happily. Detect the
+  **roof silhouette** — how close the block comes to the street at each
+  station — and take its local minima as gable apexes.
+
+Apex count is sensitive to the minimum-separation parameter, so it is not
+self-validating. Check it against the house-numbering density above, and
+overlay the apexes on a rectified strip and look at them.
+
 ## Preferred order of work
 
 1. **Anything from ~1815 on: don't georeference by hand at all.** Use

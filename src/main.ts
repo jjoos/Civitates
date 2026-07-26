@@ -79,7 +79,7 @@ loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(a
     apply(Number(yearSlider.value));
   });
 
-  // The reconstructed houses are a handful of ~4 m frontages in a 12 km-wide
+  // The reconstructed houses are a handful of ~5 m frontages in a 12 km-wide
   // scene, so they are impossible to find by panning. Make the note fly there.
   if (hist.count && hist.centre) {
     const note = document.createElement('button');

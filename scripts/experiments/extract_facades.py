@@ -1,4 +1,12 @@
-"""Extract individual house facade widths from a bird's-eye town map.
+"""SUPERSEDED by measure_frontage.py — this measured the wrong thing.
+
+The 1-D darkness profile below is dominated by the hatching strokes drawn
+INSIDE each gable, not by the gables. Autocorrelation locks onto the stroke
+rhythm (14.6 px on Blaeu 1649, about a quarter of a real house) and reports a
+confident 0.75 while being four times out. Kept for the record; use
+measure_frontage.py, which detects the roof silhouette instead.
+
+Extract individual house facade widths from a bird's-eye town map.
 
 Old maps drawn as bird's-eye views (Blaeu 1649, Utenwael 1596) draw every
 house as a gabled unit in a row. Sampling a band along a street frontage and

@@ -37,7 +37,10 @@ Verified by inspecting the scans at full resolution:
 This inverts the earlier ranking. The Van Deventer plans have the better
 *geometry* but cannot support this method; the oblique views have poor global
 geometry but draw every house, and their weakness does not matter here because
-foreshortening is roughly constant along a single street frontage.
+foreshortening is roughly constant along a single street frontage. (Measured:
+the corrected Blaeu widths show no trend along the row, so no ramp correction
+is needed. An apparent gradient in the first attempt turned out to be a trend
+in the engraver's hatching, not in the houses.)
 
 ## Record format
 
@@ -69,8 +72,8 @@ for inspection.
 
 ## Segments
 
-A frontage usually covers only part of a street. Spreading eight houses over a
-355 m centreline would invent 44 m facades, so a record pins the stretch it
+A frontage usually covers only part of a street. Spreading eleven houses over a
+355 m centreline would invent 32 m facades, so a record pins the stretch it
 actually spans with `segment_start_m` and `segment_length_m`.
 
 Derive `segment_length_m` from the **apex-to-apex** span of the detected
@@ -79,21 +82,32 @@ length inflated every facade by 1.33x when this was first run.
 
 ## First end-to-end run
 
-`blaeu1649-noort-block-north` — 8 houses on the Grote Noord frontage of the
+`blaeu1649-noort-block-north` — 11 houses on the Grote Noord frontage of the
 block between Blaeu's "Ouden Noort" and "Nieuwen Noort":
 
-| # | facade |  | # | facade |
-|---|---|---|---|---|
-| 1 | 2.94 m | | 5 | 3.87 m |
-| 2 | 4.81 m | | 6 | 4.01 m |
-| 3 | 3.47 m | | 7 | 4.14 m |
-| 4 | 3.74 m | | 8 | 4.14 m |
+| # | facade | | # | facade | | # | facade |
+|---|---|---|---|---|---|---|---|
+| 1 | 5.30 m | | 5 | 5.46 m | |  9 | 4.66 m |
+| 2 | 4.82 m | | 6 | 4.98 m | | 10 | 4.82 m |
+| 3 | 4.82 m | | 7 | 5.30 m | | 11 | 4.66 m |
+| 4 | 4.82 m | | 8 | 4.34 m | |    |        |
 
-**The widths are the validation.** Scaled by Blaeu's own *Virgae Rhijnlandicae*
-bar (0.267 m/px on the 5978px plate), they land at **2.9–4.8 m, mean 3.9 m** —
-exactly the range for 17th-century Dutch canal houses. Nothing in the pipeline
-was tuned to produce that; it falls out of the gable spacing and the printed
-scale bar independently.
+**The widths are the validation, but only against an outside source.** Scaled
+by Blaeu's own *Virgae Rhijnlandicae* bar, measured directly on the plate
+(0.32156 m/px), they land at **4.34–5.63 m, mean 4.91 m**. Grote Noord's NE
+side — the side these houses are on — is numbered 2–140, i.e. 70 original
+plots over a 354.6 m centreline, or **5.07 m per plot**. Two independent
+sources agreeing to 3%.
+
+Do **not** benchmark against BAG footprint widths. A BAG *pand* is a modern
+amalgamation — 57 panden cover 105 distinct house numbers on this street — so
+its median 15.1 m frontage measures two or three historic plots at once, and
+comparing against it makes a correct reconstruction look 4x too narrow.
+
+An earlier version of this record had 8 houses at 2.9–4.8 m and claimed the
+same "exactly right for Dutch canal houses" validation. It was 20% too narrow:
+the scale bar had been measured on a differently-cropped scan and rescaled by
+image width. See `docs/georeferencing.md` for both mistakes.
 
 **Survivors: 0.** The nearest standing buildings are dated **1880 and 1890**,
 so the matcher rejects them — correctly, since a building put up in 1890
@@ -117,7 +131,7 @@ between two identifiable junctions and using the matching modern segment.
 `public/data/hoorn-historic-houses.json`, which the app renders alongside the
 BAG buildings in a warm brick tone so reconstructions never read as survey
 data. Each house is visible only while the slider sits inside its attested
-window, and a button flies the camera to them — eight ~4 m frontages in a
+window, and a button flies the camera to them — eleven ~5 m frontages in a
 12 km scene are otherwise impossible to find.
 
 Facade widths come from the map. **Plot depth (12 m) and eaves height (9 m)

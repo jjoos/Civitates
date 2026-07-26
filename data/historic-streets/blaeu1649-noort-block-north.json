@@ -13,15 +13,14 @@
   "crs": "EPSG:28992",
   "frontage_px": [
     [
-      3268,
-      2576
+      3305.3,
+      2536.8
     ],
     [
-      3505,
-      2646
+      3473.5,
+      2620.7
     ]
   ],
-  "frontage_valid_px": 155,
   "street_centreline_rd": [
     [
       132756.14,
@@ -52,22 +51,27 @@
       517224.6
     ]
   ],
-  "frontage_offset_m": 7,
+  "frontage_offset_m": 7.9,
   "match_tolerance_m": 12,
   "houses": [
     {
       "id": "blaeu1649-noort-n-001",
-      "facade_width": 11,
+      "facade_width": 16.5,
       "order": 1,
-      "facade_frac": 0.09442,
-      "facade_m": 2.94,
+      "facade_frac": 0.09821,
+      "facade_m": 5.3,
       "rd": [
-        132760.68,
-        516966.71
+        132760.64,
+        516968.19
       ],
       "bag_candidates": [
         {
           "id": "0405100000546522",
+          "year": 1890,
+          "dist_m": 10
+        },
+        {
+          "id": "0405100000543062",
           "year": 1890,
           "dist_m": 11.4
         }
@@ -76,160 +80,250 @@
     },
     {
       "id": "blaeu1649-noort-n-002",
-      "facade_width": 18,
+      "facade_width": 15,
       "order": 2,
-      "facade_frac": 0.15451,
-      "facade_m": 4.81,
+      "facade_frac": 0.08929,
+      "facade_m": 4.82,
       "rd": [
-        132758.25,
-        516969.73
+        132757.47,
+        516972.14
       ],
       "bag_candidates": [
         {
           "id": "0405100000546522",
           "year": 1890,
-          "dist_m": 9.6
+          "dist_m": 8.3
         }
       ],
       "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-003",
-      "facade_width": 13,
+      "facade_width": 15,
       "order": 3,
-      "facade_frac": 0.11159,
-      "facade_m": 3.47,
+      "facade_frac": 0.08929,
+      "facade_m": 4.82,
       "rd": [
-        132755.66,
-        516972.95
+        132754.45,
+        516975.9
       ],
       "bag_candidates": [
         {
           "id": "0405100000546522",
           "year": 1890,
-          "dist_m": 9.3
+          "dist_m": 9.4
         }
       ],
       "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-004",
-      "facade_width": 14,
+      "facade_width": 15,
       "order": 4,
-      "facade_frac": 0.12017,
-      "facade_m": 3.74,
+      "facade_frac": 0.08929,
+      "facade_m": 4.82,
       "rd": [
-        132753.4,
-        516975.77
+        132751.43,
+        516979.66
       ],
       "bag_candidates": [
         {
-          "id": "0405100000546522",
-          "year": 1890,
-          "dist_m": 10.4
+          "id": "0405100000551276",
+          "year": 1880,
+          "dist_m": 8.2
         }
       ],
       "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-005",
-      "facade_width": 14.5,
+      "facade_width": 17,
       "order": 5,
-      "facade_frac": 0.12446,
-      "facade_m": 3.87,
+      "facade_frac": 0.10119,
+      "facade_m": 5.46,
       "rd": [
-        132751.02,
-        516978.73
+        132748.21,
+        516983.67
       ],
       "bag_candidates": [
         {
           "id": "0405100000551276",
           "year": 1880,
-          "dist_m": 9.2
+          "dist_m": 5.3
         }
       ],
       "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-006",
-      "facade_width": 15,
+      "facade_width": 15.5,
       "order": 6,
-      "facade_frac": 0.12876,
-      "facade_m": 4.01,
+      "facade_frac": 0.09226,
+      "facade_m": 4.98,
       "rd": [
-        132748.55,
-        516981.8
+        132744.94,
+        516987.74
       ],
       "bag_candidates": [
         {
           "id": "0405100000551276",
           "year": 1880,
-          "dist_m": 6.7
+          "dist_m": 6.5
         }
       ],
       "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-007",
-      "facade_width": 15.5,
+      "facade_width": 16.5,
       "order": 7,
-      "facade_frac": 0.13305,
-      "facade_m": 4.14,
+      "facade_frac": 0.09821,
+      "facade_m": 5.3,
       "rd": [
-        132746,
-        516984.98
+        132741.72,
+        516991.75
       ],
       "bag_candidates": [
         {
+          "id": "0405100000543069",
+          "year": 1860,
+          "dist_m": 8.9
+        },
+        {
           "id": "0405100000551276",
           "year": 1880,
-          "dist_m": 6.1
+          "dist_m": 10.4
         }
       ],
       "bag_match": null
     },
     {
       "id": "blaeu1649-noort-n-008",
-      "facade_width": 15.5,
+      "facade_width": 13.5,
       "order": 8,
-      "facade_frac": 0.13305,
-      "facade_m": 4.14,
+      "facade_frac": 0.08036,
+      "facade_m": 4.34,
       "rd": [
-        132743.41,
-        516988.2
+        132738.7,
+        516995.51
       ],
       "bag_candidates": [
         {
-          "id": "0405100000551276",
-          "year": 1880,
+          "id": "0405100000543069",
+          "year": 1860,
+          "dist_m": 5.6
+        }
+      ],
+      "bag_match": null
+    },
+    {
+      "id": "blaeu1649-noort-n-009",
+      "facade_width": 14.5,
+      "order": 9,
+      "facade_frac": 0.08631,
+      "facade_m": 4.66,
+      "rd": [
+        132735.88,
+        516999.02
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000543069",
+          "year": 1860,
+          "dist_m": 5.3
+        }
+      ],
+      "bag_match": null
+    },
+    {
+      "id": "blaeu1649-noort-n-010",
+      "facade_width": 15,
+      "order": 10,
+      "facade_frac": 0.08929,
+      "facade_m": 4.82,
+      "rd": [
+        132732.91,
+        517002.71
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000543069",
+          "year": 1860,
+          "dist_m": 8.3
+        },
+        {
+          "id": "0405100000532427",
+          "year": 1795,
+          "dist_m": 10.3
+        }
+      ],
+      "bag_match": null
+    },
+    {
+      "id": "blaeu1649-noort-n-011",
+      "facade_width": 14.5,
+      "order": 11,
+      "facade_frac": 0.08631,
+      "facade_m": 4.66,
+      "rd": [
+        132729.94,
+        517006.41
+      ],
+      "bag_candidates": [
+        {
+          "id": "0405100000532427",
+          "year": 1795,
           "dist_m": 8
+        },
+        {
+          "id": "0405100000532428",
+          "year": 1780,
+          "dist_m": 10.4
         }
       ],
       "bag_match": null
     }
   ],
-  "notes": "REAL measurement from the Rijksmuseum hi-res plate: 9 gable apexes detected along a 155 px stretch of frontage, autocorrelation 0.75 (strong rhythm). street is NULL because the modern equivalent of Blaeu's \"Ouden Noort\"/\"Nieuwen Noort\" is not yet confirmed against present-day Grote Noord / Nieuwe Noord - do not project until it is. Note the widths trend 11 -> 15.5 px along the row, which is likely perspective gradient rather than real variation: foreshortening is approximately but NOT exactly constant along a frontage, and may need a linear ramp correction.",
+  "notes": "11 houses measured from the Rijksmuseum hi-res plate along the NE frontage of \"Ouden Noort\". Widths 13.5-17.5 px (4.34-5.63 m) - a strikingly regular rhythm, as expected for a terraced main street. Earlier versions of this record had 8 houses at 2.94-4.81 m; those were too narrow by 1.20x from the scale-bar error above, and were measured on a frontage line 10 deg off the street axis.",
   "status": "projected",
   "street_confidence": "high",
   "street_evidence": "Blaeu's \"Nieuwen Noort\" = modern NIEUWE NOORD. Documented: the street was called Burchwal and was still a CANAL until 1595, after which it became the street now named Nieuwe Noord, which runs parallel to and directly behind the Grote Noord. Blaeu 1649 postdates 1595, so it appears as a street named \"Nieuwen Noort\". Blaeu's \"Ouden Noort\" is therefore the older parallel street it contrasts with = modern GROTE NOORD. Corroborated geometrically: Grote Noord and Nieuwe Noord are an adjacent parallel pair ~40 m apart (Nieuwe Noord on the NE side), matching the single block these two labels flank on the plate; Kleine Noord by contrast is a separate continuation further out. On the plate (north at bottom) \"Nieuwen Noort\" sits lower than \"Ouden Noort\", i.e. further north - consistent.",
   "street_caveat": "In 1649 what are now Grote Noord and Kleine Noord were still ONE street under varying names, so \"Ouden Noort\" may span both. This frontage is adjacent to Nieuwen Noort, which parallels the Grote Noord section specifically, so Grote Noord is the right modern street for THIS block. NOT yet verified: which SIDE of the street this frontage is - side is still a guess and would put the houses on the wrong side if wrong. Confirm visually before projecting.",
   "historical_note": "Directly useful for the time slider: Nieuwe Noord was open water (the Burchwal canal) until 1595. Before that date this block had a canal on that side, not a street.",
   "side_reasoning": "The sampled band runs from the frontage toward decreasing image-y. Blaeu is north-at-bottom, so that is SOUTH-ish - the block's Grote Noord frontage, since Nieuwe Noord lies to the NE. With the centreline ordered from the Roode Steen end north-westward, the houses sit on its NE flank, which is the right-hand side of travel.",
-  "map_scale_m_per_px": 0.267,
-  "map_scale_source": "Blaeu's own \"Virgae Rhijnlandicae\" bar: 3.54 px/roede on the 1500px scan, x3.985 for the 5978px plate = 14.11 px/roede; 1 Rijnlandse roede = 3.767 m.",
+  "map_scale_m_per_px": 0.32156,
+  "map_scale_source": "Measured DIRECTLY on the Rijksmuseum plate (5978x4966), not extrapolated: the \"Virgae Rhijnlandicae\" bar's six long ticks sit at x = 1139.1, 1256.4, 1374.3, 1491.0, 1608.1, 1724.9 px (y approx 4100), i.e. 50 roeden = 585.8 px = 11.716 px/roede. 1 Rijnlandse roede = 3.767348 m -> 0.32156 m/px.",
   "segment_start_m": 0,
-  "segment_length_m": 31.11,
-  "segment_caveat": "segment_length_m is DERIVED: the detected apexes span 116.5 px (first to last), x 0.267 m/px from Blaeu's own scale bar. NOTE this is the apex-to-apex span, NOT the 155 px stretch that was searched - using the search length would inflate every facade by 1.33x. segment_start_m = 0 remains an ASSUMPTION: the along-street position of this frontage has not been established, so the houses are placed at the Roode Steen end of Grote Noord. The facade widths and their ordering are real measurements; the along-street offset is not.",
+  "segment_length_m": 54,
+  "segment_caveat": "segment_length_m = the 168.0 px apex-to-apex span x 0.32156 m/px. segment_start_m = 0 is still an ASSUMPTION: the along-street position of this frontage is not established, so the houses sit at the Roode Steen end of Grote Noord. Widths and ordering are measurements; the offset is not.",
   "along_street_offset_verified": false,
-  "street_length_m": 354.6,
-  "segment_m": [
-    0,
-    31.1
-  ],
-  "survivors": 0,
   "attested_from": 1649,
   "attested_to": 1880,
   "attested_reasoning": "attested_from 1649 = the map's date: these houses are drawn, so they stood then. attested_to 1880 is INFERRED, not documented: the nearest standing buildings on this stretch are dated 1880 and 1890 in BAG, so the 1649 houses were gone by then. It does not mean they survived until 1880 - only that they were replaced at some point between. Treat the visible lifespan as an evidence window, not a building lifetime.",
   "plot_depth_m": 12,
-  "building_height_m": 9
+  "building_height_m": 9,
+  "frontage_axis_px": {
+    "origin": [
+      3282.9,
+      2525.6
+    ],
+    "direction": [
+      0.8948,
+      0.4465
+    ],
+    "station_range_px": [
+      25,
+      213
+    ],
+    "note": "street axis fitted from the light roadway band by measure_frontage.py; a hand-drawn frontage line was 10.1 deg off, enough to walk the sample band across the gables it was counting."
+  },
+  "map_scale_caveat": "Superseded 0.267 m/px, which was WRONG BY 1.20x. That figure came from measuring the bar on the 1500 px kwaad.net scan (3.54 px/roede) and scaling by 5978/1500 = 3.985. The two scans are cropped differently - the Rijksmuseum sheet carries a wide paper margin around the plate mark, the kwaad.net one does not (aspect ratios 1.204 vs 1.257) - so the image-width ratio is not the map-area ratio. Never transfer a scale bar between scans by image size; measure it on the scan you are using. Blaeu is a bird's-eye oblique, so this is a nominal scale sitting between the two axis scales; expect +/-20% depending on direction. Treat it as good enough to size a frontage, not to georeference.",
+  "measurement_method": "Roof-silhouette apex detection in a street-aligned frame (scripts/experiments/measure_frontage.py, minsep 12 px), validated by overlaying the apexes on a rectified strip. Replaces the earlier band-darkness autocorrelation, which locked onto the engraver's hatching strokes INSIDE each gable (14.6 px) rather than the gable rhythm itself.",
+  "width_check": "Independent documentary check, not from the map. Grote Noord addresses (PDOK locatieserver): the NE side - the side these houses are on - is numbered 2-140, i.e. 70 original plots over a 354.6 m centreline = 5.07 m per plot. The map gives 4.91 m mean. Agreement to 3%. The SW side numbers 1-113 = 6.33 m per plot. Do NOT benchmark against BAG footprint widths (median 15.1 m on this street): a BAG \"pand\" is a modern amalgamation - 57 panden cover 105 distinct house numbers - so it measures blocks of 2-3 historic plots.",
+  "street_length_m": 354.6,
+  "segment_m": [
+    0,
+    54
+  ],
+  "survivors": 0
 }
