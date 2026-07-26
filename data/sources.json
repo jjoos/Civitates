@@ -414,5 +414,26 @@
     "scale_bar": null,
     "georef_notes": "",
     "notes": "Falls within the era BAG already covers with real vector data - not needed as a geometry source."
+  },
+  {
+    "id": "oudhoorn-ontstaan",
+    "title": "Het ontstaan van Hoorn (Vereniging Oud Hoorn / Archeologie West-Friesland)",
+    "type": "text",
+    "year": "1250-1400",
+    "publisher": "Vereniging Oud Hoorn, reconstructions by Archeologie West-Friesland",
+    "url": "https://www.oudhoorn.nl/ontstaan_hoorn/",
+    "image_urls": [
+      "https://www.oudhoorn.nl/ontstaan_hoorn/ontstaanHoorn1.jpg",
+      "https://www.oudhoorn.nl/ontstaan_hoorn/ontstaanHoorn2.jpg",
+      "https://www.oudhoorn.nl/ontstaan_hoorn/ontstaanHoorn3.jpg",
+      "https://www.oudhoorn.nl/ontstaan_hoorn/ontstaanHoorn4.jpg"
+    ],
+    "license": "not stated - contact Vereniging Oud Hoorn before republishing; used here as reference only",
+    "status": "reference-only",
+    "projection": "n/a",
+    "orientation": "n/a",
+    "scale_bar": null,
+    "georef_notes": "ontstaanHoorn4.jpg is the single most useful item found so far: a 4887x3323 scan of the Van Deventer 1560 plan (~3.3x the kwaad.net uitsnede) with the 1275 infrastructure overlaid by Archeologie West-Friesland - brown Omringdijk, green Dam, blue Waterloop - and a marker disc on the Roode Steen. The disc gives a control point with no guesswork, and the dike is documented as following the Kleine Oost / Grote Oost / Roode Steen / het West line, all of which are still modern street names and therefore geocodable. ontstaanHoorn1-3 are reconstructions of the cultural landscape at 1250 and 1275.",
+    "notes": "Also references a \"Maquette van Hoorn 1650\" (physical scale model) via the Oud Hoorn beeldbank - an existing 3D reconstruction of the city worth investigating for the modelling phase. Note: the site 404s for non-browser user agents on some paths, and web.archive.org is blocked by this environment's egress policy."
   }
 ]

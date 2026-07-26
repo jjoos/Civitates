@@ -247,10 +247,37 @@ landmarks, and `scripts/experiments/verify_fit.py` renders the resulting fit
 over the scan to confirm or reject it. The verification step is not optional —
 it is the only thing in this exercise that has ever caught a wrong answer.
 
-Still untested: **street-network matching** (Hoorn's medieval streets survive
-far better than its canals, and many keep their names), and the
-Hoorn-specific `oudhoorn.nl/stadsplattegronden` resource, which may already
-have done this work.
+### Tested: the Oud Hoorn resource — the best find so far
+
+`oudhoorn.nl/stadsplattegronden` itself 404s (and web.archive.org is blocked
+by this environment's egress policy), but **`oudhoorn.nl/ontstaan_hoorn/`**
+turned up something better: `ontstaanHoorn4.jpg` is a **4887x3323 scan of the
+Van Deventer 1560 plan — about 3.3x the resolution of the kwaad.net crop** —
+annotated by **Archeologie West-Friesland** with the 1275 infrastructure
+(brown = Omringdijk, green = Dam, blue = Waterloop) and a **marker disc on
+the Roode Steen**.
+
+That disc is a control point with no guesswork in it. Its centre was located
+by colour segmentation at pixel **(2564.2, 2507.2)** (blob area 11913,
+bbox 138x130), sitting on a five-way street junction — consistent with the
+documented crossing of the ring dike and the watercourse. Paired with the
+centroid of the 21 geocoded *Roode Steen* addresses, RD **132805.6,
+516924.1** (±~20 m, since the square is 72x78 m), it is recorded as the first
+real control point in `data/georeferences/vandeventer-1560.json`.
+
+The accompanying text also documents that the medieval ring dike followed the
+line **Kleine Oost – Grote Oost – Roode Steen – het West**, and the
+watercourse ran through **Nieuwland and Kerkstraat**. Those are all modern
+street names, so they geocode directly — which makes **street-network
+matching** (previously untested) the natural way to get the second and third
+control points.
+
+One control point is not a fit. A similarity transform needs two, and more
+than two before the residual means anything.
+
+Also noted for the modelling phase: Oud Hoorn reference a **"Maquette van
+Hoorn 1650"**, a physical scale model of the city — an existing 3D
+reconstruction worth investigating.
 
 ## Preferred order of work
 
