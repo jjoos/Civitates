@@ -8,7 +8,7 @@
     4966
   ],
   "map_street_label": "Noort",
-  "street": null,
+  "street": "Grote Noord",
   "side": "left",
   "crs": "EPSG:28992",
   "frontage_px": [
@@ -60,5 +60,9 @@
     }
   ],
   "notes": "REAL measurement from the Rijksmuseum hi-res plate: 9 gable apexes detected along a 155 px stretch of frontage, autocorrelation 0.75 (strong rhythm). street is NULL because the modern equivalent of Blaeu's \"Ouden Noort\"/\"Nieuwen Noort\" is not yet confirmed against present-day Grote Noord / Nieuwe Noord - do not project until it is. Note the widths trend 11 -> 15.5 px along the row, which is likely perspective gradient rather than real variation: foreshortening is approximately but NOT exactly constant along a frontage, and may need a linear ramp correction.",
-  "status": "PENDING: no street centreline"
+  "status": "PENDING: no street centreline",
+  "street_confidence": "high",
+  "street_evidence": "Blaeu's \"Nieuwen Noort\" = modern NIEUWE NOORD. Documented: the street was called Burchwal and was still a CANAL until 1595, after which it became the street now named Nieuwe Noord, which runs parallel to and directly behind the Grote Noord. Blaeu 1649 postdates 1595, so it appears as a street named \"Nieuwen Noort\". Blaeu's \"Ouden Noort\" is therefore the older parallel street it contrasts with = modern GROTE NOORD. Corroborated geometrically: Grote Noord and Nieuwe Noord are an adjacent parallel pair ~40 m apart (Nieuwe Noord on the NE side), matching the single block these two labels flank on the plate; Kleine Noord by contrast is a separate continuation further out. On the plate (north at bottom) \"Nieuwen Noort\" sits lower than \"Ouden Noort\", i.e. further north - consistent.",
+  "street_caveat": "In 1649 what are now Grote Noord and Kleine Noord were still ONE street under varying names, so \"Ouden Noort\" may span both. This frontage is adjacent to Nieuwen Noort, which parallels the Grote Noord section specifically, so Grote Noord is the right modern street for THIS block. NOT yet verified: which SIDE of the street this frontage is - side is still a guess and would put the houses on the wrong side if wrong. Confirm visually before projecting.",
+  "historical_note": "Directly useful for the time slider: Nieuwe Noord was open water (the Burchwal canal) until 1595. Before that date this block had a canal on that side, not a street."
 }
