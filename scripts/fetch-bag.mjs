@@ -3,10 +3,9 @@
 // them into a static file the app fetches at runtime. Re-run manually to refresh:
 //   node scripts/fetch-bag.mjs
 import { writeFile } from 'node:fs/promises';
+import { getHoornBoundary, bboxOfMultiPolygon, isInsideMultiPolygon, originOf } from './lib/hoorn-boundary.mjs';
 
-const BOUNDARY_WFS = 'https://service.pdok.nl/kadaster/bestuurlijkegebieden/wfs/v1_0';
 const BAG_WFS = 'https://service.pdok.nl/lv/bag/wfs/v2_0';
-const GEMEENTE_CODE = '0405'; // Hoorn
 const PAGE_SIZE = 1000;
 const OUT_PATH = new URL('../public/data/hoorn-bag.json', import.meta.url);
 
@@ -14,50 +13,6 @@ async function fetchJson(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${url} -> HTTP ${res.status}`);
   return res.json();
-}
-
-async function getHoornBoundary() {
-  const url =
-    `${BOUNDARY_WFS}?service=WFS&version=2.0.0&request=GetFeature` +
-    `&typeName=bestuurlijkegebieden:Gemeentegebied&outputFormat=json`;
-  const data = await fetchJson(url);
-  const feature = data.features.find((f) => f.properties.code === GEMEENTE_CODE);
-  if (!feature) throw new Error(`Gemeente code ${GEMEENTE_CODE} not found`);
-  return feature.geometry; // MultiPolygon, EPSG:28992
-}
-
-function bboxOfMultiPolygon(geom) {
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  for (const polygon of geom.coordinates) {
-    for (const ring of polygon) {
-      for (const [x, y] of ring) {
-        if (x < minX) minX = x;
-        if (y < minY) minY = y;
-        if (x > maxX) maxX = x;
-        if (y > maxY) maxY = y;
-      }
-    }
-  }
-  return [minX, minY, maxX, maxY];
-}
-
-// Even-odd point-in-polygon test across every ring (outer + holes) of every
-// polygon in the MultiPolygon; correct for holes regardless of ring winding.
-function isInsideMultiPolygon([x, y], multiPolygon) {
-  for (const polygon of multiPolygon.coordinates) {
-    let inside = false;
-    for (const ring of polygon) {
-      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-        const [xi, yi] = ring[i];
-        const [xj, yj] = ring[j];
-        const intersects =
-          yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
-        if (intersects) inside = !inside;
-      }
-    }
-    if (inside) return true;
-  }
-  return false;
 }
 
 function centroidOfRing(ring) {
@@ -133,10 +88,7 @@ async function main() {
   console.log('Fetching BAG panden in bbox...');
   const panden = await fetchAllPanden(bbox);
 
-  // Local scene origin: center of the municipality bbox. X stays RD-easting,
-  // Z is flipped RD-northing so increasing north maps to increasing -Z.
-  const originX = (bbox[0] + bbox[2]) / 2;
-  const originY = (bbox[1] + bbox[3]) / 2;
+  const { originX, originY } = originOf(bbox);
 
   const buildings = [];
   for (const f of panden) {

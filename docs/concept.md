@@ -119,11 +119,24 @@ realistic. Suggested order — each phase produces something viewable:
    merged mesh with a per-vertex year attribute; a custom shader discards
    fragments for buildings not yet built, so the slider drives visibility
    with one uniform update — no geometry rebuild needed while scrubbing.
+2.5. **Navigation + basemap** (done): switched from OrbitControls to
+   MapControls (one-finger/left-drag pan, two-finger/scroll pinch-zoom,
+   right-drag orbit, arrow-key pan) since inspecting a spread-out city needs
+   to move across it, not just orbit one point. Added a present-day
+   reference basemap: `scripts/fetch-basemap.mjs` stitches PDOK's BRT
+   Achtergrondkaart WMTS tiles into `public/data/hoorn-basemap.jpg`,
+   georeferenced to the same local coordinate system as the buildings.
+   Real elevation data was considered and skipped — Hoorn is flat coastal
+   polder, a DEM would show essentially nothing at this scale; historic
+   land/water changes (harbor reclamation etc.) are expected to come from
+   phase 3's era-specific map textures instead of a separate terrain system.
 3. **Historic core, coarse**: trace footprints directly from Topotijdreis/
    TOPraster editions (e.g. ~1815, 1868) since those are already
    georeferenced, plus manually georeference 1-2 pre-1811 plans (e.g.
    Blaeu 1649) for the earliest era. Assign lifespans, render as schematic
-   massing alongside the BAG layer.
+   massing alongside the BAG layer. `data/sources.json` (see
+   `data/README.md`) already catalogs every known source and its
+   georeferencing status, ready for this phase to work through.
 4. **Hero buildings**: add higher-fidelity models for a handful of
    well-documented landmarks.
 5. **Fill in the gaps**: demolished buildings, uncertain-date structures,

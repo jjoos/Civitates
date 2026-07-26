@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { loadBuildings } from './buildings';
+import { loadBasemap } from './basemap';
 import './style.css';
 
 const app = document.getElementById('app')!;
@@ -37,16 +38,17 @@ const sun = new THREE.DirectionalLight(0xfff2d8, 1.2);
 sun.position.set(4000, 6000, 2000);
 scene.add(sun);
 
-const land = new THREE.Mesh(
-  new THREE.PlaneGeometry(12000, 12000),
-  new THREE.MeshStandardMaterial({ color: 0x5c6b52 }),
+// Plain backdrop behind the real basemap texture, for when panning goes
+// beyond the map's edge - matches the basemap's own blank/background tone.
+const backdrop = new THREE.Mesh(
+  new THREE.PlaneGeometry(20000, 20000),
+  new THREE.MeshStandardMaterial({ color: 0xf2f1ea }),
 );
-land.rotation.x = -Math.PI / 2;
-land.position.y = -0.1;
-scene.add(land);
+backdrop.rotation.x = -Math.PI / 2;
+backdrop.position.y = -0.15;
+scene.add(backdrop);
 
-const grid = new THREE.GridHelper(12000, 60, 0x333333, 0x222222);
-scene.add(grid);
+loadBasemap(scene, import.meta.env.BASE_URL);
 
 const yearSlider = document.getElementById('year-slider') as HTMLInputElement;
 const yearLabel = document.getElementById('year-label') as HTMLElement;
@@ -60,8 +62,7 @@ loadBuildings(scene, `${import.meta.env.BASE_URL}data/hoorn-bag.json`).then(({ s
   loadingLabel.remove();
   controls.target.set(center.x, 0, center.y);
   camera.position.set(center.x + 1800, 1500, center.y + 1800);
-  land.position.set(center.x, -0.1, center.y);
-  grid.position.set(center.x, 0, center.y);
+  backdrop.position.set(center.x, -0.15, center.y);
 
   setYear(Number(yearSlider.value));
   yearSlider.addEventListener('input', () => {
