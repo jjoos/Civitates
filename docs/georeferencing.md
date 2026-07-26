@@ -236,7 +236,7 @@ inland. A properly constrained re-run found no good match at all.
 **Sub-pixel residuals on a small control-point set prove nothing.** This is
 the second time an unverified fit looked right and wasn't.
 
-### Where this leaves us
+### Where this leaves us (updated)
 
 Every automated route tried has failed for a different reason: the canals are
 gone, the early rasters are monochrome, and symbol detection is not reliable
@@ -274,6 +274,27 @@ control points.
 
 One control point is not a fit. A similarity transform needs two, and more
 than two before the residual means anything.
+
+#### The annotation *lines* are schematic — only the disc is usable
+
+Tempting as it looks, the coloured overlay cannot supply a second control
+point. Extracting the brown Omringdijk by colour and fitting its two arms
+separately gives image bearings of 27.5° and 22.9° — essentially one straight
+line — whereas the real route it documents (Grote Oost eastward, het West
+south-westward) **bends about 57° at the Roode Steen**. Checking rotation
+against three streets gives wildly inconsistent answers: **+11.2°, −43.3°,
+−3.5°**. The lines are drawn to show a course, not a survey. The disc sits on
+an actual drawn five-way junction and stays usable; the lines do not.
+
+#### Anchored 2-DOF street scan — also no peak
+
+With the anchor fixing translation, scale and rotation were scanned against
+the map's drawn street network (segmented as the pale cream channels), scoring
+377 geocoded address points from the medieval streets by proximity to a drawn
+street. No usable peak: best score only **1.23x the median**, and the optimum
+landed **on the edge of the search range**, which means it was being pushed
+rather than found. The drawn streets cover 15.5% of the image, so "near a
+street" is too easily satisfied by chance for the metric to discriminate.
 
 Also noted for the modelling phase: Oud Hoorn reference a **"Maquette van
 Hoorn 1650"**, a physical scale model of the city — an existing 3D
