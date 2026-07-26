@@ -18,11 +18,37 @@ const OUT = new URL('../public/data/hoorn-historic-houses.json', import.meta.url
 
 const DEFAULT_DEPTH_M = 12;   // typical Dutch town-house depth; NOT measured
 const DEFAULT_HEIGHT_M = 9;   // ~3 storeys to the eaves; NOT measured
+// Houses touch exactly, so a uniform height would render the whole terrace as
+// one featureless box. Real Dutch terraces step; vary the height a little,
+// deterministically per house, so the individual units read. This is a
+// STYLISATION for legibility - the eaves height was never measured anyway.
+const HEIGHT_VARIATION_M = 1.6;
 // Neighbours in a terrace share a party wall. Let them touch EXACTLY: the
 // shared face is then back-to-back and culled from every exterior view. An
 // earlier attempt to inset each house by 12 cm was worse - at normal viewing
 // distance those gaps are sub-pixel and alias into heavy speckle.
 const PARTY_WALL_GAP_M = 0;
+
+// FNV-1a plus an fmix32 finaliser. The avalanche matters: house ids differ
+// only in their last character, and a naive `hash * 31 + charCode` then
+// `% 1000` varied by ~5 parts in 1000, making every house the same height.
+function hash01(id) {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < id.length; i++) {
+    h = (h ^ id.charCodeAt(i)) >>> 0;
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  h = (h ^ (h >>> 16)) >>> 0;
+  h = Math.imul(h, 2246822507) >>> 0;
+  h = (h ^ (h >>> 13)) >>> 0;
+  h = Math.imul(h, 3266489909) >>> 0;
+  h = (h ^ (h >>> 16)) >>> 0;
+  return h / 4294967296;                                // 0..1
+}
+
+function houseHeight(id, base) {
+  return Math.round((base + (hash01(id) - 0.5) * HEIGHT_VARIATION_M) * 100) / 100;
+}
 
 function signedArea(ring) {
   let s = 0;
@@ -90,7 +116,9 @@ for (const file of (await readdir(DIR)).filter((f) => f.endsWith('.json'))) {
       attested_from: rec.attested_from ?? rec.source_year,
       attested_to: rec.attested_to ?? null,
       facade_m: h.facade_m,
-      height: rec.building_height_m ?? DEFAULT_HEIGHT_M,
+      height: houseHeight(h.id, rec.building_height_m ?? DEFAULT_HEIGHT_M),
+      // per-house brick tint, so a terrace of touching houses stays legible
+      tint: Math.round(hash01(`${h.id}-tint`) * 1000) / 1000,
       position_confidence: rec.along_street_offset_verified === false ? 'approximate' : 'located',
       ring: corners,
     });
@@ -103,9 +131,12 @@ const out = {
   assumptions: {
     plot_depth_m: DEFAULT_DEPTH_M,
     building_height_m: DEFAULT_HEIGHT_M,
+    height_variation_m: HEIGHT_VARIATION_M,
     party_wall_gap_m: PARTY_WALL_GAP_M,
     note: 'Facade widths are measured from the map. Depth and height are assumptions - a '
-      + "bird's-eye map gives frontage but not plot depth or eaves height.",
+      + "bird's-eye map gives frontage but not plot depth or eaves height. Heights are "
+      + 'additionally jittered per house so a terrace of touching houses reads as individual '
+      + 'units rather than one box; that jitter is legibility, not evidence.',
   },
   sources: [...sources],
   houses,

@@ -9,6 +9,7 @@ interface HistoricHouse {
   facade_m: number;
   height: number;
   position_confidence: 'located' | 'approximate';
+  tint?: number;
   ring: number[][];
 }
 
@@ -48,6 +49,10 @@ export async function loadHistoricHouses(
     const to = new Float32Array(count).fill(h.attested_to ?? 9999);
     geom.setAttribute('aFrom', new THREE.BufferAttribute(from, 1));
     geom.setAttribute('aTo', new THREE.BufferAttribute(to, 1));
+    // Neighbours touch exactly, so without a per-house tint the terrace
+    // renders as one featureless mass. Comes from the data so the build
+    // script stays the single source of truth.
+    geom.setAttribute('aTint', new THREE.BufferAttribute(new Float32Array(count).fill(h.tint ?? 0.5), 1));
     geometries.push(geom);
 
     for (const [x, z] of h.ring) { sumX += x; sumZ += z; }
@@ -62,12 +67,15 @@ export async function loadHistoricHouses(
     vertexShader: /* glsl */ `
       attribute float aFrom;
       attribute float aTo;
+      attribute float aTint;
       varying float vFrom;
       varying float vTo;
+      varying float vTint;
       varying vec3 vNormal;
       void main() {
         vFrom = aFrom;
         vTo = aTo;
+        vTint = aTint;
         vNormal = normalize(normalMatrix * normal);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
@@ -77,10 +85,13 @@ export async function loadHistoricHouses(
       uniform vec3 uLightDir;
       varying float vFrom;
       varying float vTo;
+      varying float vTint;
       varying vec3 vNormal;
       void main() {
         if (uYear < vFrom || uYear > vTo) discard;
-        vec3 base = vec3(0.78, 0.36, 0.20);   // warm brick, clearly not the BAG palette
+        // warm brick, clearly not the BAG palette; tint varies per house so
+        // adjacent houses in a terrace stay individually legible
+        vec3 base = vec3(0.78, 0.36, 0.20) * (0.82 + 0.30 * vTint);
         float diffuse = max(dot(vNormal, uLightDir), 0.0);
         gl_FragColor = vec4(base * (0.5 + 0.5 * diffuse), 1.0);
       }
