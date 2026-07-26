@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { loadBuildings } from './buildings';
 import './style.css';
 
@@ -21,10 +21,16 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 app.appendChild(renderer.domElement);
 
-const controls = new OrbitControls(camera, renderer.domElement);
+// MapControls: left-drag/one-finger to pan, right-drag/two-finger to orbit,
+// scroll/pinch to zoom - feels like a map viewer rather than orbiting a
+// single fixed point, which suits inspecting a spread-out city.
+const controls = new MapControls(camera, renderer.domElement);
 controls.target.set(0, 0, 0);
 controls.enableDamping = true;
+controls.minDistance = 20;
 controls.maxDistance = 15000;
+controls.listenToKeyEvents(window);
+controls.keyPanSpeed = 14;
 
 scene.add(new THREE.HemisphereLight(0xddeeff, 0x22201c, 1.2));
 const sun = new THREE.DirectionalLight(0xfff2d8, 1.2);
