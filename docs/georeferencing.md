@@ -96,6 +96,72 @@ España) with a book gutter. The left inset panel shows the city at larger
 scale than the right-hand regional sheet — prefer the inset for the city
 itself.
 
+## Pre-1600 survey (all four maps)
+
+Every map in the catalogue dated before 1600 has been examined. Only half of
+them are georeferenceable as plans:
+
+| Year | Map | Projection | Orientation | Georeferenceable |
+|---|---|---|---|---|
+| 1545 | Van Deventer | **true plan** | north up, east right (*Septentrio* / *Oriens* labelled) | yes |
+| 1560 | Van Deventer | **true plan** | north up, east right ("Noordt"/"West"/"Oost" labelled) | yes |
+| 1582 | Guicciardini | bird's-eye oblique | north at bottom, water at top | no (indicative only) |
+| 1596 | Utenwael | bird's-eye oblique | north at bottom, water at top | no (indicative only) |
+
+Notes worth carrying forward:
+
+- **Van Deventer 1560 is the best pre-1600 target** — the clearest true plan
+  of the set, and its detail crop (*uitsnede*) is high resolution. Its scan is
+  a 19th-century Smulders lithographic facsimile rather than the original
+  manuscript, so facsimile redrawing is an extra error source when judging
+  residuals.
+- **Guicciardini 1582 and Utenwael 1596 are the same view family** — shared
+  viewpoint, framing and Neptune-on-a-sea-monster cartouche. Treat them as one
+  source, not two independent ones. Utenwael is the more detailed engraving.
+- Van Deventer 1545 is a two-page atlas spread; its left inset panel and
+  right regional sheet are separate drawings and each needs its own transform.
+
+### Dead end: don't fit against surviving old buildings
+
+Matching a map's built-up area to the distribution of surviving pre-1600 BAG
+buildings does not work. Only 28 BAG buildings in Hoorn are dated 1600 or
+earlier, and the principal axis of that point cloud swings from -136 deg to
+61 deg to 83 deg as the cutoff moves from 1600 to 1650 to 1700 — the sample is
+too small and too biased by which buildings happened to survive. It is not
+stable ground truth.
+
+### Recommended bridge: georeference via TOPraster ~1815
+
+The reliable path for the pre-1600 plans is to fit them against the earliest
+**Topotijdreis / TOPraster** sheet instead of against modern data. That map is
+already georeferenced in EPSG:28992 (no manual work for that link), and
+Hoorn's core barely changed between the VOC-era build-out and 1815 — the city
+stagnated rather than expanded — so its street and moat pattern is a far
+closer match to the 16th-century plans than anything present-day. Chain the
+fit: old plan -> 1815 raster -> RD.
+
+## Tooling
+
+`scripts/georeference.mjs` fits and checks transforms from control-point
+records in `data/georeferences/<id>.json`:
+
+```sh
+node scripts/georeference.mjs                  # all records
+node scripts/georeference.mjs vandeventer-1560 # one record
+```
+
+It fits a similarity (plans) or affine (foreshortened views) transform by
+least squares, writes the result back into the record, and prints the RMS plus
+a **per-point residual** so a mis-picked point stands out instead of being
+absorbed into the fit. Verified against a synthetic case with a known
+transform and one deliberately corrupted point: scale and rotation recovered
+to 4 significant figures, and the bad point showed 20 m against ~5 m for the
+rest.
+
+Records for all four pre-1600 maps exist with projection, orientation and
+model locked in; `control_points` are still empty, which the script reports as
+PENDING rather than fitting.
+
 ## Preferred order of work
 
 1. **Anything from ~1815 on: don't georeference by hand at all.** Use
@@ -104,7 +170,7 @@ itself.
    Kuypers 1868 in our catalogue — trace from the georeferenced raster
    instead of the kwaad.net scans of the same maps.
 2. **Pre-1811: start with Van Deventer 1545**, for the reasons above.
-3. **Bird's-eye views (Blaeu 1649 and likely several others)**: treat as
+3. **Bird's-eye views (Guicciardini 1582, Utenwael 1596, Blaeu 1649)**: treat as
    corroborating evidence for street layout, block structure and building
    existence/appearance, not as footprint geometry. If fitted, use a
    projective transform with 4+ control points and record the residuals.

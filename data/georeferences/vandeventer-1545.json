@@ -1,0 +1,22 @@
+{
+  "id": "vandeventer-1545",
+  "source_id": "kwaad-vandeventer-1545",
+  "year": 1545,
+  "image_url": "https://www.kwaad.net/PlansHrn/01A_Hoorn_VanDeventer_1545_bis.jpg",
+  "image_size_px": [
+    1500,
+    1162
+  ],
+  "projection": "plan",
+  "model": "similarity",
+  "orientation": "north up, east right (Septentrio / Oriens labelled on the sheet)",
+  "georeferenceable": true,
+  "control_points": [],
+  "notes": "Two-page atlas spread with a book gutter; the LEFT inset panel (roughly px 20-460 x 360-730) shows the city at larger scale than the right-hand regional sheet. Pick control points in the inset and record which panel they came from - the two panels are separate drawings and must not share one transform.",
+  "crs": "EPSG:28992",
+  "control_point_schema": {
+    "px": "[x, y] pixel in the image at image_size_px",
+    "rd": "[easting, northing] in EPSG:28992",
+    "label": "short name, must exist on BOTH the historical map and today"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "vandeventer-1560",
+  "source_id": "kwaad-vandeventer-1560",
+  "year": 1560,
+  "image_url": "https://www.kwaad.net/PlansHrn/Hoorn_VanDeventer_1560_uitsnede.jpg",
+  "image_size_px": [
+    1500,
+    1153
+  ],
+  "projection": "plan",
+  "model": "similarity",
+  "orientation": "north up, east right (\"Noordt\"/\"West\"/\"Oost\" labelled on the full regional sheet)",
+  "georeferenceable": true,
+  "control_points": [],
+  "notes": "Best pre-1600 target: clearest true plan of the set. This record refers to the high-resolution city detail crop (uitsnede); the full regional sheet is a separate image (02AA_Hoorn_VanDeventer_1560_bis.jpg, 1500x1667) and would need its own record and transform. Scan is a 19th-c Smulders lithographic facsimile, so facsimile redrawing is a possible extra error source.",
+  "crs": "EPSG:28992",
+  "control_point_schema": {
+    "px": "[x, y] pixel in the image at image_size_px",
+    "rd": "[easting, northing] in EPSG:28992",
+    "label": "short name, must exist on BOTH the historical map and today"
+  }
+}
