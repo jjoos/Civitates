@@ -214,19 +214,43 @@ quality was fine. Don't retry this against present-day data.
 
 ### Untested, in rough order of promise
 
-1. **Same registration against the georeferenced TOPraster ~1815 sheet.**
-   Most canals were still open then, so there should be far more shared
-   structure. The 1815 raster is already in EPSG:28992, so it costs nothing
-   to use as the reference. Best next thing to try.
-2. **Church towers as control points**, following the IISG method — Grote
-   Kerk, Noorderkerk, Oosterkerk. Point features, unambiguous on the plan,
-   positions independently known.
-3. **Street-network matching** rather than canals: Hoorn's medieval streets
-   survive far better than its canals, and many keep their names.
-4. **Hand-picked points with an overlay check** — pick, fit, then render the
-   modern layer over the historical scan and inspect. The overlay turns blind
-   picking into a feedback loop; the failure mode on Blaeu was picking with no
-   verification step.
+### Tested: TOPraster ~1815 bridge — blocked
+
+The 1815 sheet fetches fine and is genuinely georeferenced (ArcGIS service
+`Historische_tijdreis_1815`, EPSG:28992, 1.5875 m/px; 89 historical years are
+available). But it is a **monochrome engraving**, so colour segmentation
+cannot separate its water, and colour only enters the series around **1924** —
+far too late to preserve the 1560 canal layout.
+
+### Tested: automatic church-tower matching — confident false match
+
+Hoorn has four landmarks that existed in 1560 and still stand: Noorderkerk,
+Grote Kerk, Oosterkerk (15th century) and the Hoofdtoren (1532). Detecting
+church symbols and RANSAC-matching the configuration produced a top
+hypothesis that scored far above the runner-up, with the two *independent*
+landmarks landing **0.9 px and 2.5 px** from detected symbols — and it was
+**completely wrong**, as the overlay immediately showed: warped canals across
+open fields, all four landmarks bunched in one patch, the harbour tower
+inland. A properly constrained re-run found no good match at all.
+
+**Sub-pixel residuals on a small control-point set prove nothing.** This is
+the second time an unverified fit looked right and wasn't.
+
+### Where this leaves us
+
+Every automated route tried has failed for a different reason: the canals are
+gone, the early rasters are monochrome, and symbol detection is not reliable
+enough to identify churches. The remaining option is the pragmatic one:
+
+**Human-in-the-loop.** Someone who can read the plan identifies three or four
+landmarks, and `scripts/experiments/verify_fit.py` renders the resulting fit
+over the scan to confirm or reject it. The verification step is not optional —
+it is the only thing in this exercise that has ever caught a wrong answer.
+
+Still untested: **street-network matching** (Hoorn's medieval streets survive
+far better than its canals, and many keep their names), and the
+Hoorn-specific `oudhoorn.nl/stadsplattegronden` resource, which may already
+have done this work.
 
 ## Preferred order of work
 

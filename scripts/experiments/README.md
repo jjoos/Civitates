@@ -34,3 +34,51 @@ against. Do not retry this against present-day data.
 
 The same method against the **georeferenced TOPraster ~1815** sheet is worth
 trying, because most canals were still open then. See `docs/georeferencing.md`.
+
+## TOPraster ~1815 bridge — blocked
+
+Fetched the georeferenced 1815 sheet successfully (ArcGIS tile service
+`Historische_tijdreis_1815`, EPSG:28992, LOD 11 = 1.5875 m/px; the service
+directory lists 89 historical years). Two problems:
+
+- It is a **monochrome engraving**, so the colour segmentation that works on
+  the Van Deventer lithograph cannot separate water from land on it.
+- Colour only appears in the series from about **1924** onward — far too late
+  to still show the 1560 canal layout.
+
+The tile-fetch recipe is worth keeping even so; the service is the right
+source for any later-period work.
+
+## Church-tower matching — produced a CONFIDENT FALSE MATCH
+
+The professional method (church towers as control points) applied
+automatically: detect dark church-like symbols on the 1560 plan, then
+RANSAC over candidate pairs — each pair hypothesises the
+Noorderkerk-Oosterkerk baseline, fixing scale, rotation and offset — and
+score by whether the two *unused* landmarks (Grote Kerk, Hoofdtoren) have
+symbols where predicted.
+
+Hoorn has four landmarks that existed in 1560 and still stand: Noorderkerk,
+Grote Kerk, Oosterkerk (all 15th century) and the Hoofdtoren (1532). The
+three churches are nearly collinear, so the tower is required to condition
+the fit.
+
+The top hypothesis looked excellent — score 1.52 against 0.96 for the
+runner-up, with the two independent landmarks landing **0.9 px and 2.5 px**
+from detected symbols. **It was wrong.** `verify_fit.py` showed the warped
+modern canals scattered across open fields instead of following the drawn
+canals, all four landmarks bunched into one small patch instead of spanning
+the city, and the harbour tower placed inland.
+
+Re-running with the search properly constrained (scale 0.80-1.10 m/px,
+rotation ±3.5°, and requiring the Hoofdtoren to land on drawn water) found
+**no** good match at all: the best candidate missed the Grote Kerk by 60 px,
+and every alternative misplaced the Hoofdtoren by 100-250 px. The symbol
+detector is not reliably finding the actual churches.
+
+Two lessons worth keeping:
+
+1. **Sub-pixel residuals prove nothing** on a small control-point set. A
+   4-point fit can be self-consistent and still be a coincidence.
+2. **Always run `verify_fit.py`.** It is the only step in this whole
+   exercise that has actually caught a wrong answer.
