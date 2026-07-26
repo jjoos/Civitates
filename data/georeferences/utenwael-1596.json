@@ -1,0 +1,22 @@
+{
+  "id": "utenwael-1596",
+  "source_id": "kwaad-utenwael-1596",
+  "year": 1596,
+  "image_url": "https://www.kwaad.net/PlansHrn/05A_Hoorn_Utenwael_1596_bis.jpg",
+  "image_size_px": [
+    1500,
+    1096
+  ],
+  "projection": "birds-eye-oblique",
+  "model": "affine",
+  "orientation": "north at the bottom, water at the top",
+  "georeferenceable": false,
+  "control_points": [],
+  "notes": "Oblique view, same caveats as Guicciardini 1582 and the same view family (shared viewpoint, framing and Neptune cartouche) - not independent evidence from it. Higher engraving detail, so preferred of the two for reading street layout.",
+  "crs": "EPSG:28992",
+  "control_point_schema": {
+    "px": "[x, y] pixel in the image at image_size_px",
+    "rd": "[easting, northing] in EPSG:28992",
+    "label": "short name, must exist on BOTH the historical map and today"
+  }
+}

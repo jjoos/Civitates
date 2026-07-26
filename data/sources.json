@@ -94,10 +94,10 @@
     ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
-    "projection": "unknown (not yet examined)",
-    "orientation": "unknown (not yet examined)",
+    "projection": "plan",
+    "orientation": "North up, east right - unambiguous: the regional sheet is labelled \"Noordt\" (top), \"West\" (left), \"Oost\" (right), and the Zuiderzee occupies the bottom edge.",
     "scale_bar": null,
-    "georef_notes": "",
+    "georef_notes": "TRUE planimetric plan, and the clearest of the pre-1600 set: streets, canals, blocks and the moat all drawn flat, buildings as red roof-plan masses, only churches as small symbols. Two images: the full regional sheet (02AA) covering several km of countryside with Hoorn small in the lower middle, and a high-resolution detail crop of the city itself (uitsnede) - prefer the detail crop for tracing the city. The regional sheet also names surrounding settlements still on the map today (Zwaag, Blokker, the Reguliers monastery, a leper house west of town), which are candidate control points for fitting the wide sheet. Provenance: the scan is a 19th-century lithographic facsimile (\"JACOB VAN DEVENTER, del.\" / \"Lith. J. Smulders & Co., Den Haag\"), not the original manuscript - facsimile redrawing is a possible extra error source to keep in mind when residuals are assessed.",
     "notes": ""
   },
   {
@@ -112,10 +112,10 @@
     ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
-    "projection": "unknown (not yet examined)",
-    "orientation": "unknown (not yet examined)",
+    "projection": "birds-eye-oblique",
+    "orientation": "North at the bottom, water at the top - same convention as Blaeu 1649: the Zuiderzee with ships fills the top edge, and Hoorn sits on its south/south-west shore.",
     "scale_bar": null,
-    "georef_notes": "",
+    "georef_notes": "NOT a true plan. Titled \"Hoorn in Hollandt\". Buildings drawn as 3D houses and the surrounding fields drawn receding into the distance, so the ground plan is foreshortened - a similarity (rotate+scale) fit is invalid, same as Blaeu 1649. Shares its viewpoint, framing and the Neptune-on-a-sea-monster cartouche with Utenwael 1596; the two are clearly the same view family (one derived from the other or both from a common source), so they are not independent evidence. Use for street layout, block structure, fortification form and building existence - not for footprint geometry.",
     "notes": ""
   },
   {
@@ -131,10 +131,10 @@
     ],
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "needs-georeferencing",
-    "projection": "unknown (not yet examined)",
-    "orientation": "unknown (not yet examined)",
+    "projection": "birds-eye-oblique",
+    "orientation": "North at the bottom, water at the top - same convention as Guicciardini 1582 and Blaeu 1649.",
     "scale_bar": null,
-    "georef_notes": "",
+    "georef_notes": "NOT a true plan. Titled \"Hoorn in Westfrijslandt 1596\", signed \"PAVLVS VTEN WAEL F\". Buildings drawn as 3D houses in oblique view; same caveats as Guicciardini 1582, with which it shares viewpoint, framing and the Neptune cartouche - treat the two as one view family rather than independent sources. Higher engraving detail than Guicciardini, so it is the better of the two for reading street layout and fortification detail.",
     "notes": ""
   },
   {
