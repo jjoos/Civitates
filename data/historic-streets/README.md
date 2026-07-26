@@ -130,6 +130,20 @@ to inset each house by 12 cm produced gaps that are sub-pixel at normal
 viewing distance and aliased badly, and decimetre rounding pulled shared
 corners apart into slivers.
 
+But touching exactly means a uniform terrace renders as **one featureless
+box** — which is exactly what it did at first. Two things make the individual
+houses legible, both **stylisation for legibility, not evidence**:
+
+- **Height jitter** of ±0.8 m around the assumed 9 m, so the roofline steps.
+- **A per-house brick tint**, emitted as `tint` in the data file.
+
+Both derive from the house id through an FNV-1a hash with an fmix32
+finaliser, so rebuilds are stable. **The avalanche is the point**: house ids
+differ only in their final character, and a naive `hash * 31 + charCode`
+followed by `% 1000` varied by about 5 parts in 1000 — every house came out
+the same height and the same colour, and the terrace still looked like one
+box.
+
 ### Known artifact
 
 Close-up screenshots from the headless test container show speckle on the
