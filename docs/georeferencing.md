@@ -162,6 +162,72 @@ Records for all four pre-1600 maps exist with projection, orientation and
 model locked in; `control_points` are still empty, which the script reports as
 PENDING rather than fitting.
 
+## Strategy experiments for placing control points
+
+Hand-picking pixels on 16th-century engravings produced a wrong answer once
+(Blaeu 1649), so these are the alternatives, with what has actually been
+tested.
+
+### Tested: search for an existing georeference — partial win
+
+The IISG dataset *Georeferenced regional maps associated with Jacob van
+Deventer, 1536-1546* (hdl:10622/F3LGB4) publishes six georeferenced GeoTIFFs
+(Flanders, Holland, Brabant, Guelders, Frisia, Zeeland) with QGIS control
+point files, **CC0**. The Holland sheet covers Noord-Holland, but these are
+*regional* maps on which Hoorn is a dot — not a substitute for the city plan.
+
+Two things worth carrying forward from it:
+
+- **The professional method**: control points are *church towers*, fitted with
+  a thin-plate-spline transform. Towers are point features, survive, and are
+  independently documented — much better targets than street corners.
+- **An accuracy benchmark**: Van Deventer surveyed by triangulation, and his
+  1560 Amsterdam plan reportedly deviates nowhere by more than ~10 m. So a
+  good fit here should land in the low tens of metres; anything much worse
+  means the fit is wrong, not that the map is bad.
+
+Not yet explored: `oudhoorn.nl/stadsplattegronden`, a Hoorn-specific local
+history resource that may already have done this work.
+
+### Tested: colour segmentation — works, and is reusable
+
+`scripts/experiments/segment_map.py` splits a coloured plan into its
+canal/moat network and its building blocks by ink colour. On Van Deventer
+1560 it cleanly recovers the entire canal network and the block structure. It
+is a good basis for tracing and for visual overlays, independent of whether
+it feeds a registration.
+
+### Tested: automatic canal registration vs. modern water — does not work
+
+Segment the 1560 canals, segment modern canals from PDOK BRT "water" tiles,
+then grid-search scale (0.55-1.35 m/px) and rotation (±6°) with FFT
+cross-correlation solving translation exhaustively, scored by Dice overlap.
+
+Peak Dice was only **0.16**, and the score rose monotonically with scale
+rather than peaking — the signature of "a bigger mask overlaps more", not of
+a real match.
+
+The cause is historical, not technical: **most of Hoorn's 1560 canals no
+longer exist.** The Gedempte Turfhaven ("filled-in turf harbour") is the
+obvious case, and the harbour was rebuilt wholesale after 1600. Segmentation
+quality was fine. Don't retry this against present-day data.
+
+### Untested, in rough order of promise
+
+1. **Same registration against the georeferenced TOPraster ~1815 sheet.**
+   Most canals were still open then, so there should be far more shared
+   structure. The 1815 raster is already in EPSG:28992, so it costs nothing
+   to use as the reference. Best next thing to try.
+2. **Church towers as control points**, following the IISG method — Grote
+   Kerk, Noorderkerk, Oosterkerk. Point features, unambiguous on the plan,
+   positions independently known.
+3. **Street-network matching** rather than canals: Hoorn's medieval streets
+   survive far better than its canals, and many keep their names.
+4. **Hand-picked points with an overlay check** — pick, fit, then render the
+   modern layer over the historical scan and inspect. The overlay turns blind
+   picking into a feedback loop; the failure mode on Blaeu was picking with no
+   verification step.
+
 ## Preferred order of work
 
 1. **Anything from ~1815 on: don't georeference by hand at all.** Use
