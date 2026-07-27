@@ -53,11 +53,40 @@ It carries **two lettered legends**, and the gates are the first entries:
 That is a ready-made index of logical entities — exactly the treatment the
 house work uses, applied to gates.
 
-**Blocker: the only scan we have is 1500×1133 (1.7 MP).** Enough to confirm the
-gates are drawn and lettered; not enough to measure them. This is the same
-position we were in with Blaeu before finding the Rijksmuseum plate at 29.7 MP,
-and it needs the same fix — a better scan — before it can carry any geometry.
-The Westfries Museum holds Doesjan material and is the obvious place to ask.
+Two details from kwaad.net worth carrying: **north is at the bottom**, and
+Schrickx (2011, WAR22) dates the survey to **1796** rather than 1794 — "pas uit
+1796 dateert een echt nieuw gemaakte stadsplattegrond". Saaltink (1980) also
+warns the map probably flatters the state of the built-up area, which matters
+if it is ever used for building counts. The maker is **Adriaan Doesjan**
+(Hoorn, 1740–1817).
+
+#### Blocker: no high-resolution scan, and none found
+
+The only scan we have is **1500×1133 (1.7 MP)**. Scaled against the historic
+core's real extent (~950 m, from pre-1800 BAG buildings) the city occupies
+roughly 800–900 px, i.e. about **1.1 m/px**. A 10 m gate is ~9 px. That is
+enough to confirm the gates are drawn and lettered, and nowhere near enough to
+measure them: the Blaeu plate that supported facade measurement works out at
+0.32 m/px. **Doesjan needs roughly a 5000 px plate — about 3.5× linear on what
+we have.**
+
+Searched, without success:
+
+| Where | Result |
+|---|---|
+| kwaad.net page source | only the 1500 px file; no larger variant linked |
+| Wikimedia Commons | no map; only Doesjan's trompe-l'œil paintings |
+| Rijksmuseum | holds two other Hoorn plans, neither is this |
+| Archeologie West-Friesland (WAR 93) | reproduces it as a **927×656 crop** — smaller than ours |
+| Westfries Archief beeldbank | holds the original; the search is a JS app that ignores query params server-side, so it cannot be queried from here |
+| RCE Beeldbank | bot-protected (Anubis) |
+
+So this is the same position as Blaeu before the Rijksmuseum plate turned up,
+with one difference: for Blaeu a better scan was publicly downloadable, and for
+Doesjan it does not appear to be. The **Westfries Archief** holds the original
+(they are credited for the neighbouring Oostwoud 1743 sheet on kwaad.net) and
+is the place to request a scan; the Westfries Museum is the second port of
+call. This is a request-a-scan job, not a search job.
 
 ### 2. HisGIS Hoorn — the 1832 cadastre, already vectorised
 

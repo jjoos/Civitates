@@ -334,10 +334,10 @@
     "license": "map itself public domain (age); scan rights not yet checked",
     "status": "catalogued - PRIORITY, needs a better scan",
     "projection": "bird's-eye oblique, same view family as Blaeu 1649",
-    "orientation": "unknown (not yet examined)",
+    "orientation": "north at BOTTOM (per kwaad.net)",
     "scale_bar": null,
     "georef_notes": "",
-    "notes": "THE map for gates and fortifications: 1794 predates the Westerpoort's demolition in 1806, so it is the only plan in this catalogue drawn while all five gates stood. Gates are drawn IN ELEVATION and keyed in its two lettered legends - A Wester Poort, B Noorder Poort, C Koe Poort, D Ooster Poort, E Oude Ooster/Gouwse poort, F 't Hoofd - i.e. a ready-made index of logical entities. Being the same oblique family as Blaeu, the house-sequence method in data/historic-streets/ transfers to it unchanged. BLOCKER: the only scan we have is 1500x1133 (1.7 MP), enough to confirm the gates are lettered but not to measure them. Same position as Blaeu before the 29.7 MP Rijksmuseum plate turned up; the Westfries Museum is the place to ask. See docs/fortifications.md."
+    "notes": "THE map for gates and fortifications: 1794 predates the Westerpoort's demolition in 1806, so it is the only plan in this catalogue drawn while all five gates stood. Gates are drawn IN ELEVATION and keyed in its two lettered legends - A Wester Poort, B Noorder Poort, C Koe Poort, D Ooster Poort, E Oude Ooster/Gouwse poort, F 't Hoofd - i.e. a ready-made index of logical entities. Being the same oblique family as Blaeu, the house-sequence method in data/historic-streets/ transfers to it unchanged. Maker is Adriaan Doesjan (Hoorn, 1740-1817); Schrickx (2011, WAR22) dates the survey to 1796 rather than 1794, and Saaltink (1980) warns it flatters the state of the built-up area. BLOCKER: the only scan available is 1500x1133 (1.7 MP) = about 1.1 m/px, so a 10 m gate is ~9 px - enough to confirm the gates are lettered, far too coarse to measure them (the Blaeu plate that supported facade measurement is 0.32 m/px, so this needs ~5000 px, about 3.5x linear). SEARCHED AND NOT FOUND: kwaad.net links no larger file, not on Wikimedia Commons, not the Rijksmuseum's two Hoorn plans, and WAR 93 reproduces only a 927x656 crop. The original is at the Westfries Archief, whose beeldbank is a JS app that cannot be queried from here. This is a request-a-scan job, not a search job. See docs/fortifications.md."
   },
   {
     "id": "kwaad-kadaster-1811-1832",
