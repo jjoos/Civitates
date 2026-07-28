@@ -282,6 +282,65 @@ viewpoint, since three points fit one exactly and leave no residual to inspect.
 The next attempt should locate the Hoofdtoren **first**, by eye along the harbour
 front, and use it as a fourth point rather than as the test.
 
+### Resolved: the orientation is north at bottom, east at LEFT
+
+The Hoofdtoren was the missing fourth point, and the user identified it: plate
+**(2542, 925)**, confirmed by eye as a substantial tower with a stepped gable at
+the water's edge with the harbour pier running out from it.
+
+Four points over-determine an affine, so there is finally a residual to read.
+Six church assignments were fitted; two are close on RMS and one is physically
+impossible:
+
+| assignment | RMS | anisotropy | scales m/px |
+|---|---|---|---|
+| church1=Grote, church2=**Ooster**, church3=**Noorder** | 21.8 m | **22.16** | 0.858 / 0.039 |
+| church1=Grote, church2=**Noorder**, church3=**Ooster** | 28.2 m | **1.47** | 0.217 / 0.148 |
+
+The lower RMS is the degenerate one: an anisotropy of 22 is not a bird's-eye
+view, it is a near-collinear squash that reduces residuals by collapsing an
+axis. **Lower error, impossible geometry — take the geometry.** The second
+option's 1.47 sits in the expected range for an oblique, and its scales bracket
+the ~0.14 m/px estimated independently from the city's extent.
+
+That gives:
+
+    church1 = Grote Kerk    church2 = Noorderkerk    church3 = Oosterkerk
+
+and hence the orientation. In RD the Noorderkerk is **north-west** of the Grote
+Kerk and the Oosterkerk **east-south-east**; on the plate those are right+down
+and left+up respectively. So **plate down is roughly north and plate right is
+roughly west — east is at the LEFT.**
+
+This confirms the "north at bottom" recorded for this view family, which had
+only ever been inferred, and it matches what Blaeu 1649 was independently found
+to do. The two "north up" candidates from the one-landmark attempt are
+eliminated.
+
+**Testable consequence, and it holds.** If east is at the left, the Oosterpoort
+must be a gate on the *left* side of the ring. There is one, at plate
+**~(1150, 3100)** — a building astride the wall with an archway and a bridge
+over the moat. The clearest gate found earlier, at (6650, 3800) on the right,
+is therefore on the **western** side.
+
+### But do not use this transform to place anything
+
+The fit establishes orientation and nothing more. Leave-one-out errors are
+66, 203, 138 and 340 m — mean **187 m** on a city 950 m across — and the
+surviving Oosterpoort, never used in the fit, is predicted about 800 px from
+the gate that is actually there.
+
+That is not a transform choice that can be tuned. A 1596 engraver drew a
+*portrait* of the city, adjusting spacing for legibility; there is no global
+affine, projective or otherwise that makes it metric. Buildings drawn in
+elevation are displaced by their own height on top of that.
+
+So placement must use the method the rest of this project already uses:
+**anchor to surviving geometry and work in stations, not coordinates.** Take the
+Oosterpoort as the fixed point, walk the ring with `rectify_ring.py`, and place
+each gate by its fractional station along the ring against the surviving
+singels — exactly as the houses are placed by station along a surviving street.
+
 ### Why naming them is the careful step
 
 The plate is a bird's-eye oblique with north at the bottom, so gate identity
