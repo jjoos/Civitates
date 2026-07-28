@@ -59,15 +59,40 @@ saturation 80 on a road against 67 and 73 in the historic core — the same ink.
 
 They are rejected by **shape** instead: a component longer than 300 m whose
 mean width (2·area/perimeter) is under 25 m is a linear map symbol, not a
-block. On 1880 that drops 53 components covering **64 of the 118 ha** the mask
+block. On 1880 that drops 55 components covering **39 of the 86 ha** the mask
 picks up — outside the built-up area, roads carry more ink than buildings do.
 
 Short road stubs and stretches of the red dotted boundary symbol still get
 through. The filter is a heuristic, not a classifier.
 
+## Never close this mask
+
+The first version closed the mask by 2 px to bridge hairlines inside a block.
+That quietly welded the entire historic core into **one 25 ha polygon** — 46% of
+all built area in a single blob, which is exactly what it looked like on screen.
+
+The streets that separate blocks are only about **4 px wide** at 1.5875 m/px (a
+6 m street), so a 5x5 closing kernel closes the streets themselves. Measured on
+the core:
+
+| | blocks ≥120 m² | largest |
+|---|---|---|
+| close 2 px | 77 | **202,396 m²** ← the blob |
+| close 1 px | 130 | 34,355 m² |
+| no closing | 181 | 14,536 m² ← actual blocks |
+
+The **opening** is what does the useful work: eroding before dilating breaks the
+thin ink bridges between blocks, so it separates rather than merges. On the core
+it raises the block count from 146 to 181 while costing only 4% of the area.
+Whole sheet, after the fix: **913 blocks, 47.4 ha, largest 1.35 ha** — 3% of the
+built area rather than 46%.
+
 ## Verify visually, every time
 
 The extraction is only trustworthy because it was overlaid on the sheet and
-looked at. That check is what caught the roads — the numbers alone looked
-perfectly reasonable at 118 ha. It is the same lesson as
+looked at — and the blob got through anyway, because the overlay was drawn as
+outlines and one polygon wrapping a whole neighbourhood looks much like many.
+Filling each block in its own colour showed it instantly. That check is also
+what caught the roads — the numbers alone looked
+perfectly reasonable at 86 ha. It is the same lesson as
 `scripts/experiments/README.md`: a plausible aggregate proves nothing.
