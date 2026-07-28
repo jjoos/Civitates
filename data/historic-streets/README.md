@@ -1,5 +1,8 @@
 # Historic street records
 
+The cross-cutting methodological lessons — what went wrong and what caught it
+— are collected in [docs/lessons.md](../../docs/lessons.md).
+
 Old maps treated as **logical entities** rather than as rasters to be warped.
 
 A record is one side of one street, from one map. Each house on that frontage

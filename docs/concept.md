@@ -1,5 +1,8 @@
 # Civitates — Historical Cities in 3D
 
+The cross-cutting methodological lessons — what went wrong and what caught it
+— are collected in [lessons.md](lessons.md).
+
 ## Idea
 
 Reconstruct a city's built environment across time, anchored to real

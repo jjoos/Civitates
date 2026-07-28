@@ -1,5 +1,8 @@
 # Georeferencing experiments
 
+The cross-cutting methodological lessons — what went wrong and what caught it
+— are collected in [docs/lessons.md](../../docs/lessons.md).
+
 Exploratory scripts for getting control points onto pre-1600 town plans
 without hand-picking pixels (which produced a wrong answer on Blaeu 1649).
 Python rather than Node because these lean on numpy/scipy/Pillow:

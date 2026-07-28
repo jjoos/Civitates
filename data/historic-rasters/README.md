@@ -1,5 +1,8 @@
 # Historic raster records
 
+The cross-cutting methodological lessons — what went wrong and what caught it
+— are collected in [docs/lessons.md](../../docs/lessons.md).
+
 Building blocks extracted from **georeferenced** historical sheets. The
 complement to `data/historic-streets/`, and deliberately the opposite trade-off:
 

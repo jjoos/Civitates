@@ -10,6 +10,20 @@ First case study: **Hoorn**, Netherlands.
 See [docs/concept.md](docs/concept.md) for the concept, scoping decisions,
 data pipeline, and phased roadmap.
 
+**Read [docs/lessons.md](docs/lessons.md) before doing measurement work.** Every
+substantive error here has produced a plausible number that passed every
+internal check; that file is the list of what actually caught them.
+
+| | |
+|---|---|
+| [docs/concept.md](docs/concept.md) | concept, scoping, roadmap |
+| [docs/lessons.md](docs/lessons.md) | how measurements went wrong and what caught them |
+| [docs/georeferencing.md](docs/georeferencing.md) | coordinate system, per-map findings, dead ends |
+| [docs/fortifications.md](docs/fortifications.md) | gates and walls: which map, and why |
+| [data/historic-streets/](data/historic-streets/) | houses projected onto surviving streets |
+| [data/historic-rasters/](data/historic-rasters/) | blocks from georeferenced sheets |
+| [data/landmarks/](data/landmarks/) | landmark index to collect sources against |
+
 ## Development
 
 ```sh

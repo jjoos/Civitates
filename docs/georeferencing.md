@@ -1,5 +1,8 @@
 # Georeferencing historical maps
 
+The cross-cutting methodological lessons — what went wrong and what caught it
+— are collected in [lessons.md](lessons.md).
+
 How we turn a scanned historical map of Hoorn into real-world coordinates,
 and what we've learned about each map so far. Per-map facts live in
 `data/sources.json` (`projection`, `orientation`, `scale_bar`,
