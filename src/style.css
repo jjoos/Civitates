@@ -59,3 +59,81 @@ html, body {
   font-size: 0.82rem;
   backdrop-filter: blur(4px);
 }
+
+#blocks-note {
+  border: 1px solid rgba(110, 190, 184, 0.4);
+  cursor: pointer;
+  font-family: inherit;
+  position: absolute;
+  left: 16px;
+  top: 54px;
+  padding: 7px 11px;
+  border-radius: 6px;
+  background: rgba(16, 21, 26, 0.75);
+  color: #6ebeb8;
+  font-size: 0.82rem;
+  backdrop-filter: blur(4px);
+}
+
+/* Three layers, three very different kinds of claim. The legend is the only
+   thing telling a viewer which is survey and which is reconstruction. */
+#legend {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  background: rgba(16, 21, 26, 0.75);
+  color: #cbd3da;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  backdrop-filter: blur(4px);
+  max-width: 17rem;
+}
+
+.legend-row {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.legend-swatch {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.legend-head {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  opacity: 0.65;
+  margin-bottom: 5px;
+}
+
+#legend .legend-row {
+  cursor: pointer;
+  gap: 6px;
+  padding: 1px 0;
+}
+
+#legend .legend-row.off {
+  opacity: 0.42;
+}
+
+#legend .legend-row input {
+  margin: 0;
+  accent-color: #6ebeb8;
+  flex: 0 0 auto;
+}
+
+.legend-foot {
+  margin-top: 7px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(203, 211, 218, 0.18);
+  font-size: 0.66rem;
+  line-height: 1.45;
+  opacity: 0.6;
+}

@@ -49,19 +49,19 @@
   },
   {
     "id": "topotijdreis",
-    "title": "Topotijdreis / TOPraster (historical topographic map series)",
-    "type": "map",
-    "year": "1815-present",
-    "publisher": "Kadaster, via PDOK",
-    "url": "https://www.topotijdreis.nl",
+    "title": "Topotijdreis / historical topographic map series, 1815-2025",
+    "type": "raster-tile-service",
+    "year": "1815-2025 (184 year-services)",
+    "publisher": "Kadaster, via topotijdreis.nl",
+    "url": "https://tiles.arcgis.com/tiles/nSZVuSZjHpEZZbRo/arcgis/rest/services/Historische_tijdreis_1880/MapServer",
     "image_urls": [],
     "license": "Dutch government open data (TOPraster GeoTIFFs via PDOK)",
-    "status": "georeferenced",
-    "projection": "unknown (not yet examined)",
-    "orientation": "unknown (not yet examined)",
+    "status": "ingested (1880 -> data/historic-rasters/topo-1880-blocks.json)",
+    "projection": "true plan, published georeferenced in EPSG:28992 - NO fitting required",
+    "orientation": "north up",
     "scale_bar": null,
-    "georef_notes": "",
-    "notes": "Already georeferenced in EPSG:28992 - the preferred source for anything in its date range. No manual control-point work needed. Not yet ingested by a script."
+    "georef_notes": "The one source in this catalogue needing no georeferencing: the tile grid IS EPSG:28992 (origin -30515500.0 / 31112399.999999993; LOD 11 = 1.5875 m/px is the finest published). Substitute any year 1815-2025 into the service name. The host MOVED - the old services.arcgisonline.nl 'Historisch' folder 404s and that server no longer has the folder.",
+    "notes": "1815 is a REGIONAL engraving, useless for buildings: the whole town is a ~400 px blob under Zuiderzee hatching. Colour begins in 1880, whose full-colour Bonneblad prints buildings in carmine - that is what scripts/extract-map-blocks.py segments. Roads use the SAME carmine, so they are rejected by shape, not colour. Years are validity ranges, not surveys: 1880/1885/1890/1895/1898 return byte-identical tiles, as do 1870/1872/1875. At 1.5875 m/px this yields blocks, never individual houses."
   },
   {
     "id": "kwaad-vandeventer-1545",
@@ -79,7 +79,7 @@
     "orientation": "North up, east right - unambiguous: the sheet is labelled Septentrio (top), Meridies (bottom), Oriens (right), Occidens (left).",
     "scale_bar": "\"Passus quingentum\" bar on the main sheet, ticks at 100/200/300/400/500 passus. Not yet measured in pixels.",
     "georef_notes": "TRUE planimetric plan - streets, blocks and the moat are drawn flat; only churches and gates appear as small pictorial symbols. Van Deventer surveyed the Netherlandish cities for Philip II, so these are the earliest systematic true-plan surveys of Dutch towns. Best first georeferencing target of the pre-1811 set: oldest AND most geometrically faithful. The scan is a two-page atlas spread (Biblioteca Nacional de Espana) with a book gutter; the left inset panel shows the city at larger scale than the right-hand regional sheet - prefer the inset for the city itself.",
-    "notes": "Earliest plan in the kwaad.net overview. Scanned image only, no vector/geo data."
+    "notes": "Earliest plan in the kwaad.net overview. Scanned image only, no vector/geo data. PROVENANCE (per the user, worth confirming against the literature): Van Deventer surveyed streets and facade widths in the field and re-measured them himself several times, so the STREET WIDTHS and FACADE WIDTHS on these plans are measured quantities. House DEPTHS and garden/yard depths are the surveyor's own guesswork. That maps directly onto what this project should trust: use them as evidence for frontage and street geometry, never for plot depth. Facade TYPE as drawn may also be reliable."
   },
   {
     "id": "kwaad-vandeventer-1560",
@@ -98,7 +98,7 @@
     "orientation": "North up, east right - unambiguous: the regional sheet is labelled \"Noordt\" (top), \"West\" (left), \"Oost\" (right), and the Zuiderzee occupies the bottom edge.",
     "scale_bar": null,
     "georef_notes": "TRUE planimetric plan, and the clearest of the pre-1600 set: streets, canals, blocks and the moat all drawn flat, buildings as red roof-plan masses, only churches as small symbols. Two images: the full regional sheet (02AA) covering several km of countryside with Hoorn small in the lower middle, and a high-resolution detail crop of the city itself (uitsnede) - prefer the detail crop for tracing the city. The regional sheet also names surrounding settlements still on the map today (Zwaag, Blokker, the Reguliers monastery, a leper house west of town), which are candidate control points for fitting the wide sheet. Provenance: the scan is a 19th-century lithographic facsimile (\"JACOB VAN DEVENTER, del.\" / \"Lith. J. Smulders & Co., Den Haag\"), not the original manuscript - facsimile redrawing is a possible extra error source to keep in mind when residuals are assessed.",
-    "notes": ""
+    "notes": "PROVENANCE (per the user, worth confirming against the literature): Van Deventer surveyed streets and facade widths in the field and re-measured them himself several times, so the STREET WIDTHS and FACADE WIDTHS on these plans are measured quantities. House DEPTHS and garden/yard depths are the surveyor's own guesswork. That maps directly onto what this project should trust: use them as evidence for frontage and street geometry, never for plot depth. Facade TYPE as drawn may also be reliable."
   },
   {
     "id": "kwaad-guicciardini-1582",
@@ -332,12 +332,12 @@
       "https://www.kwaad.net/PlansHrn/14_Hoorn_Doesjan_1794.jpg"
     ],
     "license": "map itself public domain (age); scan rights not yet checked",
-    "status": "needs-georeferencing",
-    "projection": "unknown (not yet examined)",
-    "orientation": "unknown (not yet examined)",
+    "status": "catalogued - PRIORITY, needs a better scan",
+    "projection": "bird's-eye oblique, same view family as Blaeu 1649",
+    "orientation": "north at BOTTOM (per kwaad.net)",
     "scale_bar": null,
     "georef_notes": "",
-    "notes": "Last pre-cadastral plan before the Kadaster 1811-1832 minuutplans, which Topotijdreis/TOPraster already covers in georeferenced form."
+    "notes": "THE map for gates and fortifications: 1794 predates the Westerpoort's demolition in 1806, so it is the only plan in this catalogue drawn while all five gates stood. Gates are drawn IN ELEVATION and keyed in its two lettered legends - A Wester Poort, B Noorder Poort, C Koe Poort, D Ooster Poort, E Oude Ooster/Gouwse poort, F 't Hoofd - i.e. a ready-made index of logical entities. Being the same oblique family as Blaeu, the house-sequence method in data/historic-streets/ transfers to it unchanged. Maker is Adriaan Doesjan (Hoorn, 1740-1817); Schrickx (2011, WAR22) dates the survey to 1796 rather than 1794, and Saaltink (1980) warns it flatters the state of the built-up area. BLOCKER: the only scan available is 1500x1133 (1.7 MP) = about 1.1 m/px, so a 10 m gate is ~9 px - enough to confirm the gates are lettered, far too coarse to measure them (the Blaeu plate that supported facade measurement is 0.32 m/px, so this needs ~5000 px, about 3.5x linear). SEARCHED AND NOT FOUND: kwaad.net links no larger file, not on Wikimedia Commons, not the Rijksmuseum's two Hoorn plans, and WAR 93 reproduces only a 927x656 crop. The original is at the Westfries Archief, whose beeldbank is a JS app that cannot be queried from here. This is a request-a-scan job, not a search job. See docs/fortifications.md."
   },
   {
     "id": "kwaad-kadaster-1811-1832",
@@ -356,7 +356,7 @@
     "orientation": "unknown (not yet examined)",
     "scale_bar": null,
     "georef_notes": "",
-    "notes": "Falls within Topotijdreis/TOPraster's covered range - prefer tracing from that already-georeferenced source instead of manually georeferencing this scan."
+    "notes": "CORRECTION: an earlier note here said to trace this from Topotijdreis rather than georeference the scan. That holds for building blocks and is FALSE for fortifications - Topotijdreis's finest level (LOD 11, 1.5875 m/px) cannot resolve a gatehouse or bastion at all, verified on the 1850 and 1865 sheets. For the fortification ring use the cadastral originals (see rce-minuutplans-hoorn) or HisGIS's vectorised version (hisgis-hoorn). At 1832 the Westerpoort is already gone (1806) but the Koepoort, Noorderpoort, Oosterpoort and the whole ring are present. See docs/fortifications.md."
   },
   {
     "id": "kwaad-kuypers-1868",
@@ -436,5 +436,37 @@
     "scale_bar": null,
     "georef_notes": "ontstaanHoorn4.jpg is the single most useful item found so far: a 4887x3323 scan of the Van Deventer 1560 plan (~3.3x the kwaad.net uitsnede) with the 1275 infrastructure overlaid by Archeologie West-Friesland - brown Omringdijk, green Dam, blue Waterloop - and a marker disc on the Roode Steen. The disc gives a control point with no guesswork, and the dike is documented as following the Kleine Oost / Grote Oost / Roode Steen / het West line, all of which are still modern street names and therefore geocodable. ontstaanHoorn1-3 are reconstructions of the cultural landscape at 1250 and 1275.",
     "notes": "Also references a \"Maquette van Hoorn 1650\" (physical scale model) via the Oud Hoorn beeldbank - an existing 3D reconstruction of the city worth investigating for the modelling phase. Note: the site 404s for non-browser user agents on some paths, and web.archive.org is blocked by this environment's egress policy."
+  },
+  {
+    "id": "hisgis-hoorn",
+    "title": "HisGIS Hoorn - 1832 cadastre, vectorised and georeferenced",
+    "type": "vector-dataset",
+    "year": "1832 (survey 1811-1832); background maps 1651-1888",
+    "publisher": "HisGIS / Fryske Akademy (KNAW); georeferencing by Thomas Vermaut",
+    "url": "https://hisgis.nl/projecten/hoorn/",
+    "image_urls": [],
+    "license": "unknown - not published as open data; access needs arranging",
+    "status": "identified, NOT ingested (no public service)",
+    "projection": "already georeferenced",
+    "orientation": "north up",
+    "scale_bar": null,
+    "georef_notes": "Viewer at https://hisgis.fa.knaw.nl/?db=hoorn - a bespoke app, not an OGC service, and the host returns 403 to scripted requests. No public WMS/WFS or download found.",
+    "notes": "The richest source identified for the fortifications: the 1832 cadastre already VECTORISED, with separate parcel and building layers plus owner data, so the ring and gates exist as parcel geometry rather than ink. Covers the modern municipality plus Zwaag, Blokker, Wognum and Berkhout, and carries historical backgrounds 1651-1888 (incl. 1651-54, 1745, 1888). Would need arranging with HisGIS rather than scraping. See docs/fortifications.md."
+  },
+  {
+    "id": "rce-minuutplans-hoorn",
+    "title": "Kadastrale minuutplans Hoorn 1811-1832 (RCE Beeldbank originals)",
+    "type": "map",
+    "year": "1811-1832",
+    "publisher": "Rijksdienst voor het Cultureel Erfgoed",
+    "url": "https://beeldbank.cultureelerfgoed.nl/",
+    "image_urls": [],
+    "license": "public domain, free high-resolution download",
+    "status": "identified, NOT ingested (bot-protected, manual download only)",
+    "projection": "true cadastral plan, not georeferenced",
+    "orientation": "varies by sheet",
+    "scale_bar": null,
+    "georef_notes": "Un-georeferenced raster. HisGIS has already georeferenced this same survey - prefer that if access can be arranged.",
+    "notes": "Cadastral originals at parcel granularity, which is what the fortification works need. Hoorn's cadastral municipality code is 07052; sheets are identified like MIN07052B01 (minuutplan, section B, sheet 01), with matching OAT... registers naming owners. The beeldbank sits behind bot protection (Anubis), so these cannot be fetched by script - download by hand. See docs/fortifications.md."
   }
 ]

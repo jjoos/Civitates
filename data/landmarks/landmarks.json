@@ -1,0 +1,1118 @@
+{
+  "crs": "EPSG:28992",
+  "seeded_from": [
+    "Blaeu 1649 legend, read at full resolution off Rijksmuseum plate RP-P-AO-7-36-1A: letters a-z are buildings and institutions, numbers 1-65 are markets, streets and alleys. Only 1-10 are carried here; 11-65 are streets and belong to data/historic-streets/.",
+    "Doesjan 1794 legend, letters A-F (the gates). G onward is not legible on the 1500 px scan we have - see docs/fortifications.md."
+  ],
+  "how_to_use": "One record per landmark. history, images, paintings and links are deliberately empty: this is a worklist to collect against, not a set of claims. Fill them in and cite the source.",
+  "landmark_count": 36,
+  "landmarks": [
+    {
+      "id": "blaeu-d",
+      "name": "Rusthuys",
+      "type": "charitable",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "d",
+          "label": "Rusthuys"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "blaeu-r",
+      "name": "Pesthuys",
+      "type": "charitable",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "r",
+          "label": "Pesthuys"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "gasthuis",
+      "name": "Sint-Jansgasthuis",
+      "type": "charitable",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "u",
+          "label": "Gasthuys en Kloctooren"
+        }
+      ],
+      "locate_query": "Kerkplein Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132875.52,
+        517018.54
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Kerkplein Hoorn",
+        "matched": "Kerkplein, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 13,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "grote-kerk",
+      "name": "Grote Kerk",
+      "type": "church",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "h",
+          "label": "Groote Kerck eertydts St. Ian Baptiste"
+        }
+      ],
+      "locate_query": "Kerkplein Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132875.52,
+        517018.54
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Kerkplein Hoorn",
+        "matched": "Kerkplein, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 13,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "noorderkerk",
+      "name": "Noorderkerk",
+      "type": "church",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "i",
+          "label": "Vrouwen Kerck"
+        }
+      ],
+      "locate_query": "Kleine Noord Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132392.74,
+        517364.74
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Kleine Noord Hoorn",
+        "matched": "Kleine Noord, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 591,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "oosterkerk",
+      "name": "Oosterkerk",
+      "type": "church",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "k",
+          "label": "St. Antonis Kerck"
+        }
+      ],
+      "locate_query": "Grote Oost Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        133062.76,
+        516974.9
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Grote Oost Hoorn",
+        "matched": "Grote Oost, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 191,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "blaeu-c",
+      "name": "Boschuys gevankenis",
+      "type": "civic",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "c",
+          "label": "Boschuys gevankenis"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "blaeu-g",
+      "name": "Fabricks huys",
+      "type": "civic",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "g",
+          "label": "Fabricks huys"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "blaeu-x",
+      "name": "H.H. Staten logement",
+      "type": "civic",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "x",
+          "label": "H.H. Staten logement"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "schuttersdoelen",
+      "name": "Schuttersdoelen",
+      "type": "civic",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "z",
+          "label": "Schutters Doelens"
+        }
+      ],
+      "locate_query": "Achterom Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132589.25,
+        517066.22
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Achterom Hoorn",
+        "matched": "Achterom, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 293,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "stadhuis",
+      "name": "Stadhuis",
+      "type": "civic",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "s",
+          "label": "Het Stadthuys"
+        }
+      ],
+      "locate_query": "Nieuwstraat Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132844.48,
+        517114.31
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Nieuwstraat Hoorn",
+        "matched": "Nieuwstraat, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 91,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "statencollege",
+      "name": "Statencollege",
+      "type": "civic",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "t",
+          "label": "De H.H. Staten Colleg."
+        }
+      ],
+      "locate_query": "Roode Steen 1 Hoorn",
+      "locate_kind": "address",
+      "rd": [
+        132781.42,
+        516897.46
+      ],
+      "position_confidence": "building",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Roode Steen 1 Hoorn",
+        "matched": "Roode Steen 1, 1621CV Hoorn",
+        "result_type": "adres",
+        "from_core_m": 166,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "waag",
+      "name": "Waag",
+      "type": "civic",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "6",
+          "label": "De Waeghe"
+        }
+      ],
+      "locate_query": "Roode Steen 8 Hoorn",
+      "locate_kind": "address",
+      "rd": [
+        132820.35,
+        516931.02
+      ],
+      "position_confidence": "building",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Roode Steen 8 Hoorn",
+        "matched": "Roode Steen 8, 1621CV Hoorn",
+        "result_type": "adres",
+        "from_core_m": 116,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "blaeu-b",
+      "name": "Water poort",
+      "type": "gate",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "b",
+          "label": "Water poort"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "koepoort",
+      "name": "Koepoort",
+      "type": "gate",
+      "status": "demolished",
+      "built": null,
+      "demolished": 1871,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-doesjan-1794",
+          "key": "C",
+          "label": "Koe Poort"
+        }
+      ],
+      "locate_query": "Koepoortsweg Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132688.69,
+        517754.99
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "certain",
+      "notes": "Demolished after the council resolution of 27 June 1871.",
+      "geocode": {
+        "query": "Koepoortsweg Hoorn",
+        "matched": "Koepoortsweg, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 749,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "noorderpoort",
+      "name": "Noorderpoort",
+      "type": "gate",
+      "status": "demolished",
+      "built": null,
+      "demolished": 1850,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-doesjan-1794",
+          "key": "B",
+          "label": "Noorder Poort"
+        }
+      ],
+      "locate_query": "Noorderveemarkt Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132348.93,
+        517484.71
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "certain",
+      "notes": "",
+      "geocode": {
+        "query": "Noorderveemarkt Hoorn",
+        "matched": "Noorderveemarkt, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 699,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "oosterpoort",
+      "name": "Oosterpoort",
+      "type": "gate",
+      "status": "standing",
+      "built": 1578,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-doesjan-1794",
+          "key": "D",
+          "label": "Ooster Poort"
+        }
+      ],
+      "locate_query": "Oosterpoort Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        133446.7,
+        517126.54
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "certain",
+      "notes": "The only surviving gate. Slated for demolition in 1876 and saved by a private gift from a Hoorn citizen plus a state subsidy. Its exact position makes it the natural control point for locating the others.",
+      "geocode": {
+        "query": "Oosterpoort Hoorn",
+        "matched": "Oosterpoort, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 575,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "oude-oosterpoort",
+      "name": "Oude Oosterpoort",
+      "type": "gate",
+      "status": "demolished",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "f",
+          "label": "Oude Ooster poort"
+        },
+        {
+          "source": "kwaad-doesjan-1794",
+          "key": "E",
+          "label": "Oude Ooster- / Gouwse poort"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "certain",
+      "notes": ""
+    },
+    {
+      "id": "westerpoort",
+      "name": "Westerpoort",
+      "type": "gate",
+      "status": "demolished",
+      "built": null,
+      "demolished": 1806,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "a",
+          "label": "Wester poort"
+        },
+        {
+          "source": "kwaad-doesjan-1794",
+          "key": "A",
+          "label": "Wester Poort"
+        }
+      ],
+      "locate_query": "Westerdijk Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132351.44,
+        517196.39
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "certain",
+      "notes": "The second Westerpoort. Already gone before the 1811-1832 cadastre, so only pre-1806 maps show it.",
+      "geocode": {
+        "query": "Westerdijk Hoorn",
+        "matched": "Westerdijk 1C, 1621LC Hoorn",
+        "result_type": "adres",
+        "from_core_m": 554,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "blaeu-2",
+      "name": "Visch marckt",
+      "type": "market",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "2",
+          "label": "Visch marckt"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "blaeu-3",
+      "name": "Paerde marckt",
+      "type": "market",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "3",
+          "label": "Paerde marckt"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "blaeu-7",
+      "name": "Gaaren en Lindemarct",
+      "type": "market",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "7",
+          "label": "Gaaren en Lindemarct"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "blaeu-8",
+      "name": "Kooren marckt",
+      "type": "market",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "8",
+          "label": "Kooren marckt"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "blaeu-9",
+      "name": "Vercken marckt",
+      "type": "market",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "9",
+          "label": "Vercken marckt"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "sint-agnietenklooster",
+      "name": "Sint-Agnietenklooster",
+      "type": "monastery",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "l",
+          "label": "St. Agnieten Clooster nu 't Princenhof"
+        }
+      ],
+      "locate_query": "Muntstraat Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132931.57,
+        517179.96
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Muntstraat Hoorn",
+        "matched": "Muntstraat, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 158,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "sint-catharinaklooster",
+      "name": "Sint-Catharinaklooster",
+      "type": "monastery",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "n",
+          "label": "St. Catharinen Cloost. nu de Munte"
+        }
+      ],
+      "locate_query": "Muntstraat Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132931.57,
+        517179.96
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Muntstraat Hoorn",
+        "matched": "Muntstraat, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 158,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "sint-ceciliaklooster",
+      "name": "Sint-Ceciliaklooster",
+      "type": "monastery",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "y",
+          "label": "St. Cecilien Cloost. nu de Latynse Schoolen"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "probable",
+      "notes": ""
+    },
+    {
+      "id": "sint-claraklooster",
+      "name": "Sint-Claraklooster",
+      "type": "monastery",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "p",
+          "label": "St. Claren Clooster"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "probable",
+      "notes": ""
+    },
+    {
+      "id": "sint-geertenklooster",
+      "name": "Sint-Geertenklooster",
+      "type": "monastery",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "m",
+          "label": "S. Geerten Cloost. nu de Lombaert"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "probable",
+      "notes": ""
+    },
+    {
+      "id": "sint-mariaklooster",
+      "name": "Sint-Mariaklooster",
+      "type": "monastery",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "o",
+          "label": "St. Marien Clooster nu het Weeshuys"
+        }
+      ],
+      "locate_query": "Korte Achterstraat Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132870.14,
+        517212.39
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Korte Achterstraat Hoorn",
+        "matched": "Korte Achterstraat, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 182,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "sint-pietershof",
+      "name": "Sint-Pietershof",
+      "type": "monastery",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "q",
+          "label": "Dals kerck nu S. Pieters hof, eertyts het Augustyne Clooster"
+        }
+      ],
+      "locate_query": "Dal Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132614.8,
+        517317.68
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Dal Hoorn",
+        "matched": "Dal, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 391,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "roode-steen",
+      "name": "Roode Steen",
+      "type": "square",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "1",
+          "label": "Roode steen"
+        }
+      ],
+      "locate_query": "Roode Steen Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132810.99,
+        516930.71
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Roode Steen Hoorn",
+        "matched": "Roode Steen, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 122,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "hoofdtoren",
+      "name": "Hoofdtoren",
+      "type": "tower-harbour",
+      "status": "standing",
+      "built": 1532,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "e",
+          "label": "'t Hooft en inganck van d'oude havens"
+        },
+        {
+          "source": "kwaad-doesjan-1794",
+          "key": "F",
+          "label": "'t Hoofd"
+        }
+      ],
+      "locate_query": "Hoofd 2 Hoorn",
+      "locate_kind": "address",
+      "rd": [
+        133060.65,
+        516664.91
+      ],
+      "position_confidence": "building",
+      "identification_confidence": "certain",
+      "notes": "",
+      "geocode": {
+        "query": "Hoofd 2 Hoorn",
+        "matched": "Hoofd 2, 1621AM Hoorn",
+        "result_type": "adres",
+        "from_core_m": 408,
+        "source": "PDOK locatieserver v3_1"
+      }
+    },
+    {
+      "id": "blaeu-10",
+      "name": "Westjndische packhuys",
+      "type": "trade",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "10",
+          "label": "Westjndische packhuys"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "blaeu-5",
+      "name": "Oostjndische packhuys",
+      "type": "trade",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "5",
+          "label": "Oostjndische packhuys"
+        }
+      ],
+      "locate_query": null,
+      "locate_kind": null,
+      "rd": null,
+      "position_confidence": "unlocated",
+      "identification_confidence": "unidentified",
+      "notes": "Legend entry read off the plate; not yet matched to a modern site."
+    },
+    {
+      "id": "oostindisch-huis",
+      "name": "Oost-Indisch Huis",
+      "type": "trade",
+      "status": "unknown",
+      "built": null,
+      "demolished": null,
+      "history": "",
+      "images": [],
+      "paintings": [],
+      "links": [],
+      "map_references": [
+        {
+          "source": "kwaad-blaeu-1649",
+          "key": "4",
+          "label": "Oostjndische kamer"
+        }
+      ],
+      "locate_query": "Onder de Boompjes Hoorn",
+      "locate_kind": "street",
+      "rd": [
+        132924.61,
+        517251.83
+      ],
+      "position_confidence": "street",
+      "identification_confidence": "probable",
+      "notes": "",
+      "geocode": {
+        "query": "Onder de Boompjes Hoorn",
+        "matched": "Onder de Boompjes, Hoorn",
+        "result_type": "weg",
+        "from_core_m": 225,
+        "source": "PDOK locatieserver v3_1"
+      }
+    }
+  ],
+  "geocoded_at_utc": "2026-07-27",
+  "located_count": 19
+}

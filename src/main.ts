@@ -3,6 +3,8 @@ import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { loadBuildings } from './buildings';
 import { loadBasemap } from './basemap';
 import { loadHistoricHouses } from './historic';
+import { loadHistoricBlocks } from './blocks';
+import { LAYERS, css, type LayerSpec } from './palette';
 import { dataUrl } from './data-manifest';
 import './style.css';
 
@@ -63,23 +65,26 @@ loadingLabel.textContent = 'Loading buildings…';
 document.body.appendChild(loadingLabel);
 
 const historic = loadHistoricHouses(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-historic-houses.json'))
-  .catch(() => ({ setYear: () => {}, count: 0, centre: null }));
+  .catch(() => ({ setYear: () => {}, setVisible: () => {}, count: 0, centre: null }));
+const blocks = loadHistoricBlocks(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-historic-blocks.json'))
+  .catch(() => ({ setYear: () => {}, setVisible: () => {}, count: 0, years: [] as number[], centre: null }));
 
-loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(async ({ setYear, center }) => {
+loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(async ({ setYear, setVisible, center }) => {
   loadingLabel.remove();
   const hist = await historic;
+  const blk = await blocks;
   controls.target.set(center.x, 0, center.y);
   camera.position.set(center.x + 1800, 1500, center.y + 1800);
   backdrop.position.set(center.x, -0.15, center.y);
 
-  const apply = (y: number) => { setYear(y); hist.setYear(y); };
+  const apply = (y: number) => { setYear(y); hist.setYear(y); blk.setYear(y); };
   apply(Number(yearSlider.value));
   yearSlider.addEventListener('input', () => {
     yearLabel.textContent = yearSlider.value;
     apply(Number(yearSlider.value));
   });
 
-  // The reconstructed houses are a handful of ~4 m frontages in a 12 km-wide
+  // The reconstructed houses are a handful of ~5 m frontages in a 12 km-wide
   // scene, so they are impossible to find by panning. Make the note fly there.
   if (hist.count && hist.centre) {
     const note = document.createElement('button');
@@ -95,7 +100,64 @@ loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(a
     });
     document.body.appendChild(note);
   }
+
+  // The raster blocks only exist from their survey year on, so at 1400 the
+  // layer is empty and the button is the only hint it is there at all.
+  if (blk.count && blk.years.length) {
+    const year = String(Math.min(...blk.years));
+    const note = document.createElement('button');
+    note.id = 'blocks-note';
+    note.textContent = `${blk.count} blocks traced from the ${year} topographic sheet — show me`;
+    note.addEventListener('click', () => {
+      const c = blk.centre ?? center;
+      controls.target.set(c.x, 0, c.y);
+      camera.position.set(c.x + 620, 400, c.y + 620);
+      yearSlider.value = year;
+      yearLabel.textContent = year;
+      apply(Number(year));
+    });
+    document.body.appendChild(note);
+  }
+
+  buildLayerPanel({ bag: setVisible, blaeu1649: hist.setVisible, topoRaster: blk.setVisible });
 });
+
+// The layers make different claims, so the viewer needs to know which is which
+// AND be able to take one away to see what is underneath. Legend and toggle are
+// the same control rather than two — palette.ts is the single source for both.
+function buildLayerPanel(toggles: Record<LayerSpec['id'], (on: boolean) => void>) {
+  const el = document.createElement('div');
+  el.id = 'legend';
+  const head = document.createElement('div');
+  head.className = 'legend-head';
+  head.textContent = 'Layers';
+  el.appendChild(head);
+
+  for (const spec of LAYERS) {
+    const row = document.createElement('label');
+    row.className = 'legend-row';
+    const box = document.createElement('input');
+    box.type = 'checkbox';
+    box.checked = true;
+    box.addEventListener('change', () => {
+      toggles[spec.id](box.checked);
+      row.classList.toggle('off', !box.checked);
+    });
+    const sw = document.createElement('span');
+    sw.className = 'legend-swatch';
+    sw.style.background = css(spec.color);
+    const txt = document.createElement('span');
+    txt.innerHTML = `<strong>${spec.label}</strong> — ${spec.note}`;
+    row.append(box, sw, txt);
+    el.appendChild(row);
+  }
+
+  const foot = document.createElement('div');
+  foot.className = 'legend-foot';
+  foot.textContent = 'A layer stays on from its source’s date onward. Past the year that source actually attests it is greyed — still drawn, no longer evidence.';
+  el.appendChild(foot);
+  document.body.appendChild(el);
+}
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;

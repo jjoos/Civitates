@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { layer, TIME_FILTER_GLSL } from './palette';
 
 interface HistoricHouse {
   id: string;
@@ -34,9 +35,14 @@ type V3 = [number, number, number];
 export async function loadHistoricHouses(
   scene: THREE.Scene,
   dataUrl: string,
-): Promise<{ setYear: (year: number) => void; count: number; centre: THREE.Vector2 | null }> {
+): Promise<{
+  setYear: (year: number) => void;
+  setVisible: (on: boolean) => void;
+  count: number;
+  centre: THREE.Vector2 | null;
+}> {
   const data: HistoricData = await (await fetch(dataUrl)).json();
-  if (!data.houses.length) return { setYear: () => {}, count: 0, centre: null };
+  if (!data.houses.length) return { setYear: () => {}, setVisible: () => {}, count: 0, centre: null };
 
   const pos: number[] = [];
   const nrm: number[] = [];
@@ -98,6 +104,7 @@ export async function loadHistoricHouses(
     side: THREE.DoubleSide,
     uniforms: {
       uYear: { value: 1649 },
+      uColor: { value: layer('blaeu1649').color.clone() },
       uLightDir: { value: new THREE.Vector3(0.4, 0.8, 0.3).normalize() },
     },
     vertexShader: /* glsl */ `
@@ -116,27 +123,30 @@ export async function loadHistoricHouses(
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,
-    fragmentShader: /* glsl */ `
+    fragmentShader: TIME_FILTER_GLSL + /* glsl */ `
       uniform float uYear;
+      uniform vec3 uColor;
       uniform vec3 uLightDir;
       varying float vFrom;
       varying float vTo;
       varying float vTint;
       varying vec3 vNormal;
       void main() {
-        if (uYear < vFrom || uYear > vTo) discard;
-        // warm brick, clearly not the BAG palette; tint varies per house so
+        if (uYear < vFrom) discard;              // nothing before the source's date
+        // per-source colour (see palette.ts); tint varies per house so
         // adjacent houses in a terrace stay individually legible
-        vec3 base = vec3(0.78, 0.36, 0.20) * (0.80 + 0.36 * vTint);
+        vec3 base = applyAttestation(uColor * (0.80 + 0.36 * vTint), uYear, vFrom, vTo);
         float diffuse = abs(dot(normalize(vNormal), uLightDir));
         gl_FragColor = vec4(base * (0.45 + 0.55 * diffuse), 1.0);
       }
     `,
   });
 
-  scene.add(new THREE.Mesh(geom, material));
+  const mesh = new THREE.Mesh(geom, material);
+  scene.add(mesh);
 
   return {
+    setVisible: (on: boolean) => { mesh.visible = on; },
     count: data.houses.length,
     centre: new THREE.Vector2(sumX / nPts, sumZ / nPts),
     setYear: (year: number) => {
