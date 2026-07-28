@@ -177,6 +177,51 @@ them needs **avalanche** — ids differing only in the last character put throug
 `hash * 31 + charCode` then `% 1000` varied by about 5 parts in 1000, so every
 house came out identical. FNV-1a with an fmix32 finaliser fixed it.
 
+## How the techniques have evolved, and what to combine next
+
+None of these methods arrived working. Each is the residue of a failure, and the
+useful ones keep pieces of the ones they replaced. Worth knowing what was
+learned rather than just what is current, because the next method will want the
+same parts.
+
+**Sampling direction is a parameter, and it has a quality signal.** Sampling a
+frontage band *toward the street* gave autocorrelation 0.75; sampling *into the
+block* gave 0.29, because the band crossed roof ridges instead of running along
+a facade line. That contrast was the first useful quality metric here — and also
+the first lesson in its own limits, since 0.75 later turned out to be a
+confident lock onto the wrong feature entirely (hatching, not gables). **A
+metric that discriminates between parameter values is not thereby validating the
+answer.** Keep both halves of that.
+
+**A straight line only tracks a curved street so far.** The frontage sampler
+held for about 155 px of a 247 px line before drifting off the block edge; the
+street-axis fit is straight while Grote Noord bows 4.1 m off its own chord over
+354 m, so the axis stays inside the roadway for the measured stretch and wanders
+across blocks beyond it. Current answers: fit the axis from the roadway rather
+than drawing it by hand, and restrict to the range where it holds. **Not yet
+done: chain overlapping windows into a polyline axis, and have the sampler
+refuse stations where it has drifted more than half a roadway width.** That
+would turn a silent failure into a reported one.
+
+### Pieces worth combining
+
+The methods in this repo were built separately and overlap more than they
+currently exploit:
+
+- **The alignment measurement built for the 1880 offset** (rasterise two layers,
+  FFT cross-correlate, Dice, check for falloff) is generic. It is not yet
+  pointed at the Blaeu houses, which would give an objective answer to whether
+  their assumed along-street position is right.
+- **The landmark index** now carries the Blaeu legend keyed a–z, and several of
+  those landmarks survive with exact RD coordinates. That is a control-point set
+  for the plate that did not exist when georeferencing Blaeu was first abandoned.
+- **The house-sequence method** anchors to surviving streets. The fortification
+  work needs the same treatment against surviving singels, and the gates need
+  the landmark index to say where along the ring each one sat.
+- **Colour segmentation** (`segment_map.py`) works on lithographs and was
+  written for Van Deventer; the raster block extractor rediscovered much of it
+  for Topotijdreis. They should probably be one thing.
+
 ## Source facts worth not rediscovering
 
 - **Topotijdreis years are validity ranges, not surveys.** 1880/1885/1890/1895/
