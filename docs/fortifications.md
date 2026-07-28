@@ -32,7 +32,33 @@ the rampart-to-park conversion was under way well before the gates came down.
 
 ## Sources, best first
 
-### 1. Doesjan 1794 — the only one that catches every gate
+### 1. Utenwael 1596 — the one to use, and it needs no archive visit
+
+<https://commons.wikimedia.org/wiki/File:Plattegrond_van_Hoorn_Hoorn_in_Westfrijslandt_(titel_op_object),_RP-P-1907-2166.jpg>
+· Rijksmuseum RP-P-1907-2166 · **CC0** · **7700×5516, 42.5 MP** · already downloaded
+
+Found by following kwaad.net's own outbound links, which point at Commons for
+two sewer maps. kwaad.net publishes everything at 1500 px on the long side —
+that is its export size, not the best available anywhere.
+
+This changes the picture completely. The walled city spans about 6580 px for
+~950 m, so roughly **0.14 m/px**: 2.2× finer than the Blaeu plate (0.32) and
+**7.6× finer than the only Doesjan scan that exists** (1.1). At that resolution:
+
+- **Bastions** are drawn with their earthwork profile, revetment, ditch and the
+  guardhouse inside them.
+- **Gates** are drawn in elevation — tower, stepped gable, spired turret, the
+  bridge across the moat, figures walking through.
+
+And 1596 predates every demolition, the earliest being the Westerpoort in 1806,
+so **all the gates are present** — the same coverage Doesjan was wanted for.
+
+It remains a bird's-eye oblique, so it is evidence for **appearance, sequence
+and which works existed**, not for footprint geometry. That is the same
+trade-off the Blaeu house work already runs on, and the same method applies:
+anchor to surviving geometry — here the singels — rather than warping the plate.
+
+### 2. Doesjan 1794 — still the only one that catches every gate *and* is late
 
 Already in `data/sources.json` as `kwaad-doesjan-1794`. A bird's-eye oblique in
 the same family as Blaeu 1649, which matters twice over: it draws the gates **in
@@ -75,7 +101,7 @@ Searched, without success:
 | Where | Result |
 |---|---|
 | kwaad.net page source | only the 1500 px file; no larger variant linked |
-| Wikimedia Commons | no map; only Doesjan's trompe-l'œil paintings |
+| Wikimedia Commons | no Doesjan *map* — only his trompe-l'œil paintings. (Commons does have far better scans of the OTHER Hoorn plates; see above.) |
 | Rijksmuseum | holds two other Hoorn plans, neither is this |
 | Archeologie West-Friesland (WAR 93) | reproduces it as a **927×656 crop** — smaller than ours |
 | Westfries Archief beeldbank | holds the original; the search is a JS app that ignores query params server-side, so it cannot be queried from here |
@@ -88,7 +114,13 @@ Doesjan it does not appear to be. The **Westfries Archief** holds the original
 is the place to request a scan; the Westfries Museum is the second port of
 call. This is a request-a-scan job, not a search job.
 
-### 2. HisGIS Hoorn — the 1832 cadastre, already vectorised
+**But it is no longer blocking.** Utenwael 1596 above carries the gates and the
+fortifications at 7.6× the resolution. Doesjan's remaining value is its *date*:
+1794 shows the works as they stood two centuries later, after the 17th-century
+rebuilding, which Utenwael cannot. Worth asking for when convenient; not worth
+waiting for.
+
+### 3. HisGIS Hoorn — the 1832 cadastre, already vectorised
 
 <https://hisgis.nl/projecten/hoorn/> · viewer at `https://hisgis.fa.knaw.nl/?db=hoorn`
 
@@ -106,7 +138,7 @@ the strongest possible form for this project.
 a bespoke app, and the host returns 403 to our requests. This needs arranging
 with HisGIS rather than scraping.
 
-### 3. RCE Beeldbank minuutplans 1811–1832 — the cadastral originals
+### 4. RCE Beeldbank minuutplans 1811–1832 — the cadastral originals
 
 Cadastral municipality code for Hoorn is **07052**; sheets are identified like
 `MIN07052B01` (minuutplan, section B, sheet 01), with matching `OAT…`
@@ -116,7 +148,7 @@ Free, public domain, downloadable in high resolution — **by hand**. The
 beeldbank sits behind bot protection, so it cannot be fetched by script. Same
 survey as HisGIS layer above, but as raster and un-georeferenced.
 
-### 4. Van Asperen sewer map 1838, and 1842
+### 5. Van Asperen sewer map 1838, and 1842
 
 Already catalogued as `kwaad-sewer-maps-1838-1884`. Town-wide engineering plans
 comfortably inside the window. Currently only 960×811, so same scan problem.

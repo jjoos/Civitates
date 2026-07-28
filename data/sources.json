@@ -120,22 +120,23 @@
   },
   {
     "id": "kwaad-utenwael-1596",
-    "title": "Utenwael, 1596",
+    "title": "Utenwael (Petrus Uten Wael), 1596 — \"Hoorn in Westfryslandt\"",
     "type": "map",
     "year": "1596",
     "publisher": "overview compiled by kwaad.net",
     "url": "https://www.kwaad.net/PlansHrn/Hoorn_Historische_Plattegronden.html",
     "image_urls": [
       "https://www.kwaad.net/PlansHrn/05A_Hoorn_Utenwael_1596_bis.jpg",
-      "https://www.kwaad.net/PlansHrn/05B3_Hoorn_Utenwael.jpg"
+      "https://www.kwaad.net/PlansHrn/05B3_Hoorn_Utenwael.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/d/d0/Plattegrond_van_Hoorn_Hoorn_in_Westfrijslandt_%28titel_op_object%29%2C_RP-P-1907-2166.jpg"
     ],
-    "license": "map itself public domain (age); scan rights not yet checked",
-    "status": "needs-georeferencing",
+    "license": "CC0 (Rijksmuseum RP-P-1907-2166, via Wikimedia Commons)",
+    "status": "PRIMARY source for gates and fortifications; hi-res scan in hand",
     "projection": "birds-eye-oblique",
     "orientation": "North at the bottom, water at the top - same convention as Guicciardini 1582 and Blaeu 1649.",
     "scale_bar": null,
     "georef_notes": "NOT a true plan. Titled \"Hoorn in Westfrijslandt 1596\", signed \"PAVLVS VTEN WAEL F\". Buildings drawn as 3D houses in oblique view; same caveats as Guicciardini 1582, with which it shares viewpoint, framing and the Neptune cartouche - treat the two as one view family rather than independent sources. Higher engraving detail than Guicciardini, so it is the better of the two for reading street layout and fortification detail.",
-    "notes": ""
+    "notes": "42.5 MP (7700x5516) on Wikimedia Commons, against the 1500x1096 kwaad.net copy - 27x the pixels. The walled city spans about 6580 px for ~950 m, so roughly 0.14 m/px: 2.2x finer than the Blaeu plate (0.32) and 7.6x finer than the only Doesjan scan that exists (1.1). At that resolution the BASTIONS are drawn with their earthwork profile, revetment, ditch and guardhouse, and the GATES are drawn in elevation - tower, stepped gable, turret, bridge over the moat. 1596 predates every gate demolition (the earliest was the Westerpoort in 1806), so all of them are present. Still a bird's-eye oblique, so it is evidence for appearance and sequence, not for footprint geometry. See docs/fortifications.md."
   },
   {
     "id": "kwaad-velius-1615",
@@ -468,5 +469,21 @@
     "scale_bar": null,
     "georef_notes": "Un-georeferenced raster. HisGIS has already georeferenced this same survey - prefer that if access can be arranged.",
     "notes": "Cadastral originals at parcel granularity, which is what the fortification works need. Hoorn's cadastral municipality code is 07052; sheets are identified like MIN07052B01 (minuutplan, section B, sheet 01), with matching OAT... registers naming owners. The beeldbank sits behind bot protection (Anubis), so these cannot be fetched by script - download by hand. See docs/fortifications.md."
+  },
+  {
+    "id": "commons-rijksmuseum-hoorn-plans",
+    "title": "Rijksmuseum Hoorn city plans on Wikimedia Commons — high-resolution set",
+    "type": "map-collection",
+    "year": "1596-1743",
+    "publisher": "Rijksmuseum, via Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/w/index.php?search=Hoorn+plattegrond&ns6=1",
+    "image_urls": [],
+    "license": "CC0 / public domain",
+    "status": "identified; Utenwael 1596 downloaded, the rest not yet",
+    "projection": "varies - mostly bird's-eye obliques",
+    "orientation": "varies",
+    "scale_bar": null,
+    "georef_notes": "Not georeferenced. Value here is RESOLUTION, not geometry.",
+    "notes": "Found by following kwaad.net's own outbound links, which point at Commons for two sewer maps. kwaad.net publishes everything at 1500 px on the long side - that is its export size, not the best available. Commons has far better scans of the same plates: Utenwael 1596 = RP-P-1907-2166, 7700x5516 (42.5 MP); 'Kaart en voornaamste gebouwen van Hoorn' c.1590-1657 = RP-P-AO-OB-24.744, 7830x4516 (35.4 MP), which draws the principal buildings and is therefore directly useful for data/landmarks/; a bird's-eye at PK.OP.15200.tif, 6375x4956 (31.6 MP), date unknown; 1632 = RP-P-2019-1079, 6848x4608 (31.6 MP); Blaeu = RP-P-AO-7-36-1A, 5978x4966 (already in hand); 1743 = RP-P-1937-1450, 4310x3866, and RP-P-2019-1080, 4304x3558; 'Nieuwe grondtekening der stad Hoorn' 1743 = RP-P-AO-7-38, 3972x3318. NO DOESJAN: the latest plan in the set is 1743, so the 1794 scan problem stands."
   }
 ]
