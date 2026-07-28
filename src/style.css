@@ -103,3 +103,37 @@ html, body {
   height: 10px;
   border-radius: 2px;
 }
+
+.legend-head {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  opacity: 0.65;
+  margin-bottom: 5px;
+}
+
+#legend .legend-row {
+  cursor: pointer;
+  gap: 6px;
+  padding: 1px 0;
+}
+
+#legend .legend-row.off {
+  opacity: 0.42;
+}
+
+#legend .legend-row input {
+  margin: 0;
+  accent-color: #6ebeb8;
+  flex: 0 0 auto;
+}
+
+.legend-foot {
+  margin-top: 7px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(203, 211, 218, 0.18);
+  font-size: 0.66rem;
+  line-height: 1.45;
+  opacity: 0.6;
+}

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { SOURCE_COLORS } from './palette';
+import { layer, TIME_FILTER_GLSL } from './palette';
 
 interface HistoricBlock {
   id: string;
@@ -32,12 +32,13 @@ export async function loadHistoricBlocks(
   dataUrl: string,
 ): Promise<{
   setYear: (year: number) => void;
+  setVisible: (on: boolean) => void;
   count: number;
   years: number[];
   centre: THREE.Vector2 | null;
 }> {
   const data: BlockData = await (await fetch(dataUrl)).json();
-  if (!data.blocks.length) return { setYear: () => {}, count: 0, years: [], centre: null };
+  if (!data.blocks.length) return { setYear: () => {}, setVisible: () => {}, count: 0, years: [], centre: null };
 
   const geometries: THREE.BufferGeometry[] = [];
   // Camera target = the centroid of the LARGEST block. Neither a plain nor an
@@ -78,12 +79,12 @@ export async function loadHistoricBlocks(
     geom.setAttribute('aTint', new THREE.BufferAttribute(new Float32Array(n).fill(b.tint), 1));
     geometries.push(geom);
   }
-  if (!geometries.length) return { setYear: () => {}, count: 0, years: [], centre: null };
+  if (!geometries.length) return { setYear: () => {}, setVisible: () => {}, count: 0, years: [], centre: null };
 
   const material = new THREE.ShaderMaterial({
     uniforms: {
       uYear: { value: 1880 },
-      uColor: { value: SOURCE_COLORS.topoRaster.clone() },
+      uColor: { value: layer('topoRaster').color.clone() },
       uLightDir: { value: new THREE.Vector3(0.4, 0.8, 0.3).normalize() },
     },
     vertexShader: /* glsl */ `
@@ -102,7 +103,7 @@ export async function loadHistoricBlocks(
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,
-    fragmentShader: /* glsl */ `
+    fragmentShader: TIME_FILTER_GLSL + /* glsl */ `
       uniform float uYear;
       uniform vec3 uColor;
       uniform vec3 uLightDir;
@@ -111,17 +112,19 @@ export async function loadHistoricBlocks(
       varying float vTint;
       varying vec3 vNormal;
       void main() {
-        if (uYear < vFrom || uYear > vTo) discard;
-        vec3 base = uColor * (0.80 + 0.36 * vTint);
+        if (uYear < vFrom) discard;              // nothing before the sheet's survey
+        vec3 base = applyAttestation(uColor * (0.80 + 0.36 * vTint), uYear, vFrom, vTo);
         float diffuse = max(dot(normalize(vNormal), uLightDir), 0.0);
         gl_FragColor = vec4(base * (0.45 + 0.55 * diffuse), 1.0);
       }
     `,
   });
 
-  scene.add(new THREE.Mesh(mergeGeometries(geometries, false), material));
+  const mesh = new THREE.Mesh(mergeGeometries(geometries, false), material);
+  scene.add(mesh);
 
   return {
+    setVisible: (on: boolean) => { mesh.visible = on; },
     count: data.blocks.length,
     years: data.sources.map((s) => s.year),
     centre: best.area > 0 ? new THREE.Vector2(best.x, best.z) : null,

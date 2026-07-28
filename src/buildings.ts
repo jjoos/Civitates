@@ -20,7 +20,7 @@ function hashHeight(id: string): number {
 export async function loadBuildings(
   scene: THREE.Scene,
   dataUrl: string,
-): Promise<{ setYear: (year: number) => void; center: THREE.Vector2 }> {
+): Promise<{ setYear: (year: number) => void; setVisible: (on: boolean) => void; center: THREE.Vector2 }> {
   const data: BagData = await (await fetch(dataUrl)).json();
 
   const geometries: THREE.BufferGeometry[] = [];
@@ -94,6 +94,7 @@ export async function loadBuildings(
 
   return {
     center,
+    setVisible: (on: boolean) => { mesh.visible = on; },
     setYear: (year: number) => {
       material.uniforms.uYear.value = year;
     },

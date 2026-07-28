@@ -4,7 +4,7 @@ import { loadBuildings } from './buildings';
 import { loadBasemap } from './basemap';
 import { loadHistoricHouses } from './historic';
 import { loadHistoricBlocks } from './blocks';
-import { LEGEND, SOURCE_COLORS, BAG_SWATCH, css } from './palette';
+import { LAYERS, css, type LayerSpec } from './palette';
 import { dataUrl } from './data-manifest';
 import './style.css';
 
@@ -65,11 +65,11 @@ loadingLabel.textContent = 'Loading buildings…';
 document.body.appendChild(loadingLabel);
 
 const historic = loadHistoricHouses(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-historic-houses.json'))
-  .catch(() => ({ setYear: () => {}, count: 0, centre: null }));
+  .catch(() => ({ setYear: () => {}, setVisible: () => {}, count: 0, centre: null }));
 const blocks = loadHistoricBlocks(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-historic-blocks.json'))
-  .catch(() => ({ setYear: () => {}, count: 0, years: [] as number[], centre: null }));
+  .catch(() => ({ setYear: () => {}, setVisible: () => {}, count: 0, years: [] as number[], centre: null }));
 
-loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(async ({ setYear, center }) => {
+loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(async ({ setYear, setVisible, center }) => {
   loadingLabel.remove();
   const hist = await historic;
   const blk = await blocks;
@@ -119,25 +119,43 @@ loadBuildings(scene, dataUrl(import.meta.env.BASE_URL, 'hoorn-bag.json')).then(a
     document.body.appendChild(note);
   }
 
-  buildLegend();
+  buildLayerPanel({ bag: setVisible, blaeu1649: hist.setVisible, topoRaster: blk.setVisible });
 });
 
-// Three layers make three different claims. Say which is which, in the same
-// colours the geometry actually uses — palette.ts is the single source.
-function buildLegend() {
+// The layers make different claims, so the viewer needs to know which is which
+// AND be able to take one away to see what is underneath. Legend and toggle are
+// the same control rather than two — palette.ts is the single source for both.
+function buildLayerPanel(toggles: Record<LayerSpec['id'], (on: boolean) => void>) {
   const el = document.createElement('div');
   el.id = 'legend';
-  for (const row of LEGEND) {
-    const item = document.createElement('div');
-    item.className = 'legend-row';
+  const head = document.createElement('div');
+  head.className = 'legend-head';
+  head.textContent = 'Layers';
+  el.appendChild(head);
+
+  for (const spec of LAYERS) {
+    const row = document.createElement('label');
+    row.className = 'legend-row';
+    const box = document.createElement('input');
+    box.type = 'checkbox';
+    box.checked = true;
+    box.addEventListener('change', () => {
+      toggles[spec.id](box.checked);
+      row.classList.toggle('off', !box.checked);
+    });
     const sw = document.createElement('span');
     sw.className = 'legend-swatch';
-    sw.style.background = css(row.key === 'bag' ? BAG_SWATCH : SOURCE_COLORS[row.key]);
+    sw.style.background = css(spec.color);
     const txt = document.createElement('span');
-    txt.innerHTML = `<strong>${row.label}</strong> — ${row.note}`;
-    item.append(sw, txt);
-    el.appendChild(item);
+    txt.innerHTML = `<strong>${spec.label}</strong> — ${spec.note}`;
+    row.append(box, sw, txt);
+    el.appendChild(row);
   }
+
+  const foot = document.createElement('div');
+  foot.className = 'legend-foot';
+  foot.textContent = 'A layer stays on from its source’s date onward. Past the year that source actually attests it is greyed — still drawn, no longer evidence.';
+  el.appendChild(foot);
   document.body.appendChild(el);
 }
 

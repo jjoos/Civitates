@@ -125,6 +125,29 @@ Grote Noord by assumption. The survivor count therefore says nothing about
 these particular houses yet. Fixing it means sampling a frontage that runs
 between two identifiable junctions and using the matching modern segment.
 
+## Layers and time
+
+Each source is a **separate, toggleable layer** in the viewer, listed in a panel
+that doubles as the legend so a swatch can never drift from the geometry it
+labels. `src/palette.ts` is the single source for the colour, the label and the
+checkbox.
+
+A layer appears at its source's date and **stays on from then on**, rather than
+vanishing at some inferred end year. Scrubbing forward otherwise empties the
+scene and leaves nothing to compare against, which defeats the point of having
+layers at all.
+
+But *still drawn* must not read as *still standing*. Past the year a source
+actually attests — `attested_to`, where we have one — the geometry is
+desaturated toward a neutral grey. Blaeu 1649 is evidence for 1649; that its
+houses are still on screen in 1900 is a viewing convenience, and the render says
+so. Layers with no known end date (`attested_to: null`, emitted as 9999) never
+grey out, because there is no year at which the claim expires.
+
+Darkening alone does not work for this: the first attempt just multiplied the
+colour down and produced dark brown boxes that read as unlit buildings rather
+than as ghosts. It has to lose its hue.
+
 ## Rendering
 
 `scripts/build-historic-houses.mjs` turns projected records into
