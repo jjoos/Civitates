@@ -186,6 +186,52 @@ readable pieces. What is visibly present, in the drawing:
 That is more than enough to model from. What is **not** established is which
 gate is which.
 
+### Attempted and not resolved: the orientation
+
+Tried, and stopped rather than forced. The plan was to fix orientation from the
+church triangle: Hoorn's three medieval churches have known modern positions
+(Kerkplein 132817.2/517015.0, Grote Oost 133202.5/517010.0, Kleine Noord
+132420.6/517349.2), and from the Grote Kerk the Oosterkerk is due **east** 386 m,
+the Noorderkerk **north-west** 518 m and the Hoofdtoren **south-east** 449 m —
+distances of 2760, 3700 and 3210 px at this plate's ~0.14 m/px, easily told
+apart.
+
+**Only one church is unambiguously identifiable on the plate.** A nine-tile
+sweep of the built area found exactly one large church with a tall tower, at
+about plate (3800, 2400) — almost certainly the Grote Kerk, since it is the
+principal church and the only one Hoorn gave a big tower. The Noorderkerk and
+Oosterkerk are hall churches without prominent towers and do not stand out from
+the surrounding roofscape at a glance.
+
+One landmark is not enough. Placing that church as a fraction across the city
+gives plate (0.51, 0.39) against RD (0.43 W→E, 0.57 S→N), and the four candidate
+orientations predict:
+
+| orientation | predicted plate x, y | error |
+|---|---|---|
+| north up, east left | 0.57, 0.43 | 0.10 |
+| north up, east right | 0.43, 0.43 | 0.11 |
+| north down, east left | 0.57, 0.57 | 0.24 |
+| north down, east right | 0.43, 0.57 | 0.26 |
+
+The best and worst differ by 0.16 of the city width — about **190 m** — which is
+inside the error of eyeballing a city outline on an oblique view. The top two
+are separated by 0.01. **That does not decide anything**, and note it also sits
+awkwardly with the "north at bottom" recorded for this view family in
+`docs/georeferencing.md`, which was itself inferred rather than measured.
+
+What would settle it, in order of preference:
+
+1. **Find the Hoofdtoren on the plate.** It survives (Hoofd 2, 133060.65/
+   516664.91), it is a large round harbour tower, and it is 449 m SE of the
+   Grote Kerk. Two confirmed points fix orientation, scale and handedness
+   outright. A first look at the harbour crop did not isolate it among the
+   shipping and the pier — it needs a careful pass along the harbour front.
+2. **Match the ring outline to the surviving singels.** The CBS *Binnenstad*
+   buurt is not the ring — 95.6 ha against the walled city's ~55 ha, because it
+   includes the harbour and later ground — so this needs the singel watercourses
+   from BRT rather than an administrative boundary.
+
 ### Why naming them is the careful step
 
 The plate is a bird's-eye oblique with north at the bottom, so gate identity
