@@ -105,6 +105,29 @@ The apex count depends on `--minsep`, so it is not self-validating. Always
 overlay the apexes on a rectified strip and look at them, and compare the mean
 against numbering density.
 
+## rectify_ring.py — straightens a defensive ring into one strip
+
+    python3 scripts/experiments/rectify_ring.py utenwael-1596.jpg ring.png \
+        1560,1290 1050,1780 830,2280 ... 6380,1500 --depth 300
+
+Sampling a fortification ring at likely-looking spots is not a survey. A first
+pass over Utenwael 1596 checked six plausible places and found one gate, two
+bastions and a windmill **with no way to know what lay between them**.
+Rectifying the whole ring along a polyline puts the entire enceinte in one
+image, in order, so features can be counted rather than hunted.
+
+On Utenwael the ring comes out **10,224 px long** from 17 hand-placed
+waypoints, readable in four strips. The wall, moat, palisade, round bastions
+(*rondelen*) with their guardhouses, square wall towers, gates and even
+wall-mounted windmills are all legible.
+
+The polyline is given by hand from a gridded overview: unlike a street, the ring
+is not a bright corridor, so `follow_street.py` cannot track it. Waypoints are
+interpolated with a Catmull-Rom spline, and a `.stations.txt` sidecar maps every
+station back to a source pixel, so anything spotted in the strip can be located
+on the plate — and stations along the ring are directly comparable to stations
+along the surviving singels on the ground.
+
 ## follow_street.py — tracks a street as a polyline
 
 A straight axis is only good locally: the fitted Ouden Noort axis stays inside

@@ -169,6 +169,40 @@ There are four distinct pre-1880 surveys in the series, if that is ever useful:
 1820 (valid 1820–1835), 1836–1849, 1850 (valid to 1864) and 1865 (valid to
 1875). 1815 is regional and useless.
 
+## Progress: the ring is readable, the gates are not yet named
+
+`scripts/experiments/rectify_ring.py` straightens the whole enceinte from
+Utenwael 1596 into a single strip — **10,224 px** from 17 waypoints, in four
+readable pieces. What is visibly present, in the drawing:
+
+- **Round bastions** (*rondelen*), drawn with earthwork profile, revetment,
+  ditch, and a guardhouse inside
+- **Square wall towers** along the medieval curtain
+- **Gates** in elevation — tower, stepped gable, spired turret, bridge over the
+  moat
+- **Wall-mounted windmills**
+- The **palisade / hedge line** beyond the moat
+
+That is more than enough to model from. What is **not** established is which
+gate is which.
+
+### Why naming them is the careful step
+
+The plate is a bird's-eye oblique with north at the bottom, so gate identity
+depends on getting the orientation right, and this project has already produced
+one confident false match by fitting landmarks on a 16th-century plan without
+verifying — see the church-tower RANSAC in `scripts/experiments/README.md`,
+which had 0.9 px residuals and was completely wrong.
+
+The anchor to use is the **Oosterpoort**: it survives, so it has an exact RD
+position (133446.70, 517126.54) and is the one gate whose plate location can be
+confirmed rather than inferred. Everything else should be placed relative to it,
+by station along the ring, against the surviving singels — the same
+anchor-to-surviving-geometry move the house work uses, with the singels standing
+in for the streets.
+
+Do not name a gate from its position on the plate alone.
+
 ## Suggested approach when we build them
 
 The ring survives in the modern street and water network — Draafsingel is the
