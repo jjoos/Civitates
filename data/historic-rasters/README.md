@@ -57,13 +57,36 @@ Roads **cannot be separated from buildings by colour**: a country road's fill
 is the same carmine as a building's. Sampled on the 1880 sheet, R−G was 73 and
 saturation 80 on a road against 67 and 73 in the historic core — the same ink.
 
-They are rejected by **shape** instead: a component longer than 300 m whose
-mean width (2·area/perimeter) is under 25 m is a linear map symbol, not a
-block. On 1880 that drops 55 components covering **39 of the 86 ha** the mask
-picks up — outside the built-up area, roads carry more ink than buildings do.
+They are rejected by **shape** instead: a component longer than **1000 m** whose
+mean width (2·area/perimeter) is under 25 m is a linear map symbol, not a block.
+
+**The threshold was 300 m and that ate the city.** A terrace of houses along a
+street is also long and narrow, so the rule deleted building rows as well as
+road casings — including a 12,457 m² row at the Roode Steen, the dead centre of
+Hoorn. The test that fixes it: *a road rule must not delete anything in the dense
+historic core, because the core is buildings.* Area dropped within 900 m of the
+core centre:
+
+| rule | dropped in the core |
+|---|---|
+| len > 300 m | **6.18 ha** ← eating the city |
+| len > 600 m | 3.67 ha |
+| len > 1000 m | **0.00 ha** ← clean |
+
+At 1000 m it still removes 18.3 ha of genuine rural road, the longest 6 km. The
+populations separate cleanly on length: real roads here run 1400–6000 m, the
+building rows it used to eat were 570–920 m.
 
 Short road stubs and stretches of the red dotted boundary symbol still get
 through. The filter is a heuristic, not a classifier.
+
+## The trace undershoots by half a pixel
+
+`trace_outer` returns pixel **centres**, so every ring runs down the middle of
+its boundary pixels and encloses less area than the component actually covers.
+For a 3 px wide bar that is about a third of the area. Left uncorrected it
+pushed thin blocks under the minimum-area threshold and silently dropped **387
+components**. `extract()` grows the ring by half a pixel before simplifying.
 
 ## Never close this mask
 
@@ -84,8 +107,9 @@ the core:
 The **opening** is what does the useful work: eroding before dilating breaks the
 thin ink bridges between blocks, so it separates rather than merges. On the core
 it raises the block count from 146 to 181 while costing only 4% of the area.
-Whole sheet, after the fix: **913 blocks, 47.4 ha, largest 1.35 ha** — 3% of the
-built area rather than 46%.
+Whole sheet: **1224 blocks, 89.3 ha, largest 1.35 ha** — 3% of the built area
+rather than 46%. Of the 125.9 ha of raw carmine ink, what is discarded is 8.6 ha
+to the opening, 8 ha of sub-120 m² specks and 18.3 ha of road, all deliberate.
 
 ## Verify visually, every time
 
