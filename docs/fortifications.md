@@ -232,6 +232,56 @@ What would settle it, in order of preference:
    includes the harbour and later ground — so this needs the singel watercourses
    from BRT rather than an administrative boundary.
 
+### Second attempt: three churches found, fit still fails
+
+The user supplied two phone screenshots showing the churches the tile sweep had
+missed. Locating them was done by template matching rather than by eye, and the
+matcher was validated first on a known crop of the plate — **NCC 0.923 at the
+exact position**, collapsing to 0.07 at ±25% scale, which is why the earlier
+coarse scale grids found nothing. Both screenshots matched **kwaad.net's 1500 px
+Utenwael copies**, not the Rijksmuseum plate, at a consistent scale and away from
+any search boundary; the located crops were then confirmed visually against the
+hi-res plate.
+
+Church positions on the Rijksmuseum plate:
+
+| church | plate px |
+|---|---|
+| large, tall tower | 3800, 2400 |
+| screenshot A | 6036, 3543 |
+| screenshot B | 2791, 2222 |
+
+The RD side also had to be corrected. The first attempt used **street addresses
+chosen as proxies** — "Grote Oost 114" for the Oosterkerk — which are not the
+churches at all, and the geocoder has no entry for either the Noorderkerk or the
+Oosterkerk. Taking the largest old BAG buildings in the core instead gives real
+positions: **3132 m² built 1492** at 132639.3/517370.3 (Noorderkerk), **1442 m²
+built 1883** at 132866.4/517044.7 (Grote Kerk, rebuilt after the 1878 fire), and
+**716 m² built 1519** at 133076.8/516949.3 (Oosterkerk).
+
+With real coordinates on both sides, one of the six assignments wins clearly —
+anisotropy **2.88 against 18.66** for the runner-up, a 6.5× gap:
+
+    tall tower = Grote Kerk / screenshot A = Noorderkerk / screenshot B = Oosterkerk
+
+**And it fails its held-out test.** Predicting the Hoofdtoren — deliberately not
+used in the fit, and known at 133060.65/516664.91 — puts it at plate (1366, 990),
+which is **open sea**, among the ships beside the title cartouche. The Hoofdtoren
+is a harbour tower on land.
+
+So the orientation is *still* not established, and this is the same shape of
+failure as the church-tower RANSAC: a candidate that wins by a wide margin on
+its own metric and is refuted the moment an unused landmark is checked. Two
+independent instances now, on two different plates. **Do not accept a fit here
+without a held-out landmark.**
+
+What remains suspect, in order: whether the structures picked out inside the two
+verified crops are really the Noorderkerk and Oosterkerk rather than nearby
+buildings with spires; and whether an affine is adequate at all for this
+viewpoint, since three points fit one exactly and leave no residual to inspect.
+The next attempt should locate the Hoofdtoren **first**, by eye along the harbour
+front, and use it as a fourth point rather than as the test.
+
 ### Why naming them is the careful step
 
 The plate is a bird's-eye oblique with north at the bottom, so gate identity
