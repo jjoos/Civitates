@@ -1,9 +1,10 @@
 # Lessons
 
 Every substantive error in this project so far has produced a **plausible
-number that survived every internal check**. None was caught by the pipeline
-noticing something was wrong. Each was caught by an outside reference, or by
-looking at the right picture.
+result that survived every internal check** — a number that looked right, a
+build that reported success, a fit that converged. None was caught by the
+pipeline noticing something was wrong. Each was caught by an outside reference,
+or by looking at the right picture.
 
 This file is the transferable part. Detail lives in `docs/georeferencing.md`,
 `data/historic-rasters/README.md`, `data/historic-streets/README.md` and
@@ -92,6 +93,89 @@ far from where the thing must have been.
 modern amalgamation — 57 of them cover 105 house numbers on Grote Noord — so
 their median width measures two or three historic plots and made a correct
 reconstruction look 4× wrong.
+
+**Measure the span you found, not the span you searched.** Scaling facade widths
+by the 155 px of frontage that was *searched*, rather than the 116.5 px actually
+spanned apex-to-apex, inflated every house by 1.33×. The two numbers look
+equally reasonable in isolation.
+
+**Survivors are not a random sample.** Only 28 BAG buildings in Hoorn are dated
+1600 or earlier, and the principal axis of that point cloud swings from −136° to
+61° to 83° as the cutoff moves 1600 → 1650 → 1700. What survived is biased by
+what was worth keeping, so a small survivor set is not stable ground truth to
+fit against — this is why the house method anchors to **streets**, which survive
+for different reasons than buildings do.
+
+## Engineering traps, same species
+
+Measurement is not the only place a wrong answer looks right. These all cost
+real time in the same way — the system reported success while doing something
+else.
+
+**A failed type-check leaves the previous build in place.** `npm run build` is
+`tsc -b && vite build`, so an unused import aborts before Vite runs and `dist/`
+silently keeps yesterday's bundle. An isolation test — removing the BAG layer to
+see whether an artifact persisted — therefore tested the *old* code and returned
+a confident, false "yes, it persists". **If a build step can fail, check it
+succeeded before believing what you are looking at.**
+
+**Headless WebGL lies about rendering.** Close-up screenshots from the container
+showed heavy speckle on the historic facades. It survived every fix tried —
+winding, near/far planes, party-wall gap, coordinate precision, render order,
+dev vs production, removing the BAG layer entirely — because it was the
+container's software rasteriser (SwiftShader), not the scene. A phone screenshot
+settled it in seconds. **Confirm a visual bug on real hardware before chasing
+it.**
+
+**An invalid server-side filter can return the wrong thing instead of an
+error.** A CQL filter on a property that did not exist did not fail; PDOK
+returned a feature for *Buitenland*. Same species as the fuzzy geocoder that
+answers "Kaap Hoorn" for a street that no longer exists. **Validate that what
+came back is what you asked for** — we now fetch by bbox and filter client-side.
+
+**Paginated APIs have caps that are not errors.** PDOK stops at
+`startIndex` 50,000 and simply stops; `fetch-bag.mjs` subdivides the bbox
+recursively to get all 50,198 buildings.
+
+**Files in `public/` are not content-hashed.** Vite fingerprints the JS bundle,
+but `public/` keeps stable URLs and Pages serves them with `max-age=600`, so a
+data-only fix ships a fresh bundle reading **stale JSON**. That is why a
+corrected dataset kept rendering as the old one, twice.
+`scripts/gen-data-manifest.mjs` hashes each file and appends `?v=`.
+
+**Deploys can fail with no logs at all.** A GitHub Pages run failing instantly
+and empty was the `github-pages` **environment's deployment-branch policy** not
+listing `main` — not the workflow, not permissions, not the Pages source. Also
+worth knowing: an account-level custom domain will redirect
+`<user>.github.io/<repo>/` away entirely, which looks exactly like a broken
+deploy.
+
+**Axis and sign conventions fail silently and symmetrically.** Two separate
+instances: `ExtrudeGeometry` + `rotateX(-90°)` maps a shape point `(x, y)` to
+world `(x, ·, -y)`, so ring coordinates must be negated or the whole layer
+mirrors in Z; and deriving the Blaeu axes from the compass rose produced a
+determinant of −1, a mirrored fit that still "worked". **Check the determinant
+of any fitted transform, and check a layer against a known landmark rather than
+against its own bounding box.**
+
+**A raw `ShaderMaterial` ignores `logarithmicDepthBuffer`** unless you include
+the logdepth shader chunks — enabling it made the historic mesh vanish
+altogether rather than fixing depth precision.
+
+**A centroid is usually not the place you want the camera.** The municipal bbox
+centre is farmland; the plain vertex centroid of the 1880 blocks is farmland;
+the area-weighted centroid is *also* farmland, because most blocks are outlying
+farms. What works is the centroid of the **largest** feature — on this sheet the
+historic core is one contiguous mass an order of magnitude bigger than anything
+else.
+
+**A uniform terrace renders as one featureless box.** Neighbours share party
+walls and touch exactly, so nothing separates them visually. Three things fix
+it, all stylisation rather than evidence: gabled roofs (the sawtooth roofline is
+what actually reads), height jitter, and a per-house tint. And the hash driving
+them needs **avalanche** — ids differing only in the last character put through
+`hash * 31 + charCode` then `% 1000` varied by about 5 parts in 1000, so every
+house came out identical. FNV-1a with an fmix32 finaliser fixed it.
 
 ## Source facts worth not rediscovering
 
