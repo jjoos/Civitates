@@ -1,5 +1,8 @@
 # Landmark index
 
+The cross-cutting methodological lessons — what went wrong and what caught it
+— are collected in [docs/lessons.md](../../docs/lessons.md).
+
 A worklist for collecting history, photographs and paintings against — one
 record per landmark, with the slots deliberately left empty. It is **not** a set
 of claims about what these buildings were or where they stood.
@@ -109,7 +112,7 @@ recorded independently, so the agreement is real corroboration.
 
 ## What is missing
 
-- 17 records unlocated, 7 unidentified.
+- 17 records unlocated, 13 unidentified.
 - Doesjan's legend beyond F, which needs a better scan.
 - Bastions and rampart works are not here at all. The Blaeu legend does not name
   them individually, though street names still do — `Vale Hen` geocodes cleanly
