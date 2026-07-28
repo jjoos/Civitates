@@ -62,10 +62,25 @@ OPEN_PX = 3
 # Roads are the dominant false positive and CANNOT be separated by colour: on
 # these sheets a country road's fill is the same carmine as a building's
 # (sampled: R-G 73 and saturation 80 on a road, 67 and 73 in the historic core).
-# Shape is the only discriminator. A road casing is long and narrow; a building
-# block is not. Outside the built-up area, roads carry more ink than buildings
-# do — this rule drops 64 of the 118 ha the mask picks up on the 1880 sheet.
-MAX_LINEAR_LENGTH_M = 300.0
+# Shape is the only discriminator: a road casing is long and narrow.
+#
+# The length threshold was 300 m and that was far too aggressive — a terrace of
+# houses along a street is ALSO long and narrow. It was deleting the city's own
+# building rows, including a 12,457 m2 row at the Roode Steen, the dead centre
+# of Hoorn.
+#
+# The test that fixes the threshold: a road rule must not delete anything in the
+# dense historic core, because the core is buildings. Measured, area dropped
+# within 900 m of the core centre:
+#
+#   len >  300 m & width < 25 m ->  6.18 ha in the core   <- eating the city
+#   len >  600 m & width < 25 m ->  3.67 ha in the core
+#   len > 1000 m & width < 25 m ->  0.00 ha in the core   <- clean
+#
+# At 1000 m it still removes 18.3 ha of genuine rural road ribbon, the longest
+# being 6 km. Real roads here run 1400-6000 m; the building rows it used to eat
+# were 570-920 m, so the two populations separate cleanly on length.
+MAX_LINEAR_LENGTH_M = 1000.0
 MIN_BLOCK_WIDTH_M = 25.0
 
 
@@ -80,8 +95,12 @@ def building_mask(rgb):
 def trace_outer(sub):
     """Moore-neighbour boundary trace of one connected component.
 
-    Returns pixel-corner coordinates, so the polygon wraps the pixels rather
-    than running through their centres.
+    Returns pixel CENTRE coordinates, so the resulting ring runs down the middle
+    of the boundary pixels and undershoots the true extent by half a pixel all
+    round. Callers must grow it back — see the buffer in extract(). Getting this
+    wrong silently deleted 387 components: a 3 px wide bar traced through centres
+    encloses about a third less area than the bar covers, which pushed thin
+    blocks under the minimum-area threshold.
     """
     h, w = sub.shape
     start = None
@@ -141,6 +160,10 @@ def extract(year):
         poly = Polygon(pts)
         if not poly.is_valid:
             poly = poly.buffer(0)
+        if poly.geom_type == "MultiPolygon":
+            poly = max(poly.geoms, key=lambda p: p.area)
+        # Grow the centre-line ring out to the pixel edges (see trace_outer).
+        poly = poly.buffer(res * 0.5, join_style=2)
         if poly.geom_type == "MultiPolygon":
             poly = max(poly.geoms, key=lambda p: p.area)
         poly = poly.simplify(SIMPLIFY_M, preserve_topology=True)
