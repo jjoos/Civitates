@@ -25,25 +25,41 @@ const SERVICE = (year) =>
   `https://tiles.arcgis.com/tiles/nSZVuSZjHpEZZbRo/arcgis/rest/services/Historische_tijdreis_${year}/MapServer/tile`;
 
 // LOD 11 is the finest the service publishes. That is the hard ceiling on what
-// can be read off these sheets: at 1.5875 m/px a 5 m house frontage is 3 px, so
+// can be read off these sheets: at ~1.59 m/px a 5 m house frontage is 3 px, so
 // individual houses are NOT recoverable — building blocks are.
 const LOD = 11;
-const RES = 1.5875;
 const TILE_SIZE = 256;
-const TILE_SPAN = RES * TILE_SIZE;
-const ORIGIN = { x: -30515500.0, y: 31112399.999999993 };
+
+// NEVER hardcode the resolution or the origin. The true LOD 11 resolution is
+// 1.5875031750063502 m/px; rounding it to 1.5875 looks harmless and is not,
+// because the tiling origin is 30.5 MILLION metres away. Hoorn sits 75,412
+// tiles from it, so an error of 0.0000032 m/px accumulates to **61 m** — which
+// is exactly the offset the 1880 blocks showed against BAG, and the 2025 sheet
+// showed it too, which is how the maths rather than the old sheet was convicted.
+// Read both straight from the service instead.
+async function tilingScheme(year) {
+  const res = await fetch(`${SERVICE(year).replace(/\/tile$/, '')}?f=pjson`);
+  if (!res.ok) throw new Error(`tiling scheme for ${year} -> HTTP ${res.status}`);
+  const info = (await res.json()).tileInfo;
+  const lod = info?.lods?.find((l) => l.level === LOD);
+  if (!lod || !info?.origin) throw new Error(`${year}: service did not publish LOD ${LOD} / origin`);
+  if (info.rows !== TILE_SIZE || info.cols !== TILE_SIZE) {
+    throw new Error(`${year}: unexpected tile size ${info.cols}x${info.rows}`);
+  }
+  return { res: lod.resolution, span: lod.resolution * TILE_SIZE, origin: info.origin };
+}
 
 // Full-resolution sheets are ~90 MB each and are INTERMEDIATES, not build
 // output: only the extracted blocks get committed. Keep them out of public/,
 // which ships to Pages.
 const OUT_DIR = new URL('../data/raster-cache/', import.meta.url);
 
-function colRowRange([minX, minY, maxX, maxY]) {
+function colRowRange([minX, minY, maxX, maxY], { span, origin }) {
   return {
-    minCol: Math.floor((minX - ORIGIN.x) / TILE_SPAN),
-    maxCol: Math.floor((maxX - ORIGIN.x) / TILE_SPAN),
-    minRow: Math.floor((ORIGIN.y - maxY) / TILE_SPAN),
-    maxRow: Math.floor((ORIGIN.y - minY) / TILE_SPAN),
+    minCol: Math.floor((minX - origin.x) / span),
+    maxCol: Math.floor((maxX - origin.x) / span),
+    minRow: Math.floor((origin.y - maxY) / span),
+    maxRow: Math.floor((origin.y - minY) / span),
   };
 }
 
@@ -55,7 +71,9 @@ async function fetchTile(year, col, row) {
 }
 
 async function fetchYear(year, bbox, origin) {
-  const { minCol, maxCol, minRow, maxRow } = colRowRange(bbox);
+  const scheme = await tilingScheme(year);
+  const { res: RES, span: TILE_SPAN, origin: ORIGIN } = scheme;
+  const { minCol, maxCol, minRow, maxRow } = colRowRange(bbox, scheme);
   const cols = maxCol - minCol + 1;
   const rows = maxRow - minRow + 1;
 
@@ -90,6 +108,7 @@ async function fetchYear(year, bbox, origin) {
     crs: 'EPSG:28992',
     lod: LOD,
     m_per_px: RES,
+    tile_origin: ORIGIN,
     width,
     height,
     // top-left corner in RD, so px -> RD is rd = [rdMinX + px*res, rdMaxY - py*res]

@@ -111,6 +111,37 @@ Whole sheet: **1224 blocks, 89.3 ha, largest 1.35 ha** — 3% of the built area
 rather than 46%. Of the 125.9 ha of raw carmine ink, what is discarded is 8.6 ha
 to the opening, 8 ha of sub-120 m² specks and 18.3 ha of road, all deliberate.
 
+## Never hardcode the tiling scheme
+
+The blocks sat **78 m** from where they belonged, which is what a misaligned
+prison on the Oostereiland looked like on screen.
+
+The cause was a rounded constant. The service publishes LOD 11 as
+`1.5875031750063502` m/px; rounding that to `1.5875` looks harmless. It is not,
+because the tiling origin is at x = −30,515,500 — **30.5 million metres away**.
+Hoorn sits 75,412 tiles from it, so an error of 0.0000032 m/px accumulates to
+**61 m in x and 61 m in y**.
+
+`fetch-topotijdreis.mjs` now reads the resolution and the origin from the
+service and stores them in the sheet metadata. It also asserts the tile size,
+so a scheme change fails loudly rather than silently shifting the city.
+
+**How the maths was convicted rather than the old sheet.** A 19th-century sheet
+being loosely georeferenced is entirely plausible, so the offset alone proved
+nothing. Fetching the **2025** sheet from the same tile grid settled it: modern
+topography must line up with BAG, and it showed the same −60 m displacement. The
+error therefore had to be in the conversion, not in the map.
+
+| | offset vs pre-1880 BAG | Dice at zero shift |
+|---|---|---|
+| before | 78 m | 0.234 |
+| after | 11 m | 0.319 |
+
+The 11 m residual is a shallow optimum — 0.342 against 0.319, a 7% gain, versus
+47% before — so it is within the noise of comparing whole blocks against
+individual footprints, plus whatever slack the 1880 sheet's own georeferencing
+carries. Do not chase it without better evidence.
+
 ## Verify visually, every time
 
 The extraction is only trustworthy because it was overlaid on the sheet and
