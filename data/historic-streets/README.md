@@ -122,11 +122,22 @@ Real: the facade widths, their ordering, the metre scale, and the street
 identification (Blaeu's "Nieuwen Noort" is modern Nieuwe Noord — it was the
 Burchwal *canal* until 1595 — so "Ouden Noort" is modern Grote Noord).
 
-Not real: `segment_start_m = 0`. The **along-street position** of this frontage
-has not been established, so the houses currently sit at the Roode Steen end of
-Grote Noord by assumption. The survivor count therefore says nothing about
-these particular houses yet. Fixing it means sampling a frontage that runs
-between two identifiable junctions and using the matching modern segment.
+Real as of the along-street fix: `segment_start_m = 46.8`, **measured rather
+than assumed**. `follow_street.py` tracks Ouden Noort across the plate as a
+polyline, the Roode Steen is located objectively as the widest point on that
+track (95 px = 31 m across, against 25-35 px for the street), and the first
+gable apex sits 109.5 m along the street from the square's centre. The modern
+centreline starts 62.7 m from the square's geocoded centroid, so the row
+occupies **47-102 m** of a 354.6 m street.
+
+What makes it trustworthy is that the same track re-measures apex-to-apex as
+54.9 m against 54.0 m from the independent straight-axis fit — 1.7% apart, from
+two different geometries.
+
+Uncertainty is about **±8 m**: 10 px of error locating the square is 3.2 m, a 5%
+along-street scale error is 5.5 m, and the 62.7 m gap assumes the square's
+centroid and the street's start are collinear. Tightening it means anchoring
+between two identifiable junctions rather than to one square.
 
 ## Layers and time
 

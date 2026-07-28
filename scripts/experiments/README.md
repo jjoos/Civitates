@@ -105,6 +105,37 @@ The apex count depends on `--minsep`, so it is not self-validating. Always
 overlay the apexes on a rectified strip and look at them, and compare the mean
 against numbering density.
 
+## follow_street.py — tracks a street as a polyline
+
+A straight axis is only good locally: the fitted Ouden Noort axis stays inside
+the roadway for about 250 px and is 47 px off it by station 700. Anything
+measured at street scale needs the axis to bend too.
+
+    python3 scripts/experiments/follow_street.py blaeu-rp.jpg 3283 2525 3372 2570 --back 120 --fwd 260
+
+Walks forward in 6 px steps, taking the brightest point across the roadway as
+the centre and turning the heading toward it, capped at 7 deg per step so ink
+blots and side openings cannot yank the track away. Outputs station, position
+and a `bright` value — roads are the light background of this engraving, so a
+drop in `bright` means the track has wandered onto a block.
+
+Two things had to be got right, both by getting them wrong first:
+
+1. **Do not snap the point onto the measured centre.** The centre can be
+   26 px away laterally, so snapping makes the track zigzag and inflates arc
+   length — 4920 px of track for 2280 px of walking. Correct 35% of the way and
+   let the heading do the rest.
+2. **Smooth before measuring arc length.** Even damped, residual wiggle
+   inflated a 188 px span to 256 px (1.36x). Smoothing over 21 vertices brings
+   it to 189.4 px, or **1.01x** — calibrated against a stretch where the street
+   really is straight, which is the only way to know the smoothing is right.
+
+First use: locating the Roode Steen as the widest point on the track (95 px =
+31 m across, against 25-35 px for the street) to fix the along-street position
+of the Blaeu house row. Apex-to-apex along the curved track came to 54.9 m
+against 54.0 m from the independent straight-axis fit — 1.7% apart, which is
+what makes the tracking trustworthy.
+
 ## extract_facades.py — SUPERSEDED, measured the wrong thing
 
 Measures individual house facade widths straight off a bird's-eye map, which
