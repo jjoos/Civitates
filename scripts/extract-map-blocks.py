@@ -43,7 +43,21 @@ OUT_DIR = ROOT / "data" / "historic-rasters"
 
 MIN_AREA_M2 = 120.0      # below this it is a symbol, a lone farmhouse or speckle
 SIMPLIFY_M = 2.5         # ~1.5 px; keeps block corners, drops raster staircase
-CLOSE_PX = 2             # bridge the white street-line hairlines inside a block
+
+# DO NOT morphologically close this mask. An earlier version closed by 2 px to
+# bridge hairlines inside a block, and that quietly welded the whole historic
+# core into ONE 25 ha polygon — 46% of all built area in a single blob, which is
+# what it looked like on screen. The streets that separate the blocks are only
+# about 4 px wide at 1.5875 m/px (a 6 m street), so a 5x5 closing kernel closes
+# the streets themselves. Measured on the core:
+#
+#   close 2 px ->  77 blocks, largest 202396 m2   <- the blob
+#   close 1 px -> 130 blocks, largest  34355 m2
+#   no closing -> 181 blocks, largest  14536 m2   <- actual city blocks
+#
+# The opening below is what does the useful work: it erodes thin ink bridges
+# between blocks before dilating back, so it separates rather than merges.
+OPEN_PX = 3
 
 # Roads are the dominant false positive and CANNOT be separated by colour: on
 # these sheets a country road's fill is the same carmine as a building's
@@ -107,8 +121,7 @@ def extract(year):
     res = meta["m_per_px"]
 
     mask = building_mask(rgb)
-    mask = ndimage.binary_closing(mask, np.ones((CLOSE_PX * 2 + 1,) * 2))
-    mask = ndimage.binary_opening(mask, np.ones((3, 3)))
+    mask = ndimage.binary_opening(mask, np.ones((OPEN_PX, OPEN_PX)))
     lab, n = ndimage.label(mask, structure=np.ones((3, 3)))
     print(f"{year}: {mask.mean() * 100:.1f}% of the sheet is building ink, {n} components")
 
@@ -156,8 +169,9 @@ def extract(year):
         "m_per_px": res,
         "sheet_hash": meta["sheet_hash"],
         "method": (
-            "Carmine building ink segmented by hue, closed by "
-            f"{CLOSE_PX} px, components traced and simplified to {SIMPLIFY_M} m. "
+            f"Carmine building ink segmented by hue, opened by {OPEN_PX} px (and "
+            "deliberately NOT closed - closing welds the blocks together across the "
+            f"streets), components traced and simplified to {SIMPLIFY_M} m. "
             "Sheet is already georeferenced in EPSG:28992, so no fit is involved "
             "and there are no residuals to report."
         ),
