@@ -23,7 +23,8 @@ export class EditorCanvas {
 
   /** vertices of the feature currently being drawn, in image pixels */
   draft: Array<[number, number]> = [];
-  kind: FeatureKind = 'house';
+  /** facade by default: on most plates it is the only thing actually observed */
+  kind: FeatureKind = 'facade';
   selectedId: string | null = null;
   /** index of the vertex being dragged on the selected feature */
   private dragVertex: { id: string; i: number } | null = null;
@@ -128,7 +129,8 @@ export class EditorCanvas {
 
   commitDraft() {
     const shape = KIND_SHAPE[this.kind];
-    const need = shape === 'point' ? 1 : shape === 'path' ? 2 : 3;
+    // A run needs 2 points for its first house, same as a path.
+    const need = shape === 'point' ? 1 : shape === 'area' ? 3 : 2;
     if (this.draft.length < need) return;
     const f = this.store.add(this.kind, this.draft.slice(), shape === 'area');
     this.draft = [];
@@ -236,6 +238,23 @@ export class EditorCanvas {
       this.render();
       return;
     }
+    // With a run selected and nothing being drawn, a tap on the run itself adds
+    // a party wall there — the common repair when a division was missed. It is
+    // only reachable when the tap lands on the run, so drawing elsewhere is
+    // unaffected.
+    if (!this.draft.length && this.selectedId) {
+      const sel = this.store.project.features.find((x) => x.id === this.selectedId);
+      if (sel && KIND_SHAPE[sel.kind] === 'run') {
+        const hit = nearestOnPath(rawX, rawY, sel.points, 12 / this.view.scale);
+        if (hit) {
+          this.store.insertDivision(sel.id, hit.i, [round2(hit.x), round2(hit.y)]);
+          this.onChange();
+          this.render();
+          return;
+        }
+      }
+    }
+
     const snapped = this.snap(rawX, rawY);
     const p: [number, number] = snapped ?? [round2(rawX), round2(rawY)];
     this.draft.push(p);
@@ -284,8 +303,13 @@ export class EditorCanvas {
     if (f.closed) ctx.closePath();
     if (shape === 'area') { ctx.fillStyle = col + '4d'; ctx.fill(); }
     ctx.strokeStyle = col;
-    ctx.lineWidth = selected ? 3 : 1.8;
+    ctx.lineWidth = shape === 'run' ? (selected ? 5 : 3.5) : selected ? 3 : 1.8;
     ctx.stroke();
+
+    // A run is a terrace: draw the party walls as ticks across the frontage,
+    // because that is the thing being recorded. Without them a run of twelve
+    // houses and a single long wall look identical.
+    if (shape === 'run') this.drawDivisions(pts, col, f, selected);
 
     if (selected) {
       for (const [x, y] of pts) {
@@ -299,6 +323,42 @@ export class EditorCanvas {
       ctx.fillStyle = '#fff'; ctx.font = '12px system-ui';
       ctx.fillText(f.label, x + 8, y - 6);
     }
+  }
+
+  /**
+   * Party-wall ticks, plus each house's width in source pixels once there is
+   * room to print it. Seeing the widths while tracing is the cheapest check
+   * available: a division dropped or doubled shows up immediately as one house
+   * twice its neighbours' width, or two at half.
+   */
+  private drawDivisions(pts: Array<[number, number]>, col: string, f: Feature, selected: boolean) {
+    const ctx = this.ctx;
+    const len = 9;
+    for (let i = 0; i < pts.length; i++) {
+      // normal to the local run direction, so the tick reads as a party wall
+      const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+      const d = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+      const nx = -(b[1] - a[1]) / d, ny = (b[0] - a[0]) / d;
+      ctx.beginPath();
+      ctx.moveTo(pts[i][0] - nx * len, pts[i][1] - ny * len);
+      ctx.lineTo(pts[i][0] + nx * len, pts[i][1] + ny * len);
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = selected ? 2.5 : 1.5; ctx.stroke();
+    }
+    ctx.font = '11px system-ui';
+    ctx.textAlign = 'center';
+    for (let i = 1; i < pts.length; i++) {
+      const sw = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+      if (sw < 26) continue;                       // no room; would just be noise
+      const w = Math.hypot(f.points[i][0] - f.points[i - 1][0], f.points[i][1] - f.points[i - 1][1]);
+      const mx = (pts[i][0] + pts[i - 1][0]) / 2, my = (pts[i][1] + pts[i - 1][1]) / 2;
+      const label = f.houses?.[i - 1]?.label || `${Math.round(w)}px`;
+      ctx.fillStyle = 'rgba(0,0,0,.55)';
+      const tw = ctx.measureText(label).width;
+      ctx.fillRect(mx - tw / 2 - 3, my - 20, tw + 6, 14);
+      ctx.fillStyle = col;
+      ctx.fillText(label, mx, my - 9);
+    }
+    ctx.textAlign = 'left';
   }
 
   private drawDraft() {
@@ -327,6 +387,21 @@ function pointInPoly(x: number, y: number, poly: Array<[number, number]>) {
     if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
   }
   return inside;
+}
+
+/** Closest point on a polyline within `tol`, with the index of its segment. */
+function nearestOnPath(x: number, y: number, pts: Array<[number, number]>, tol: number) {
+  let best: { d: number; i: number; x: number; y: number } | null = null;
+  for (let i = 1; i < pts.length; i++) {
+    const a = pts[i - 1], b = pts[i];
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const L = dx * dx + dy * dy;
+    const t = L === 0 ? 0 : Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / L));
+    const px = a[0] + t * dx, py = a[1] + t * dy;
+    const d = Math.hypot(x - px, y - py);
+    if (d < tol && (!best || d < best.d)) best = { d, i: i - 1, x: px, y: py };
+  }
+  return best;
 }
 
 function distToSegment(x: number, y: number, a: [number, number], b: [number, number]) {

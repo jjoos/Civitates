@@ -1,4 +1,5 @@
-import type { Feature, FeatureKind, Project } from './types';
+import type { Feature, FeatureKind, HouseInRun, Project } from './types';
+import { KIND_SHAPE } from './types';
 
 const KEY = 'civitates-editor-v1';
 
@@ -29,10 +30,28 @@ export class Store {
   private load(): Project | null {
     try {
       const raw = localStorage.getItem(KEY);
-      return raw ? (JSON.parse(raw) as Project) : null;
+      return raw ? Store.normalise(JSON.parse(raw) as Project) : null;
     } catch {
       return null;
     }
+  }
+
+  /**
+   * `houses.length === points.length - 1` is an invariant the editor maintains,
+   * but an imported or hand-edited file need not respect it. Repair rather than
+   * reject: a trace is hours of work and a length mismatch loses nothing.
+   */
+  static normalise(p: Project): Project {
+    for (const f of p.features) {
+      if (KIND_SHAPE[f.kind] !== 'run') continue;
+      const want = Math.max(0, f.points.length - 1);
+      f.houses ??= [];
+      while (f.houses.length < want) f.houses.push({ label: '', notes: '' });
+      f.houses.length = want;
+      f.streetId ??= null;
+      f.depthM ??= null;
+    }
+    return p;
   }
 
   subscribe(fn: () => void) {
@@ -84,9 +103,48 @@ export class Store {
       rd: null,
       createdAt: new Date().toISOString(),
     };
+    if (KIND_SHAPE[kind] === 'run') {
+      feature.houses = points.slice(1).map(() => ({ label: '', notes: '' }));
+      feature.streetId = null;
+      feature.depthM = null;
+    }
     this.project.features.push(feature);
     this.commit();
     return feature;
+  }
+
+  /**
+   * Split a house in two by adding a party wall at `at`, which lies on the
+   * segment starting at division `i`. The new house inherits nothing — a
+   * division is a statement that these are two dwellings, not one relabelled.
+   */
+  insertDivision(id: string, i: number, at: [number, number]) {
+    const f = this.project.features.find((x) => x.id === id);
+    if (!f || !f.houses) return;
+    this.snapshot();
+    f.points.splice(i + 1, 0, at);
+    f.houses.splice(i + 1, 0, { label: '', notes: '' });
+    this.commit();
+  }
+
+  /** Merge house `i` into `i-1` by removing the division between them. */
+  removeDivision(id: string, i: number) {
+    const f = this.project.features.find((x) => x.id === id);
+    // Removing an end division would shorten the run rather than merge, and
+    // a run needs two divisions to describe even one house.
+    if (!f || !f.houses || i <= 0 || i >= f.points.length - 1) return;
+    this.snapshot();
+    f.points.splice(i, 1);
+    f.houses.splice(i, 1);
+    this.commit();
+  }
+
+  updateHouse(id: string, i: number, patch: Partial<HouseInRun>) {
+    const f = this.project.features.find((x) => x.id === id);
+    if (!f?.houses?.[i]) return;
+    this.snapshot();
+    Object.assign(f.houses[i], patch);
+    this.commit();
   }
 
   update(id: string, patch: Partial<Feature>) {
@@ -105,7 +163,7 @@ export class Store {
 
   replaceAll(p: Project) {
     this.snapshot();
-    this.project = p;
+    this.project = Store.normalise(p);
     this.commit();
   }
 

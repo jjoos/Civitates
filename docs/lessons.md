@@ -233,6 +233,38 @@ spacing for legibility, and buildings drawn in elevation are displaced by their
 own height on top of that. The fit is good for **orientation and nothing else**.
 Placement has to work in stations along surviving geometry.
 
+## Record what was observed, separately from what was inferred
+
+**Trace facades, not footprints.** A bird's-eye engraver drew the street
+elevation — the row of gables — and could not see how deep the plots ran. Asking
+a tracer for a house *outline* therefore asks for a line nobody ever observed,
+and fuses a measurement and an invention into one polygon that can no longer
+tell them apart. Van Deventer is the model: he measured street lines and facade
+widths and re-measured them, guessed the depths, and the distinction survives
+four centuries **because he kept it**. `src/editor/` follows him — a facade run
+holds the frontage, divided at the party walls; depth is a separate field on the
+run, and stays visibly a guess.
+
+The same principle covers scale. There is no global scale on a portrait plate,
+but there is a **local** one along a single street, recoverable from two control
+points on that street. So the editor attaches a run to a street rather than to
+the plate, and a run that has not been attached reports relative widths only.
+Never let an unavailable global answer stop a locally available one.
+
+**A threshold that fires on the modal failure is worth checking against that
+failure.** Flagging a house wider than 2x its neighbours sounds right for
+catching a missed party wall — and misses it. A terrace of near-equal houses
+with one division dropped yields a house of *exactly* twice the others, landing
+precisely on the boundary that a strict `>` excludes. It is now 1.75x.
+
+Compare against the **median**, not the mean, for the same class of reason: the
+outlier being hunted drags the mean toward itself and hides behind it. Widths of
+6, 6, 18, 6 have a mean of 9, so the 18 m house sits exactly on 2x mean and
+escapes twice over. The median is 6.
+
+Both bugs were found by *testing the detector on the thing it exists to detect*,
+which cost one synthetic run and is the cheapest check in this file.
+
 ## How the techniques have evolved, and what to combine next
 
 None of these methods arrived working. Each is the residue of a failure, and the
