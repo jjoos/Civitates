@@ -70,12 +70,64 @@ over the 7700 px copy looks like a georeferencing error, not a file mix-up.
 The editor warns when you load an image whose hash differs from the one the
 current features were drawn on.
 
+### Facades, not footprints
+
+**This is the important one.** A bird's-eye engraver stood off the town and drew
+the *street elevation* — the row of gables. He could not see how far back the
+plots ran, and did not draw it. Tracing a house *outline* therefore asks the
+tracer to draw a line nobody ever observed, and silently mixes a measurement
+(the frontage) with an invention (the depth) in a single polygon that no longer
+distinguishes them.
+
+Van Deventer is the precedent. He measured street lines and facade widths, and
+re-measured them; his depths were guesswork. That distinction survives because
+he kept it. Ours should too.
+
+So the default tool is `facade`, and a facade is a **run**: you tap the party
+walls straight along a terrace, and *n*+1 taps give *n* houses. The divisions
+are shared because they are literally the same point, not two points that
+happen to coincide. Depth lives in one field on the run, marked as the guess it
+is, and nothing downstream can mistake it for something observed.
+
+Use `house` only where the source genuinely shows a footprint — a cadastral
+plan, a measured survey.
+
+Two checks run while you trace. Each house's width in source pixels is printed
+on the run, and a house far wider than the rest of its row is flagged in the
+panel, because a missed party wall and one wide house look identical. The
+threshold is 1.75× the row's **median**: the median because an outlier drags the
+mean toward itself and can hide behind it, and 1.75 rather than 2 because a
+terrace of near-equal houses with one division missed produces a house of
+*exactly* twice the median — the commonest mistake lands precisely on a 2×
+threshold and slips through.
+
+To fix a run: tap anywhere on it to add a party wall, or press ⌫ on a row in
+the panel to merge that house into the one before it.
+
+### Attaching a run to a street
+
+Set **fronts onto** in the panel. Which side of the street the row sits on is
+*derived* from the geometry, not asked — you already said it by drawing the run
+where you did.
+
+Attachment is what makes the widths metric. Put `control` points on two vertices
+of that street, give them RD coordinates, and `ingest-trace.mjs` converts every
+frontage on it into metres using a scale **local to that street**. That is the
+only kind of scale a portrait plate has: no global transform fits Utenwael, but
+over a couple of hundred metres along one street the scale is near enough
+constant. It is the same assumption the Blaeu frontage work already runs on.
+
+Anchor a *straight* stretch. RD distance is measured straight while the plate
+distance is measured along the street, so a bend between the anchors makes the
+scale an underestimate; the script reports the bend ratio and warns above 1.02.
+
 ### Feature kinds
 
 | kind | shape | what it is for |
 |---|---|---|
-| `house` | area | one dwelling, as the engraver drew it |
-| `block` | area | a whole terrace or island where individual houses are not separable |
+| `facade` | run | **the default.** A terrace's frontage, tapped at the party walls: each segment is one house |
+| `house` | area | a real footprint, from a source that actually shows one |
+| `block` | area | an island where individual houses are not separable at all |
 | `street` | path | centreline, in the direction of increasing house numbers where known |
 | `wall` | path | curtain wall, rampart, palisade |
 | `water` | area | harbour, canal, moat |
@@ -83,7 +135,9 @@ current features were drawn on.
 | `control` | point | **the only place ground truth enters**: carries an `rd` pair |
 
 `rd` is `[x, y]` in EPSG:28992 and is only meaningful on `control` features. It
-is what the fitting step consumes.
+is what the fitting step consumes. Facade runs additionally carry `houses` (one
+record per segment, so `houses.length === points.length - 1`), `streetId`, and
+`depthM`.
 
 ## Using it
 
@@ -97,6 +151,7 @@ tool, then tap to place vertices.
 | Esc | discard the shape in progress |
 | Backspace | remove the last vertex |
 | shift-tap | select an existing feature |
+| tap a selected run | add a party wall there |
 | drag a white handle | move that vertex |
 | drag elsewhere | pan |
 | wheel / pinch | zoom |
@@ -111,7 +166,9 @@ cope with.
 
 Work is written to `localStorage` after every change, so a reload or a closed
 tab does not lose hours of tracing. It is still browser storage — **export to a
-file when you stop**, and commit that file.
+file when you stop**, and commit that file. The plate image itself is *not*
+stored — a 42 MP scan will not fit — so after a reload you re-open the image
+and the trace is still there, checked against its hash.
 
 The layout collapses to a single column below 820 px, because tracing on a
 tablet with a stylus is a genuinely better way to do this than a mouse.
@@ -123,8 +180,16 @@ node scripts/ingest-trace.mjs utenwael-1596-trace.json
 ```
 
 It reports what the file contains, flags degenerate geometry (closed rings with
-no area, paths with one point), and — given four or more control points — fits
-an affine to RD and interrogates it.
+no area, paths with one point, runs whose house records do not match their
+divisions), measures every facade run, and — given four or more control points —
+fits an affine to RD and interrogates it.
+
+For each run it prints the house widths in pixels, and in metres wherever the
+street is anchored, with the mean and total. It re-runs the wide-house check
+there too, flags houses under 2.5 m as narrower than a real frontage, and
+compares the overall mean against Hoorn's independently measured 4.91 m — a
+figure corroborated at 5.07 m per plot by house numbering. A mean far from that
+usually means the anchors are wrong, not the houses.
 
 The interrogation is the point. Every check in it exists because something got
 past the obvious ones:
@@ -156,15 +221,22 @@ Nothing consumes traces automatically yet, and that is deliberate — the
 georeferencing method should be chosen per plate rather than assumed. The
 sequence is:
 
-1. Trace the plate, including at least four control points on features that
-   still exist and can be given RD coordinates (church towers, surviving gates,
-   street junctions).
-2. Run `ingest-trace.mjs` and read the verdict.
-3. If `usable`, apply the transform to the traced houses to get footprints in
-   RD. If `ORIENTATION ONLY`, use the trace the way the Blaeu frontages were
-   used — as an ordered sequence of facade widths along a street, laid out by
-   arc length against the surviving modern centreline. See
+1. Trace the streets first, then the frontages along them, attaching each run to
+   its street as you go.
+2. Add control points: on street vertices that still exist, to make those
+   streets metric, and — if the plate might be metric as a whole — at least four
+   spread across it on identifiable landmarks.
+3. Run `ingest-trace.mjs`. Read the per-run metres before the verdict; a run
+   whose houses come out at 12 m or 2 m is telling you about the anchors.
+4. Place the houses. If the fit is `usable`, the transform puts the frontages
+   straight into RD. If it is `ORIENTATION ONLY`, use the runs the way the Blaeu
+   frontages were used — an ordered sequence of widths laid out by arc length
+   against the surviving modern centreline. See
    [docs/georeferencing.md](georeferencing.md).
+5. Extrude backwards by `depthM` only at the point of building geometry, and
+   keep it labelled as an assumption wherever it surfaces.
 
 An `ORIENTATION ONLY` verdict is not a failed trace. The Blaeu work produced
-real, corroborated house positions from a plate no affine will ever fit.
+real, corroborated house positions from a plate no affine will ever fit, and it
+did it from exactly this data: an ordered run of frontage widths against a
+street that still exists.

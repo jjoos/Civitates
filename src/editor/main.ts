@@ -1,6 +1,6 @@
 import { Store } from './store';
 import { EditorCanvas } from './canvas';
-import { KIND_COLOR, KIND_SHAPE, type FeatureKind, type Project } from './types';
+import { KIND_COLOR, KIND_SHAPE, type Feature, type FeatureKind, type Project } from './types';
 import './editor.css';
 
 const store = new Store();
@@ -135,12 +135,15 @@ function refresh() {
   const sel = p.features.find((f) => f.id === editor.selectedId);
   const insp = $('inspector');
   if (!sel) { insp.innerHTML = '<p class="muted">Shift-tap a feature to select it.</p>'; return; }
+  const isRun = KIND_SHAPE[sel.kind] === 'run';
   insp.innerHTML = `
     <label>label<input id="i-label" value="${esc(sel.label)}"></label>
     <label>notes<textarea id="i-notes" rows="2">${esc(sel.notes)}</textarea></label>
     ${sel.kind === 'control' ? `<label>RD x, y (EPSG:28992)
       <input id="i-rd" placeholder="133060.65, 516664.91" value="${sel.rd ? sel.rd.join(', ') : ''}"></label>` : ''}
-    <p class="muted">${sel.points.length} vertices · drag the white handles to adjust</p>`;
+    ${isRun ? runPanel(sel, p) : ''}
+    <p class="muted">${sel.points.length} vertices · drag the white handles to adjust${
+      isRun ? ' · tap the run to add a party wall' : ''}</p>`;
   $('i-label').addEventListener('input', (e) => store.update(sel.id, { label: (e.target as HTMLInputElement).value }));
   $('i-notes').addEventListener('input', (e) => store.update(sel.id, { notes: (e.target as HTMLTextAreaElement).value }));
   const rd = document.getElementById('i-rd') as HTMLInputElement | null;
@@ -148,6 +151,98 @@ function refresh() {
     const m = rd.value.match(/(-?\d+\.?\d*)\D+(-?\d+\.?\d*)/);
     store.update(sel.id, { rd: m ? [Number(m[1]), Number(m[2])] : null });
   });
+  if (isRun) bindRunPanel(sel);
+}
+
+// ------------------------------------------------------------- facade runs
+/** Widths of every house in a run, in source pixels. */
+function widths(f: Feature): number[] {
+  return f.points.slice(1).map((q, i) =>
+    Math.hypot(q[0] - f.points[i][0], q[1] - f.points[i][1]));
+}
+
+/**
+ * Which side of its street a frontage sits on, from the sign of the cross
+ * product of the street's local direction with the offset to the frontage.
+ * Derived rather than asked: the tracer already showed us, by drawing it there.
+ */
+function sideOfStreet(f: Feature, street: Feature): string {
+  const mid = f.points[Math.floor(f.points.length / 2)];
+  let best = { d: Infinity, s: 0 };
+  for (let i = 1; i < street.points.length; i++) {
+    const a = street.points[i - 1], b = street.points[i];
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const L = dx * dx + dy * dy;
+    const t = L === 0 ? 0 : Math.max(0, Math.min(1, ((mid[0] - a[0]) * dx + (mid[1] - a[1]) * dy) / L));
+    const px = a[0] + t * dx, py = a[1] + t * dy;
+    const d = Math.hypot(mid[0] - px, mid[1] - py);
+    if (d < best.d) best = { d, s: Math.sign(dx * (mid[1] - a[1]) - dy * (mid[0] - a[0])) };
+  }
+  return best.s < 0 ? 'left' : 'right';
+}
+
+function runPanel(f: Feature, p: Project): string {
+  const w = widths(f);
+  const streets = p.features.filter((x) => x.kind === 'street');
+  const street = streets.find((s) => s.id === f.streetId);
+  const mean = w.reduce((a, b) => a + b, 0) / (w.length || 1);
+  // A house twice its neighbours' width is nearly always a division that was
+  // missed, not a mansion. Flagging it while tracing is far cheaper than
+  // finding it later.
+  //
+  // Compare against the MEDIAN, not the mean: an outlier drags the mean toward
+  // itself, so widths of 6, 6, 18, 6 average to 9 and the wide one lands exactly
+  // on the 2x line and slips through. The median is 6 and catches it.
+  const sorted = [...w].sort((a, b) => a - b);
+  const mid = sorted.length
+    ? (sorted.length % 2 ? sorted[sorted.length >> 1]
+      : (sorted[(sorted.length >> 1) - 1] + sorted[sorted.length >> 1]) / 2)
+    : 0;
+  // 1.75x, not 2x. A terrace of near-equal houses with one division missed
+  // gives a house of EXACTLY twice the median — the commonest mistake lands
+  // precisely on a 2x threshold and a strict > lets it through.
+  const suspect = w.map((x, i) => (mid > 0 && x > 1.75 * mid ? i : -1)).filter((i) => i >= 0);
+
+  return `
+    <label>fronts onto
+      <select id="i-street">
+        <option value="">— not attached —</option>
+        ${streets.map((s) => `<option value="${s.id}"${s.id === f.streetId ? ' selected' : ''}>${
+          esc(s.label || s.id)}</option>`).join('')}
+      </select></label>
+    ${street ? `<p class="muted">on the <b>${sideOfStreet(f, street)}</b> side, walking the street as drawn</p>` : ''}
+    <label>assumed plot depth, m (a guess — kept out of the tracing)
+      <input id="i-depth" type="number" step="0.5" placeholder="e.g. 25" value="${f.depthM ?? ''}"></label>
+    <p class="muted">${w.length} house${w.length === 1 ? '' : 's'} · mean ${mean.toFixed(1)} px · run ${
+      w.reduce((a, b) => a + b, 0).toFixed(0)} px</p>
+    ${suspect.length ? `<p class="warn">house ${suspect.map((i) => i + 1).join(', ')} ${
+      suspect.length === 1 ? 'is' : 'are'} far wider than the rest of the row — a missed party wall?</p>` : ''}
+    <div class="houses">
+      ${w.map((x, i) => `<div class="hrow${suspect.includes(i) ? ' warn' : ''}">
+        <b>${i + 1}</b>
+        <input data-h="${i}" class="hlabel" placeholder="unnamed" value="${esc(f.houses?.[i]?.label ?? '')}">
+        <small>${x.toFixed(0)}px</small>
+        <button data-merge="${i}" title="merge into the house before it"${i === 0 ? ' disabled' : ''}>⌫</button>
+      </div>`).join('')}
+    </div>`;
+}
+
+function bindRunPanel(f: Feature) {
+  const st = document.getElementById('i-street') as HTMLSelectElement | null;
+  st?.addEventListener('change', () => { store.update(f.id, { streetId: st.value || null }); refresh(); });
+  const dp = document.getElementById('i-depth') as HTMLInputElement | null;
+  dp?.addEventListener('change', () => {
+    store.update(f.id, { depthM: dp.value === '' ? null : Number(dp.value) });
+  });
+  for (const el of Array.from(document.querySelectorAll('.hlabel')) as HTMLInputElement[]) {
+    el.addEventListener('input', () => store.updateHouse(f.id, Number(el.dataset.h), { label: el.value }));
+  }
+  for (const el of Array.from(document.querySelectorAll('[data-merge]')) as HTMLButtonElement[]) {
+    el.addEventListener('click', () => {
+      store.removeDivision(f.id, Number(el.dataset.merge));
+      refresh(); editor.render();
+    });
+  }
 }
 
 const esc = (s: string) => s.replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]!));

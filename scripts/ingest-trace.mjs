@@ -52,10 +52,92 @@ for (const f of features) {
   if (f.closed && f.points.length >= 3 && Math.abs(ringArea(f.points)) < 1) {
     problems.push(`${f.id}: ring encloses no area (collinear?)`);
   }
+  if (f.kind === 'facade' && (f.houses?.length ?? 0) !== f.points.length - 1) {
+    problems.push(`${f.id}: ${f.points.length - 1} segments but ${f.houses?.length ?? 0} house records`);
+  }
 }
 if (problems.length) {
   console.log(`\n${problems.length} geometry problem(s):`);
   for (const p of problems) console.log(`   ${p}`);
+}
+
+// --- facade runs
+//
+// The whole point of tracing frontages rather than footprints is that a
+// frontage is a MEASUREMENT and a footprint is a guess. So measure them: widths
+// in pixels always, and in metres wherever the street they face has been
+// anchored to the ground by two control points.
+//
+// The scale used is LOCAL to that street. On a plate no global transform fits —
+// Utenwael's leave-one-out error is 187 m — the scale along one street over a
+// couple of hundred metres is still roughly constant, and that is exactly the
+// assumption the Blaeu frontage work already relies on.
+const runs = features.filter((f) => f.kind === 'facade' && f.points.length >= 2);
+if (runs.length) {
+  console.log(`\n${runs.length} facade run(s)`);
+  const allM = [];
+  for (const f of runs) {
+    const w = segLengths(f.points);
+    const street = features.find((s) => s.id === f.streetId);
+    const scale = street ? localScale(street, features) : null;
+
+    console.log(`   ${f.id}  ${f.label || '(unlabelled)'}  ${w.length} house(s)` +
+      `  ${street ? `on ${street.label || street.id}` : 'NOT ATTACHED to a street'}`);
+
+    if (!street) {
+      console.log('      widths are relative only until this run is attached to a street.');
+    } else if (!scale) {
+      console.log('      street has no scale: put control points on two of its vertices,');
+      console.log('      give them RD, and these widths become metres.');
+    } else {
+      const m = w.map((x) => x * scale.mPerPx);
+      allM.push(...m);
+      console.log(`      scale ${scale.mPerPx.toFixed(4)} m/px  (from ${scale.anchors} anchors, ` +
+        `${scale.rdDist.toFixed(1)} m over ${scale.pxArc.toFixed(0)} px)`);
+      console.log(`      widths m: ${m.map((x) => x.toFixed(1)).join(' ')}`);
+      console.log(`      mean ${mean(m).toFixed(2)} m   total ${m.reduce((a, b) => a + b, 0).toFixed(1)} m`);
+      // Check each run on its own. A single 18 m house averages away to nothing
+      // across a whole plate, and a missed party wall is the likeliest cause of
+      // it — so say which house, per run, where it can still be fixed.
+      //
+      // Compare against the MEDIAN. An outlier drags the mean toward itself, so
+      // a run of 6, 6, 18, 6 has a mean of 9 and the 18 m house sits exactly on
+      // the 2x line and escapes. The median is 6 and catches it.
+      //
+      // And use 1.75x rather than 2x: a terrace of near-equal houses with one
+      // division missed gives a house of EXACTLY twice the median, so the
+      // commonest mistake lands precisely on a 2x threshold and slips past.
+      const wide = m.map((x, i) => (x > 1.75 * median(m) ? i + 1 : 0)).filter(Boolean);
+      if (wide.length) {
+        console.log(`      CHECK house ${wide.join(', ')} — far wider than the rest of this run.`);
+        console.log('      A missed party wall looks exactly like one wide house.');
+      }
+      const narrow = m.filter((x) => x < 2.5).length;
+      if (narrow) console.log(`      CHECK ${narrow} house(s) under 2.5 m — narrower than a real frontage.`);
+      if (scale.bend > 1.02) {
+        console.log(`      WARNING — the street bends between its anchors (plate arc is`);
+        console.log(`      ${scale.bend.toFixed(2)}x the chord). RD distance is measured straight, so`);
+        console.log('      this scale is an UNDERESTIMATE. Anchor a straighter stretch.');
+      }
+    }
+    if (f.depthM == null) {
+      console.log('      depth not set — footprints cannot be built from this run yet.');
+    } else {
+      console.log(`      assumed depth ${f.depthM} m  (a guess, and recorded as one)`);
+    }
+  }
+  if (allM.length) {
+    // Hoorn's frontages were measured independently off Blaeu at 4.91 m mean,
+    // corroborated by house numbering at 5.07 m per plot. A run landing far
+    // from that is worth a second look before it becomes geometry.
+    const mu = mean(allM);
+    console.log(`\n   ${allM.length} house(s) in metres: mean ${mu.toFixed(2)} m, ` +
+      `range ${Math.min(...allM).toFixed(1)}–${Math.max(...allM).toFixed(1)} m`);
+    if (mu < 3 || mu > 9) {
+      console.log(`   SUSPECT — Hoorn's measured frontages average 4.91 m (docs/lessons.md).`);
+      console.log('   A mean this far off usually means the anchors, not the houses, are wrong.');
+    }
+  }
 }
 
 // --- control points
@@ -132,6 +214,51 @@ if (s1 / s2 > 3) {
 }
 
 function r2(n) { return Math.round(n * 100) / 100; }
+function mean(a) { return a.reduce((x, y) => x + y, 0) / a.length; }
+function median(a) {
+  const s = [...a].sort((x, y) => x - y);
+  const h = s.length >> 1;
+  return s.length % 2 ? s[h] : (s[h - 1] + s[h]) / 2;
+}
+function segLengths(pts) {
+  return pts.slice(1).map((q, i) => Math.hypot(q[0] - pts[i][0], q[1] - pts[i][1]));
+}
+
+/**
+ * Metres per pixel along one street, from control points sitting on its
+ * vertices. Uses the two anchors furthest apart, since a short baseline
+ * multiplies any placement error straight into the scale.
+ */
+function localScale(street, features, tol = 6) {
+  const anchors = [];
+  for (const c of features) {
+    if (c.kind !== 'control' || !Array.isArray(c.rd) || !c.points.length) continue;
+    const [cx, cy] = c.points[0];
+    let bi = -1, bd = tol;
+    street.points.forEach((p, i) => {
+      const d = Math.hypot(p[0] - cx, p[1] - cy);
+      if (d <= bd) { bd = d; bi = i; }
+    });
+    if (bi >= 0) anchors.push({ i: bi, rd: c.rd });
+  }
+  if (anchors.length < 2) return null;
+  anchors.sort((a, b) => a.i - b.i);
+  const A = anchors[0], B = anchors[anchors.length - 1];
+  if (A.i === B.i) return null;
+
+  const seg = segLengths(street.points.slice(A.i, B.i + 1));
+  const pxArc = seg.reduce((a, b) => a + b, 0);
+  const pxChord = Math.hypot(street.points[B.i][0] - street.points[A.i][0],
+                             street.points[B.i][1] - street.points[A.i][1]);
+  const rdDist = Math.hypot(B.rd[0] - A.rd[0], B.rd[1] - A.rd[1]);
+  if (!(pxArc > 0) || !(rdDist > 0)) return null;
+  return {
+    mPerPx: rdDist / pxArc,
+    pxArc, rdDist,
+    anchors: anchors.length,
+    bend: pxChord > 0 ? pxArc / pxChord : 1,
+  };
+}
 function ringArea(pts) {
   let a = 0;
   for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
