@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Civitates — map tracer</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="surface"></canvas>
+
+      <aside id="panel">
+        <header>
+          <h1>Map tracer</h1>
+          <p id="srcname" class="muted">no image loaded</p>
+          <div class="files">
+            <label class="btn">open image<input id="file" type="file" accept="image/*" hidden></label>
+            <button id="fit" class="btn">fit</button>
+          </div>
+        </header>
+
+        <section>
+          <h2>draw</h2>
+          <div id="tools"></div>
+          <div class="acts">
+            <button id="finish" class="btn primary">finish ⏎</button>
+            <button id="cancel" class="btn">cancel esc</button>
+            <button id="undo" class="btn">undo ⌘Z</button>
+            <button id="del" class="btn danger">delete</button>
+          </div>
+          <p class="muted hint">Tap to add a point. <b>Shift-tap</b> selects. Drag to pan, pinch or scroll to zoom. Points snap to nearby vertices so shared walls stay shared.</p>
+        </section>
+
+        <section>
+          <h2>traced</h2>
+          <div id="counts"></div>
+          <div id="list"></div>
+        </section>
+
+        <section>
+          <h2>selected</h2>
+          <div id="inspector"></div>
+        </section>
+
+        <section>
+          <h2>file</h2>
+          <div class="acts">
+            <button id="export" class="btn primary">export JSON</button>
+            <label class="btn">import<input id="import" type="file" accept="application/json" hidden></label>
+            <button id="clear" class="btn danger">clear all</button>
+          </div>
+          <p class="muted hint">Work autosaves to this browser. Export to keep it — coordinates are <b>source-image pixels</b>, never metres.</p>
+        </section>
+      </aside>
+    </div>
+    <script type="module" src="/src/editor/main.ts"></script>
+  </body>
+</html>

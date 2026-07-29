@@ -177,6 +177,62 @@ them needs **avalanche** — ids differing only in the last character put throug
 `hash * 31 + charCode` then `% 1000` varied by about 5 parts in 1000, so every
 house came out identical. FNV-1a with an fmix32 finaliser fixed it.
 
+## Division of labour: mark by hand, measure by machine
+
+**The model is unreliable at visual identification in a dense engraving, and
+reliable at measuring once something is marked.** This was established the hard
+way over one session on Utenwael 1596.
+
+A nine-tile sweep of the built area found **one** of the three churches. The
+other two were found by the user in seconds from a phone. The Hoofdtoren was
+missed by a crop that contained it, and again the user pointed straight at it.
+Every one of those was then located and cross-checked mechanically without
+trouble — template matching put a user-supplied screenshot on the plate at
+**NCC 0.923**, and the four-point fit that finally resolved the orientation was
+pure arithmetic.
+
+So the split that works is:
+
+| human | machine |
+|---|---|
+| *this is a church* | where exactly, to the pixel |
+| *this is the Hoofdtoren* | what that implies for orientation |
+| *these houses form a row* | their widths, spacing, and whether the total is plausible |
+
+Chasing landmark detection automatically wasted most of a session and produced,
+twice, a confident wrong answer. **Build the tool that lets a person mark
+things, and spend the machine on measurement, cross-checks and refusing bad
+fits.** That is what `src/editor/` exists for.
+
+## Fitting: more traps
+
+**A lower error can mean an impossible transform.** Fitting the Utenwael
+churches, the assignment with the *better* RMS (21.8 m against 28.2 m) had an
+anisotropy of **22** — a near-collinear squash that lowers residuals by
+collapsing an axis. The worse-scoring one had anisotropy 1.47, right for an
+oblique view, with scales that independently bracketed the m/px estimated from
+the city's extent. **Check the fitted transform is physically possible before
+comparing scores.**
+
+**A proxy coordinate is not the thing.** The first orientation attempt used
+street addresses as stand-ins for churches — "Grote Oost 114" for the
+Oosterkerk. They are not the churches, and the geocoder has no entry for either
+the Noorderkerk or the Oosterkerk at all. Real positions came from the largest
+old BAG footprints: 3132 m² built 1492, 716 m² built 1519.
+
+**Template matching is brutally scale-sensitive.** On a known crop the matcher
+scored **0.923 at the right scale and 0.07 at ±25%**. Coarse scale grids will
+therefore miss a true match completely — several sweeps found nothing and each
+peaked at a search boundary, which is the tell. Validate the matcher on a crop
+whose answer you already know before believing a negative result.
+
+**Some maps are not metric at all.** No global transform makes Utenwael 1596
+measurable: leave-one-out errors are 66, 203, 138 and 340 m — mean **187 m on a
+city 950 m across**. A 16th-century engraver drew a *portrait*, adjusting
+spacing for legibility, and buildings drawn in elevation are displaced by their
+own height on top of that. The fit is good for **orientation and nothing else**.
+Placement has to work in stations along surviving geometry.
+
 ## How the techniques have evolved, and what to combine next
 
 None of these methods arrived working. Each is the residue of a failure, and the
