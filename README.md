@@ -20,6 +20,7 @@ internal check; that file is the list of what actually caught them.
 | [docs/lessons.md](docs/lessons.md) | how measurements went wrong and what caught them |
 | [docs/georeferencing.md](docs/georeferencing.md) | coordinate system, per-map findings, dead ends |
 | [docs/fortifications.md](docs/fortifications.md) | gates and walls: which map, and why |
+| [docs/editor.md](docs/editor.md) | tracing plates by hand into structured data |
 | [data/historic-streets/](data/historic-streets/) | houses projected onto surviving streets |
 | [data/historic-rasters/](data/historic-rasters/) | blocks from georeferenced sheets |
 | [data/landmarks/](data/landmarks/) | landmark index to collect sources against |
@@ -28,9 +29,12 @@ internal check; that file is the list of what actually caught them.
 
 ```sh
 npm install
-npm run dev      # local dev server
+npm run dev      # local dev server: / is the city, /editor.html traces plates
 npm run build    # production build to dist/
 ```
+
+The site has two entry points: `index.html`, the 3D city, and `editor.html`,
+the tracing editor described in [docs/editor.md](docs/editor.md).
 
 Built with [three.js](https://threejs.org/) + Vite. Deploys automatically
 to GitHub Pages on push to `main` via `.github/workflows/deploy.yml` — this
